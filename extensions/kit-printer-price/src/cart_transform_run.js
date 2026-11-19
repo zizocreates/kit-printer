@@ -6,13 +6,13 @@
 
 import { checkPrint, toCents, fromCents } from "../../../shared/print.js";
 
-// The operation's name in the Cart Transform API ("lineUpdate"; older API versions called it "update").
+// The operation's name in the Cart Transform API, version 2026-07 ("lineUpdate"; older versions called it "update").
 export const UPDATE_OP = "lineUpdate";
 
 const NO_CHANGES = { operations: [] };
 
 /** @param {any} input */
-export function run(input) {
+export function cartTransformRun(input) {
   const operations = [];
   for (const line of input?.cart?.lines ?? []) {
     const op = priceLine(line);

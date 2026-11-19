@@ -4,3 +4,7 @@ generated/
 .env
 .shopify/
 *.log
+schema.graphql
+package-lock.json
+.shopify.lock
+.DS_Store

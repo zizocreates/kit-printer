@@ -1,0 +1,16 @@
+api_version = "2026-07"
+
+[[extensions]]
+name = "Kit Printer check"
+handle = "kit-printer-check"
+type = "function"
+description = "Blocks checkout if a printed name or number is not allowed."
+
+  [[extensions.targeting]]
+  target = "cart.validations.generate.run"
+  input_query = "src/cart_validations_generate_run.graphql"
+  export = "cart-validations-generate-run"
+
+  [extensions.build]
+  command = ""
+  path = "dist/function.wasm"

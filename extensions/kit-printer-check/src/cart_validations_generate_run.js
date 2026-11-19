@@ -6,13 +6,13 @@
 import { checkPrint, toCents } from "../../../shared/print.js";
 
 /** @param {any} input */
-export function run(input) {
+export function cartValidationsGenerateRun(input) {
   const errors = [];
   for (const line of input?.cart?.lines ?? []) {
     const problem = checkLine(line);
-    if (problem) errors.push({ localizedMessage: problem, target: "$.cart" });
+    if (problem) errors.push({ message: problem, target: "$.cart" });
   }
-  return { errors };
+  return { operations: [{ validationAdd: { errors } }] };
 }
 
 /** Returns a message for the buyer, or null if the line is fine. */

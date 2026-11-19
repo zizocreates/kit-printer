@@ -1,0 +1,20 @@
+api_version = "2026-07"
+
+[[extensions]]
+name = "Kit Printer price"
+handle = "kit-printer-price"
+type = "function"
+description = "Adds the printing price to a kit with a name or number."
+
+  [[extensions.targeting]]
+  target = "cart.transform.run"
+  input_query = "src/cart_transform_run.graphql"
+  export = "cart-transform-run"
+
+  [extensions.build]
+  command = ""
+  path = "dist/function.wasm"
+
+  [extensions.ui.paths]
+  create = "/"
+  details = "/"

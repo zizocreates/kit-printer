@@ -4,7 +4,10 @@
   "private": true,
   "type": "module",
   "description": "Names and numbers on football kits, priced and checked inside Shopify's checkout.",
+  "workspaces": ["extensions/*"],
   "scripts": {
+    "deploy": "shopify app deploy",
+    "info": "shopify app info",
     "test": "node --test --test-timeout=60000 test/*.test.js"
   },
   "engines": { "node": ">=22" }

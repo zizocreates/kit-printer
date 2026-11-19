@@ -1,7 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { run as price, UPDATE_OP } from "../extensions/kit-printer-price/src/run.js";
-import { run as check } from "../extensions/kit-printer-check/src/run.js";
+import { cartTransformRun as price, UPDATE_OP } from "../extensions/kit-printer-price/src/cart_transform_run.js";
+import { cartValidationsGenerateRun } from "../extensions/kit-printer-check/src/cart_validations_generate_run.js";
+
+// The check returns its errors inside a validationAdd operation (API 2026-07).
+const check = (input) => ({ errors: cartValidationsGenerateRun(input).operations[0].validationAdd.errors });
 
 // A cart line shaped like the Function's input query.
 function line({ id = "gid://shopify/CartLine/1", qty = 1, amount = "89.99", name, number, fee = "15.00", title = "Home kit" } = {}) {
@@ -40,7 +43,7 @@ test("number 100 is never charged and the checkout is blocked", () => {
   assert.deepEqual(price(cart(line({ name: "SAKA", number: "100" }))).operations, []);
   const errs = check(cart(line({ name: "SAKA", number: "100" }))).errors;
   assert.equal(errs.length, 1);
-  assert.match(errs[0].localizedMessage, /1 to 99/);
+  assert.match(errs[0].message, /1 to 99/);
 });
 
 test("an emoji sent straight to the cart, skipping the product page, is blocked at checkout", () => {
@@ -51,7 +54,7 @@ test("an emoji sent straight to the cart, skipping the product page, is blocked 
 test("a print on a product that isn't printable is blocked, never free", () => {
   const l = line({ name: "SAKA", number: "7", fee: null, title: "Socks" });
   assert.deepEqual(price(cart(l)).operations, []);
-  assert.match(check(cart(l)).errors[0].localizedMessage, /Socks can't be printed/);
+  assert.match(check(cart(l)).errors[0].message, /Socks can't be printed/);
 });
 
 test("each line is priced on its own: one printed, one plain, one bad", () => {

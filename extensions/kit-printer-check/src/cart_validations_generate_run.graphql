@@ -1,14 +1,7 @@
-query RunInput {
+query CartValidationsGenerateRunInput {
   cart {
     lines {
       id
-      quantity
-      cost {
-        amountPerQuantity {
-          amount
-          currencyCode
-        }
-      }
       printName: attribute(key: "Print name") {
         value
       }
@@ -18,8 +11,8 @@ query RunInput {
       merchandise {
         __typename
         ... on ProductVariant {
-          id
           product {
+            title
             printPrice: metafield(namespace: "kit_printer", key: "print_price") {
               value
             }

@@ -1,0 +1,7 @@
+# Kit Printer's app settings. client_id is filled in by `shopify app config link` on first run.
+name = "Kit Printer"
+client_id = ""
+
+[access_scopes]
+# write_cart_transforms: needed once, to switch the price Function on (cartTransformCreate).
+scopes = "write_cart_transforms"
