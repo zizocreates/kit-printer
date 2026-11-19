@@ -10,7 +10,7 @@ That's because they live in the theme's JavaScript. Kit Printer doesn't. The pri
 
 ## Try it
 
-The demo store is **[kitsbyzizo.myshopify.com](https://kitsbyzizo.myshopify.com)**. It's a Shopify test store, so it asks for a password, and payments are fake.
+The demo store is **[kitsbyzizo.myshopify.com](https://kitsbyzizo.myshopify.com)**. It's a Shopify test store, so it asks for a password: **`teoway`**. Payments are fake.
 
 1. Open any kit and type a name and number. The shirt fills in as you type.
 2. Add it to the cart: the price goes up by $15.00 for the printing, on the shirt's own line.
