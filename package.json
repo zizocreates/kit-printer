@@ -8,6 +8,7 @@
   "scripts": {
     "deploy": "shopify app deploy",
     "info": "shopify app info",
+    "sync": "node scripts/sync-block.mjs",
     "test": "node --test --test-timeout=60000 test/*.test.js"
   },
   "engines": { "node": ">=22" }

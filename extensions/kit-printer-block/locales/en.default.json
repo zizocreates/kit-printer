@@ -1,0 +1,8 @@
+{
+  "kit_printer": {
+    "heading": "Add a name and number",
+    "name": "Name",
+    "number": "Number",
+    "hint": "Letters only, up to 12. Numbers 1 to 99."
+  }
+}

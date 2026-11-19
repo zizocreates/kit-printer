@@ -1,0 +1,51 @@
+{%- comment -%}
+  Kit Printer: the name and number boxes on a printable kit's product page, with a live preview of the back of the
+  shirt. Shows only on products with a print price (metafield kit_printer.print_price). This is the friendly part;
+  the real price and the real check run inside Shopify's checkout as Functions, so nothing here can be skipped
+  to get a cheaper or a bad print.
+{%- endcomment -%}
+{%- assign print_price = product.metafields.kit_printer.print_price.value -%}
+{%- if print_price and print_price > 0 -%}
+  <div class="kp" data-kit-printer {{ block.shopify_attributes }}
+       style="--kp-shirt: {{ block.settings.shirt_colour }}; --kp-ink: {{ block.settings.ink_colour }};">
+    <p class="kp__heading">
+      {{ 'kit_printer.heading' | t }}
+      <span class="kp__price">+{{ print_price | times: 100 | money }}</span>
+    </p>
+
+    <div class="kp__body">
+      <svg class="kp__shirt" viewBox="0 0 200 220" role="img" aria-label="Preview of the back of the shirt">
+        <path class="kp__cloth" d="M60 10 L35 18 L5 55 L30 78 L45 66 L45 212 L155 212 L155 66 L170 78 L195 55 L165 18 L140 10 Q100 30 60 10 Z"/>
+        <text class="kp__name" x="100" y="72" text-anchor="middle" data-kp-name-out></text>
+        <text class="kp__number" x="100" y="160" text-anchor="middle" data-kp-number-out></text>
+      </svg>
+
+      <div class="kp__fields">
+        <label class="kp__label">{{ 'kit_printer.name' | t }}
+          <input class="kp__input" type="text" name="properties[Print name]" maxlength="12"
+                 autocomplete="off" autocapitalize="characters" spellcheck="false" data-kp-name>
+        </label>
+        <label class="kp__label">{{ 'kit_printer.number' | t }}
+          <input class="kp__input" type="text" name="properties[Print number]" maxlength="2"
+                 inputmode="numeric" autocomplete="off" data-kp-number>
+        </label>
+        <p class="kp__hint">{{ 'kit_printer.hint' | t }}</p>
+        <p class="kp__error" role="alert" aria-live="polite" data-kp-error hidden></p>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="{{ 'kit-printer.css' | asset_url }}">
+  <script type="module" src="{{ 'kit-printer.js' | asset_url }}"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Kit Printer",
+  "target": "section",
+  "settings": [
+    { "type": "color", "id": "shirt_colour", "label": "Shirt colour in the preview", "default": "#c8102e" },
+    { "type": "color", "id": "ink_colour", "label": "Print colour in the preview", "default": "#ffffff" }
+  ]
+}
+{% endschema %}
