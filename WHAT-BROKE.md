@@ -9,5 +9,8 @@ The catch: Shopify's add-to-cart form always has a hidden field named `id` (the 
 
 Found it by checking the boxes in a real browser against a page shaped like a Shopify product page, instead of trusting that it looked right. Fixed by reading the id with `form.getAttribute("id")`, and a test now fails if `form.id` ever comes back.
 
+## The box vanished after the release (day 2)
+Everything passed, then the product page lost its box. While `shopify app dev` runs, Shopify serves a dev copy of the app, and the theme editor offered that copy of the block, so that's what got added to the page. Cleaning up dev mode deleted the copy, and the theme was left pointing at a block that no longer existed (it shows red, "unresolved"). The released block was fine; it just had never been added. Fix: remove the dead block and add the released one. Lesson: test the released version on its own, with dev mode off, before calling anything done. The last check of day 2 did exactly that, which is how it was caught.
+
 ## A lowercase name on the order (day 1)
 Typing "saka" put "saka" on the checkout. The Functions already compare in capitals, but they can't change what the buyer typed. The product page block now writes it in capitals as you type, so the order says SAKA.
