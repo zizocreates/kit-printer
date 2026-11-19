@@ -3,6 +3,8 @@ api_version = "2026-07"
 [[extensions]]
 name = "Kit Printer price"
 handle = "kit-printer-price"
+
+uid = "3dd8deaa-0e04-76d0-3f9c-02991e131d2caca1515b"
 type = "function"
 description = "Adds the printing price to a kit with a name or number."
 

@@ -1,7 +1,20 @@
-# Kit Printer's app settings. client_id is filled in by `shopify app config link` on first run.
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
 name = "Kit Printer"
-client_id = ""
+client_id = "1d119b1c517cea6ee60acb3c750c3ef2"
+application_url = "https://shopify.dev/apps/default-app-home"
+embedded = true
 
 [access_scopes]
-# write_cart_transforms: needed once, to switch the price Function on (cartTransformCreate).
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "write_cart_transforms"
+
+[webhooks]
+api_version = "2027-01"
+
+[auth]
+redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true

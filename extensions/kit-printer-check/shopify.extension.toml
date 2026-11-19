@@ -3,6 +3,8 @@ api_version = "2026-07"
 [[extensions]]
 name = "Kit Printer check"
 handle = "kit-printer-check"
+
+uid = "e8ea447d-05b4-206a-372f-72f79e442b9bdebb72fb"
 type = "function"
 description = "Blocks checkout if a printed name or number is not allowed."
 
