@@ -1,0 +1,24 @@
+query RunInput {
+  cart {
+    lines {
+      id
+      printName: attribute(key: "Print name") {
+        value
+      }
+      printNumber: attribute(key: "Print number") {
+        value
+      }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          product {
+            title
+            printPrice: metafield(namespace: "kit_printer", key: "print_price") {
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}

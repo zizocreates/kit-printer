@@ -1,0 +1,11 @@
+{
+  "name": "kit-printer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Names and numbers on football kits, priced and checked inside Shopify's checkout.",
+  "scripts": {
+    "test": "node --test --test-timeout=60000 test/*.test.js"
+  },
+  "engines": { "node": ">=22" }
+}
