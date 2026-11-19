@@ -5,9 +5,13 @@
   to get a cheaper or a bad print.
 {%- endcomment -%}
 {%- assign print_price = product.metafields.kit_printer.print_price.value -%}
+{%- comment -%} The preview uses the kit's own colours when the product has them (metafields kit_printer.shirt_colour
+  and kit_printer.print_colour, type Color), and the block's settings otherwise. {%- endcomment -%}
+{%- assign shirt_colour = product.metafields.kit_printer.shirt_colour.value | default: block.settings.shirt_colour -%}
+{%- assign print_colour = product.metafields.kit_printer.print_colour.value | default: block.settings.ink_colour -%}
 {%- if print_price and print_price > 0 -%}
   <div class="kp" data-kit-printer {{ block.shopify_attributes }}
-       style="--kp-shirt: {{ block.settings.shirt_colour }}; --kp-ink: {{ block.settings.ink_colour }};">
+       style="--kp-shirt: {{ shirt_colour }}; --kp-ink: {{ print_colour }};">
     <p class="kp__heading">
       {{ 'kit_printer.heading' | t }}
       <span class="kp__price">+{{ print_price | times: 100 | money }}</span>
@@ -44,8 +48,8 @@
   "name": "Kit Printer",
   "target": "section",
   "settings": [
-    { "type": "color", "id": "shirt_colour", "label": "Shirt colour in the preview", "default": "#c8102e" },
-    { "type": "color", "id": "ink_colour", "label": "Print colour in the preview", "default": "#ffffff" }
+    { "type": "color", "id": "shirt_colour", "label": "Shirt colour in the preview (when the product has none)", "default": "#c8102e" },
+    { "type": "color", "id": "ink_colour", "label": "Print colour in the preview (when the product has none)", "default": "#ffffff" }
   ]
 }
 {% endschema %}

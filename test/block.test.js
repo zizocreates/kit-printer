@@ -37,3 +37,9 @@ test("the block never reads form.id (Shopify's cart form has a field named id th
   assert.doesNotMatch(js, /form\.id\b/);
   assert.match(js, /getAttribute\("id"\)/);
 });
+
+test("the preview takes the kit's own colours, falling back to the block's settings", () => {
+  assert.match(block, /product\.metafields\.kit_printer\.shirt_colour\.value \| default: block\.settings\.shirt_colour/);
+  assert.match(block, /product\.metafields\.kit_printer\.print_colour\.value \| default: block\.settings\.ink_colour/);
+  assert.match(block, /--kp-shirt: \{\{ shirt_colour \}\}; --kp-ink: \{\{ print_colour \}\}/);
+});
