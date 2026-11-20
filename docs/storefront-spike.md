@@ -2,7 +2,7 @@
 
 Run on 20 November 2026 against the real store, `kitsbyzizo.myshopify.com`, with the Headless channel's **public** Storefront API token. Storefront API version **2026-10**. Every response in this file came back from Shopify; the ones worth keeping are saved in `storefront/src/fixtures/`.
 
-Short version: **a, b, c and d all pass.** The Cart Transform and the Validation Function both run on carts built by the Storefront API, which is the thing the whole project rests on. Check e is partly answered and needs one manual step, written up at the bottom.
+Short version: **all five checks pass.** The Cart Transform and the Validation Function both run on carts built by the Storefront API, which is the thing the whole project rests on. Check e is answered in full: the printed price and the print attributes arrive in Shopify's real checkout.
 
 ## Setup, and what was already done
 
@@ -96,25 +96,32 @@ The socks carry `print_price: null`, which is how the product page decides not t
 
 Saved as `fixtures/cart-error-socks.json`.
 
-## e. The checkout URL and the password: half answered
+## e. The checkout URL and the password: PASS, and fully answered
 
-`cart.checkoutUrl` was re-fetched fresh (F4) and opened in a browser with no store cookies and no admin session, which is the closest thing to what a recruiter gets.
+Done in three steps, in a browser with no store cookie and no admin session, which is the closest thing to a recruiter opening the link.
 
-**Confirmed:** it does not reach checkout. It redirects to `https://kitsbyzizo.myshopify.com/password`, which says "This store is password protected. Use the password to enter the store." That is F6, seen on our own store.
+**Step 1. The bare checkout URL does not reach checkout.** A freshly fetched `cart.checkoutUrl` (F4) redirects to `https://kitsbyzizo.myshopify.com/password`, which says "This store is password protected." That is F6 on our own store.
 
-**Still open:** whether entering the password then continues to the checkout, or drops you on the store's home page. I did not submit the password myself.
+**Step 2. Entering the password lands you on the store home page, not the checkout.** Zyad submitted the password on that page and the browser ended up at `https://kitsbyzizo.myshopify.com/`. The original checkout destination is lost. That matches what the form looks like: it posts to `/password` with only `authenticity_token` and `password`, and carries **no `return_to` field**, so Shopify has nothing to send the buyer onward to.
 
-There is good evidence for the second, though. The password form posts to `/password` with only two fields, `authenticity_token` and `password`. There is **no `return_to` field and no hidden copy of the original path**, so the form has nothing to send Shopify back to. On that evidence the plan's two step sheet is the one to build:
+**So the two step sheet in the plan is required, not optional.** The Checkout button has to unlock the store first, then be pressed again.
 
-1. **Unlock the store**, which opens `/password` in a new tab;
-2. **Continue to checkout**, which opens `checkoutUrl` once the password cookie is set.
+**Step 3. Once the password cookie is set, the checkout URL goes straight through.** Re-opening a fresh `checkoutUrl` in the same browser landed on the real thing, `/checkouts/cn/...`, titled "Checkout - Kits by Zizo". And the order summary is the proof the whole project is built for:
 
-That sheet works whichever way the redirect goes, so it is the safe thing to build now. The e2e suite tests both paths, as the plan asks.
+```
+Kanata FC Away Kit 26/27  M
+  Print name: SAKA
+  Print number: 7                1     $104.99
+Kanata FC Socks                  1      $14.99
+Subtotal, 2 items                      $119.98
+```
+
+A cart built entirely by our own code, through the Storefront API, arrives in Shopify's checkout with **Kit Printer's price applied and the print attributes intact**. No theme, and no server of ours. That is the sentence to say to a recruiter, and it is now a thing that happened rather than a claim.
 
 ## Two things for Zyad
 
 1. **The socks have no images at all.** `images` comes back empty, and there is no socks image anywhere in `store/images/` or `storefront/public/demo/`. The kits all have 2 each. The socks need a product photo, or the product page needs a deliberate placeholder for them. They are not in the `kits` collection, so the grid is unaffected, but e2e check 5 opens the socks page.
-2. **Check e needs one manual step** to be finished properly: submit `futureshopifolk` on that password page and say where it lands.
+2. ~~Check e needs one manual step.~~ **Done.** You entered the password, the store landed on the home page, so the two step sheet is required. Written up in e above.
 
 ## What the data layer should know
 

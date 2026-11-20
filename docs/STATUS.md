@@ -12,18 +12,32 @@
 - Next: anything you put in REQUESTS; README storefront section; a11y pass on my components; the portfolio card once kitsbyzizo.pages.dev is live.
 
 ## Local agent
-- **Step 1, connectors (20 Nov 2026):** Shopify **pass** (store confirmed Kits by Zizo, `kitsbyzizo.myshopify.com`, USD, plan "Shopify Plus App Development"; server skills `admin-graphql`, `editing-themes`). 21st.dev **pass** (3 cards back; best starting point for the Kits grid is `deltacomponents/product-card`). Mobbin **fail**, "requires a paid plan", same as Claude. Claude in Chrome **pass**. Local: Node v26.13.0, npm 11.20.0, Shopify CLI 5.0.2, Playwright 1.65.1.
-  - Note for later: the Shopify CLI can run Admin GraphQL (`shopify app execute`), but the Kit Printer app only holds `write_cart_transforms`, so it is ACCESS_DENIED on products. Admin work goes through the connector.
-- **Step 2, Shopify setup: DONE.**
-  - Headless channel installed. Installing it created the storefront "Kits By Zizo Headless" (id 432818) by itself, so nothing had to be created by hand. **Public** token is in `storefront/.env.production`. The private token is masked in the admin and was never read or stored.
-  - Published to Headless publication `220251324487`: the 4 kits, the socks, and the **`kits` collection** (the plan did not list the collection, but `collection(handle:)` does not resolve without it). No userErrors.
-  - Metafield access (F7) **was already correct**, all four `kit_printer` definitions on `PUBLIC_READ`. No mutation run.
-- **Step 2, the spike: a, b, c, d PASS. e half answered.** Full write-up in `docs/storefront-spike.md`, real responses in `storefront/src/fixtures/`.
-  - **b is the big one:** on a cart our own site built, `cost.amountPerQuantity` is **104.99** for the 89.99 away kit with SAKA 7. F1 and F3 hold. **The "+$15.00 applied at checkout" fallback is not needed**, the UI can show the real cart price.
-  - c: `VALIDATION_CUSTOM`, "Kanata FC Away Kit 26/27: Numbers go from 1 to 99." d: "Kanata FC Socks can't be printed. Remove the name and number to continue." Socks with no print are accepted.
-  - e: `checkoutUrl` redirects to `/password` (F6 confirmed on our store). Whether unlocking then continues to checkout is still open; the password form has no `return_to` field, so the plan's two step sheet is what to build.
-- **Fixtures pushed:** `collection.json`, `product-<handle>.json` for all 5 products, `cart-created.json`, `cart-two-lines.json`, `cart-error-number.json`, `cart-error-socks.json`. Cart ids and checkout URL keys are redacted in the cart fixtures (public repo); shapes are untouched.
-- **Claude's data layer checked against the live store: all 33 checks pass.** Ran his own `queries.ts` and `map.ts` against `kitsbyzizo` (`storefront/tests/e2e/live-data.check.mts`, `npx vite-node tests/e2e/live-data.check.mts`). Collection maps to 4 kits with `backBlank` and `printPrice` 15.00, socks map to `printPrice: null`, a real cart line is 104.99 with the print off the attributes, and a refusal maps to null cart plus VALIDATION_CUSTOM word for word. His `typecheck` is clean and his 11 unit tests pass.
-- **Now:** blocked on nothing of my own. Waiting on `docs/storefront-components.md` before Home and the Kits page can start.
-- **Next:** Home and the Kits page the moment the component list lands; then the Playwright e2e suite, Cloudflare Pages deploy, Lighthouse.
-- **Two things for Zyad:** the socks have **no images at all** (none on the product, none in the repo), and spike e needs one manual password submission to finish.
+
+**Done**
+- **Connectors:** Shopify works (store confirmed Kits by Zizo). 21st.dev works. **Mobbin unavailable** (paid plan). Claude in Chrome works. Node v26.13.0, npm 11.20.0, Shopify CLI 5.0.2, Playwright 1.65.1.
+- **Shopify setup:** Headless channel installed; installing it created the storefront "Kits By Zizo Headless" (id 432818) by itself. Public token in `storefront/.env.production`; the private token was never read or stored. Published the 4 kits, the socks **and the `kits` collection** to publication `220251324487`. Metafield storefront access (F7) was **already correct**, so no mutation was run.
+- **Spike: all five checks pass.** `docs/storefront-spike.md`, real responses in `storefront/src/fixtures/`.
+  - **b:** a cart built by our own site comes back `cost.amountPerQuantity` **104.99**. So **the "applied at checkout" fallback copy is not needed.**
+  - **e, now finished:** `checkoutUrl` hits `/password`; entering the password lands on the **store home page**, not checkout; once the cookie is set a fresh `checkoutUrl` goes straight to `/checkouts/cn/...`, where the order summary reads **Kanata FC Away Kit 26/27 M, Print name: SAKA, Print number: 7, $104.99**, subtotal $119.98. The whole pitch, proven.
+- **Claude's data layer checked live:** his own `queries.ts` and `map.ts` against the real store, 33 checks, all pass (`storefront/tests/e2e/live-data.check.mts`, `npx vite-node tests/e2e/live-data.check.mts`).
+- **My pages are built:** `routes/Home.tsx` and `routes/Collection.tsx` replaced whole, plus `components/home/` (`HeroPrint`, `PrintingSteps`, `BuiltTeaser`, `useCalm`).
+  - Home: hero with a name and number typing themselves onto the blank kit back (RONALDO 7, MESSI 10, SALAH 11, SAKA 7), scroll parallax, "Shop kits" and "Add your name", the 4 kits, a three step "Pick, print, priced by Shopify" strip whose middle step is a **live demo running `shared/print.js`**, and the How it's built teaser.
+  - Kits: heading, club chips built from the data (All, Capital City SC, Kanata FC, Rideau United), a live count, staggered fade in, and the socks underneath as "Add the socks".
+  - Verified in a real browser on real data: both titles set, 4 cards, chips filter correctly (Kanata FC gives 2 kits, `aria-pressed` right), the hero really types and cycles, **no console errors, no horizontal scroll**. `tsc` clean, **22 unit tests pass**, `vite build` ok.
+
+**Now**
+- Playwright: the live e2e suite, then the width and reduced motion QA pass.
+
+**Next**
+- Cloudflare Pages deploy, Lighthouse on the deployed URL, then `reports/storefront.md`.
+
+**Decisions**
+- **Storefront API version is now `2026-04`, not `2026-10`.** hydrogen-react 2026.4 logged a version mismatch warning on every page load. I checked 2026-04 against the live store: same collection, same metafields, same `back_image` reference. Matching the kit we ship beats being ahead of it, and the console is clean now.
+- **Club chips are derived from `kit.vendor`, not hardcoded.** The brief listed three clubs; reading them from the data means a fifth kit needs no code change. Chips only appear when there is more than one club.
+- **The socks are a "View socks" link, not a quick add, on the Kits page.** They have one variant and no print, so sending people to the product page keeps one way to buy and avoids a second add-to-bag path to test.
+- **The hero uses the first kit that has a `backBlank`** rather than a fixed handle, so it cannot break if a product is unpublished.
+- **Reduced motion:** my typing and cycling are plain timers, not motion/react, so `MotionConfig` cannot switch them off. `useCalm` does it: no typing, no cycling, no parallax, one finished print shown instead.
+
+**Edited Claude's files** (both small, both logged as the brief allows)
+- `tests/unit/setup.ts`: **all 22 unit tests failed on this machine** before the fix. Node 26 defines a global `localStorage` that is `undefined` unless `--localstorage-file` is passed, and because the global already exists Vitest's jsdom environment does not put jsdom's own there (`sessionStorage` is still jsdom's, which is the giveaway). Added a small in-memory `Storage` stand-in, which is what that file is for. Not a bug in the app, and it passes in Claude's container because its Node is older.
+- `src/lib/config.ts`: `API_VERSION` 2026-10 to 2026-04, see Decisions.
