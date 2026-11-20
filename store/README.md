@@ -9,6 +9,7 @@
 |---|---|
 | `products.csv` | The four kits, sizes S to XL, $89.99, print price $15.00, and each kit's shirt and print colours (the box's preview uses them). Import in Products, Import. |
 | `images/<kit>-front.png`, `-back.png` | Product photos, 1600 by 1600. Front first, then the back with a printed name. |
+| `images/<kit>-back-blank.png` | The back with nothing printed. Not a product photo: it goes in each kit's `kit_printer.back_image` metafield (type File), and the product page preview prints the buyer's name on it, turning from the front to the back as they type. |
 | `images/banner-plain.png` | Homepage hero image, no text (the theme's heading goes on top). |
 | `images/banner.png` | The same with the text baked in, for the README and social previews only. |
 | `images/logo.png` | The "KITS by ZIZO" wordmark. |
@@ -32,6 +33,6 @@
    - **About:** "Kits by Zizo is a demo store for Kit Printer, a Shopify app I built that adds names and numbers to football kits. The kits are original designs for made-up clubs."
 3. **Collection "Kits":** the four kits (tag `kits`).
 4. **Navigation:** Home, Kits. The footer gets the About line and nothing else of note.
-5. **Products:** from `products.csv`, each with its front then back image. Alt text: "Front of the <kit>" and "Back of the <kit>, printed with <NAME> <number>" (Kanata FC home: SALAH 11; away: RONALDO 7; Rideau United: MESSI 10; Capital City: O'BRIEN 10).
+5. **Products:** from `products.csv`, each with its front then back image. Alt text: "Front of the <kit>" and "Back of the <kit>, printed with <NAME> <number>" (Kanata FC home: SALAH 11; away: RONALDO 7; Rideau United: MESSI 10; Capital City: SAKA 7).
 6. **The old "Home kit":** set to **Archived** (not deleted). **"Football socks":** rename to "Kanata FC Socks". Keep it at $14.99 with no print price: it's the "can't be printed" example.
 7. **Password page message:** "Kits by Zizo: the demo store for Kit Printer."

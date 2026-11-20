@@ -11,6 +11,15 @@ function setUp(box) {
   const nameOut = box.querySelector("[data-kp-name-out]");
   const numberOut = box.querySelector("[data-kp-number-out]");
   const error = box.querySelector("[data-kp-error]");
+  const stage = box.querySelector("[data-kp-stage]");
+
+  // Turn the kit over: the front to start, the back as soon as the buyer works on a print, like a club shop does.
+  const turn = (toBack) => {
+    if (!stage) return;
+    stage.classList.toggle("is-back", toBack);
+    stage.querySelectorAll("[data-kp-side]").forEach((b) => b.setAttribute("aria-pressed", String((b.dataset.kpSide === "back") === toBack)));
+  };
+  stage?.querySelectorAll("[data-kp-side]").forEach((b) => b.addEventListener("click", () => turn(b.dataset.kpSide === "back")));
 
   // The block sits outside the theme's add-to-cart form, so point the inputs at that form.
   const form = findCartForm(box);
@@ -38,6 +47,7 @@ function setUp(box) {
   for (const input of [name, number]) {
     input.addEventListener("input", update);
     input.addEventListener("blur", update);
+    input.addEventListener("focus", () => turn(true));
   }
 
   // Runs before the theme's own add-to-cart handler, so a bad print never leaves the page.

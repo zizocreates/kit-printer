@@ -10,7 +10,7 @@ const KITS = [
   { slug: "kanata-fc-home", initials: "K", body: "#c8102e", trim: "#ffffff", rib: "#c8102e", print: "#ffffff", pattern: "plain", back: { name: "SALAH", number: "11" } },
   { slug: "kanata-fc-away", initials: "K", body: "#1d4fa3", trim: "#ffffff", rib: "#0f2f6b", print: "#ffffff", pattern: "plain", back: { name: "RONALDO", number: "7" } },
   { slug: "rideau-united-home", initials: "RU", body: "#f4a7c6", trim: "#111111", rib: "#111111", print: "#111111", pattern: "plain", back: { name: "MESSI", number: "10" } },
-  { slug: "capital-city-third", initials: "CC", body: "#108a8c", trim: "#0a3a3b", rib: "#ffffff", print: "#ffffff", pattern: "hoops", accent: "#0b4f50", crest: "#ffffff", crestText: "#0a3a3b", back: { name: "O'BRIEN", number: "10" } },
+  { slug: "capital-city-third", initials: "CC", body: "#f3f1ec", trim: "#13294b", rib: "#13294b", print: "#13294b", pattern: "plain", crest: "#13294b", crestText: "#f3f1ec", back: { name: "SAKA", number: "7" } },
 ];
 
 // The shirt as worn: square shoulders, short sleeves angled down, a straight body with a slight waist and a
@@ -25,7 +25,10 @@ function pattern(k, side) {
   return "";
 }
 
-function svg(k, side, cut = false) {
+// A shirt light enough that white highlights would vanish gets a darker weave instead.
+const isLight = (hex) => { const n = parseInt(hex.slice(1), 16); return ((n >> 16) * 299 + ((n >> 8) & 255) * 587 + (n & 255) * 114) / 1000 > 200; };
+
+function svg(k, side, cut = false, blank = false) {
   const front = side === "front";
   const outline = shirt(front ? 198 : 160);
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1600" height="1600">
@@ -34,7 +37,7 @@ function svg(k, side, cut = false) {
     <clipPath id="shirt"><path d="${outline}"/></clipPath>
     <!-- the tonal pattern woven into modern match shirts, and the mesh of the fabric -->
     <pattern id="jacquard" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate(32)">
-      <rect width="9" height="22" fill="#fff" opacity=".055"/>
+      <rect width="9" height="22" fill="${isLight(k.body) ? "#000" : "#fff"}" opacity="${isLight(k.body) ? ".02" : ".055"}"/>
     </pattern>
     <pattern id="mesh" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r=".9" fill="#000" opacity=".06"/></pattern>
     <filter id="cloth" x="0" y="0" width="100%" height="100%">
@@ -62,8 +65,10 @@ function svg(k, side, cut = false) {
       <rect width="1000" height="1000" fill="url(#jacquard)"/>
       <path d="${CUFFS}" fill="${k.trim}"/>
       <path d="M148 392 L236 448 M852 392 L764 448" stroke="${k.rib}" stroke-width="5" opacity=".7"/>
-      ${front ? "" : printBack(k)}
-      <!-- light: the chest catches it, the sides and sleeves fall away, creases at the armpits and waist -->
+      ${front || blank ? "" : printBack(k)}
+      <!-- light: the chest catches it, the sides and sleeves fall away, creases at the armpits and waist.
+           A white shirt shows shadow far more than a coloured one, so it gets half as much. -->
+      <g opacity="${isLight(k.body) ? 0.45 : 1}">
       <rect width="1000" height="1000" fill="url(#chest)"/>
       <rect width="1000" height="1000" fill="url(#sides)"/>
       <rect width="1000" height="1000" fill="url(#hem)"/>
@@ -76,6 +81,7 @@ function svg(k, side, cut = false) {
         <path d="M430 820 Q470 850 480 885" stroke="#000" stroke-opacity=".10" stroke-width="14"/>
         <path d="M440 260 Q480 400 470 560" stroke="#fff" stroke-opacity=".12" stroke-width="34"/>
         <path d="M196 250 Q220 300 226 380" stroke="#fff" stroke-opacity=".10" stroke-width="18"/>
+      </g>
       </g>
       <path d="M300 332 Q292 262 268 176 M700 332 Q708 262 732 176" stroke="#000" stroke-opacity=".25" stroke-width="2.5" fill="none"/>
       <path d="M300 332 Q292 262 268 176 M700 332 Q708 262 732 176" stroke="#fff" stroke-opacity=".12" stroke-width="2" fill="none" transform="translate(3 0)"/>
@@ -148,7 +154,9 @@ function shade(hex, amt) {
   for (const k of KITS) {
     for (const side of ["front", "back"]) await shot(svg(k, side), path.join(out, `${k.slug}-${side}.png`));
     await shot(svg(k, "back", true), path.join(cuts, `${k.slug}-back.png`), true);
+    // The back with nothing printed: the product page preview prints the buyer's name on this exact photo.
+    await shot(svg(k, "back", false, true), path.join(out, `${k.slug}-back-blank.png`));
   }
   await b.close();
-  console.log(`Rendered ${KITS.length} kits, front and back, plus cut-outs.`);
+  console.log(`Rendered ${KITS.length} kits: front, back, blank back, and cut-outs.`);
 })();

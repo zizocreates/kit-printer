@@ -57,3 +57,16 @@ test("the block's assets are only file types Shopify accepts (a .woff2 here fail
   assert.ok(files.length > 0);
   for (const f of files) assert.match(f, allowed, f);
 });
+
+test("with a blank back photo the preview is the real kit, front and back; without one, a drawn shirt", () => {
+  assert.match(block, /product\.metafields\.kit_printer\.back_image\.value/);
+  assert.match(block, /data-kp-stage/);
+  assert.match(block, /kp__face--front[\s\S]*featured_image[\s\S]*kp__face--back[\s\S]*back_photo/);
+  assert.match(block, /\{%- else -%\}[\s\S]*class="kp__shirt"/);
+  // the print sits where the product pictures put it, so the preview matches the photos
+  const kits = read("store/make-kits.cjs");
+  for (const [x, y, size] of [["500", "292", "60"], ["500", "640", "300"]]) {
+    assert.ok(kits.includes(`x="${x}" y="${y}" font-size="${size}"`), `make-kits prints at ${y}`);
+    assert.ok(block.includes(`x="${x}" y="${y}"`), `block prints at ${y}`);
+  }
+});

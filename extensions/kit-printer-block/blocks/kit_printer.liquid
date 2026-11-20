@@ -17,7 +17,32 @@
       <span class="kp__price">+{{ print_price | times: 100 | money }}</span>
     </p>
 
-    <div class="kp__body">
+    {%- comment -%}
+      The preview. With a blank back photo of the kit (metafield kit_printer.back_image, a File), it shows the real
+      kit: the front first, and it turns to the back as soon as the buyer starts on a name, printing it on that
+      exact photo in the same place and font as the product pictures. Without one, a drawn shirt in the kit's colours.
+    {%- endcomment -%}
+    {%- assign back_photo = product.metafields.kit_printer.back_image.value -%}
+    {%- if back_photo and product.featured_image -%}
+      <div class="kp__stage" data-kp-stage>
+        <div class="kp__card">
+          <div class="kp__face kp__face--front">
+            {{ product.featured_image | image_url: width: 900 | image_tag: class: 'kp__photo', loading: 'lazy', alt: product.featured_image.alt }}
+          </div>
+          <div class="kp__face kp__face--back">
+            {{ back_photo | image_url: width: 900 | image_tag: class: 'kp__photo', loading: 'lazy', alt: 'Back of the shirt, where the name and number go' }}
+            <svg class="kp__print" viewBox="0 0 1000 1000" aria-hidden="true">
+              <text class="kp__name" x="500" y="292" text-anchor="middle" data-kp-name-out></text>
+              <text class="kp__number" x="500" y="640" text-anchor="middle" data-kp-number-out></text>
+            </svg>
+          </div>
+        </div>
+        <div class="kp__sides" role="group" aria-label="Show the shirt">
+          <button type="button" data-kp-side="front" aria-pressed="true">Front</button>
+          <button type="button" data-kp-side="back" aria-pressed="false">Back</button>
+        </div>
+      </div>
+    {%- else -%}
       <svg class="kp__shirt" viewBox="130 120 740 790" role="img" aria-label="Preview of the back of the shirt">
         <path class="kp__cloth" d="M402 140 Q500 160 598 140 C650 150 700 158 732 176 L852 392 L764 448 L700 332 C694 420 690 520 690 600 C690 700 694 800 694 880 Q500 900 306 880 C306 800 310 700 310 600 C310 520 306 420 300 332 L236 448 L148 392 L268 176 C300 158 350 150 402 140 Z"/>
         <path class="kp__shade" d="M268 176 L148 392 L236 448 L300 332 C292 262 282 214 268 176 Z M732 176 L852 392 L764 448 L700 332 C708 262 718 214 732 176 Z"/>
@@ -25,20 +50,20 @@
         <text class="kp__name" x="500" y="292" text-anchor="middle" data-kp-name-out></text>
         <text class="kp__number" x="500" y="640" text-anchor="middle" data-kp-number-out></text>
       </svg>
+    {%- endif -%}
 
-      <div class="kp__fields">
-        <label class="kp__label">{{ 'kit_printer.name' | t }}
-          <input class="kp__input" type="text" name="properties[Print name]" maxlength="12"
-                 autocomplete="off" autocapitalize="characters" spellcheck="false" data-kp-name>
-        </label>
-        <label class="kp__label">{{ 'kit_printer.number' | t }}
-          <input class="kp__input" type="text" name="properties[Print number]" maxlength="2"
-                 inputmode="numeric" autocomplete="off" data-kp-number>
-        </label>
-        <p class="kp__hint">{{ 'kit_printer.hint' | t }}</p>
-        <p class="kp__error" role="alert" aria-live="polite" data-kp-error hidden></p>
-      </div>
+    <div class="kp__fields">
+      <label class="kp__label kp__label--name">{{ 'kit_printer.name' | t }}
+        <input class="kp__input" type="text" name="properties[Print name]" maxlength="12"
+               autocomplete="off" autocapitalize="characters" spellcheck="false" data-kp-name>
+      </label>
+      <label class="kp__label kp__label--number">{{ 'kit_printer.number' | t }}
+        <input class="kp__input" type="text" name="properties[Print number]" maxlength="2"
+               inputmode="numeric" autocomplete="off" data-kp-number>
+      </label>
     </div>
+    <p class="kp__hint">{{ 'kit_printer.hint' | t }}</p>
+    <p class="kp__error" role="alert" aria-live="polite" data-kp-error hidden></p>
   </div>
 
   <link rel="stylesheet" href="{{ 'kit-printer.css' | asset_url }}">
