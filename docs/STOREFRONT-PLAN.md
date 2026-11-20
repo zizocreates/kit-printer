@@ -39,7 +39,7 @@ No server of our own. The Shopify theme store stays as it is (it's where the the
 ## Stack (versions checked on npm, 20 Nov 2026)
 - **Vite 8 + React 19 + React Router 8** (SPA). No server rendering needed: SEO doesn't matter for a password-gated demo, and the public token is meant for browsers (F9).
 - **`@shopify/hydrogen-react` 2026.4**: Shopify's official React kit, which works outside Hydrogen. Use its Storefront client helpers, `Money`, `Image` (Shopify CDN resizing) and the `flattenConnection`/`parseGid` utilities. Using Shopify's own kit is a signal in itself.
-- **Tailwind CSS 4** for styling. **21st.dev MCP** (Agent U only) for well-made React and Tailwind building blocks. Adapt them to our design tokens; never ship one unstyled.
+- **Tailwind CSS 4** for styling. Components are hand-built to our tokens (the 21st.dev MCP can be added on the local machine later if wanted; nothing ships looking like a stock component).
 - **Motion 14** (`motion/react`) for layout and shared-element transitions. **Lenis 1.3** for smooth scroll (off for reduced motion). **GSAP 3.15** only if a scroll sequence needs it (its standard licence is free).
 - **Vitest** for unit tests, **Playwright** for end-to-end tests against the live store.
 - Fonts: **Oswald 700** for headings and the print (SIL OFL, already in `store/fonts`), **Inter** for body (SIL OFL, via `@fontsource-variable/inter`).
