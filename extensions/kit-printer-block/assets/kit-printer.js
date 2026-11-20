@@ -28,8 +28,8 @@ function setUp(box) {
   number.setAttribute("form", formId);
 
   const update = () => {
-    name.value = cleanName(name.value).replace(/^ /, "");
-    number.value = number.value.replace(/\D/g, "");
+    tidy(name, cleanName(name.value).replace(/^ /, ""));
+    tidy(number, number.value.replace(/\D/g, ""));
     nameOut.textContent = name.value.trim();
     numberOut.textContent = number.value;
     show(checkPrint(name.value, number.value));
@@ -47,7 +47,7 @@ function setUp(box) {
     if (!result.ok) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      (result.reason.startsWith("Numbers") ? number : name).focus();
+      (result.field === "number" ? number : name).focus();
       return;
     }
     // Leave empty boxes out of the cart entirely (disabled fields aren't sent), so a plain kit has no blank
@@ -60,9 +60,19 @@ function setUp(box) {
     const bad = !result.ok;
     error.textContent = bad ? result.reason : "";
     error.hidden = !bad;
-    name.setAttribute("aria-invalid", String(bad && !result.reason.startsWith("Numbers")));
-    number.setAttribute("aria-invalid", String(bad && result.reason.startsWith("Numbers")));
+    name.setAttribute("aria-invalid", String(bad && result.field === "name"));
+    number.setAttribute("aria-invalid", String(bad && result.field === "number"));
   }
+}
+
+// Replace a box's text only when it changed, and keep the cursor where it was, so typing in the middle of a
+// name doesn't throw the cursor to the end.
+function tidy(input, value) {
+  if (input.value === value) return;
+  const at = input.selectionStart ?? value.length;
+  const drift = input.value.length - value.length;
+  input.value = value;
+  if (document.activeElement === input) input.setSelectionRange(Math.max(0, at - drift), Math.max(0, at - drift));
 }
 
 function findCartForm(box) {

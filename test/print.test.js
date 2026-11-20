@@ -15,6 +15,12 @@ test("numbers 1 to 99 pass; 0, 100, 07, 7.5, -7 and words don't", () => {
   for (const n of ["0", "100", "07", "7.5", "-7", "seven", "7a", " 1 2 "]) assert.equal(checkPrint("", n).ok, false, n);
 });
 
+test("a failure names the field at fault, so the page can highlight the right box", () => {
+  assert.equal(checkPrint("SAKA", "100").field, "number");
+  assert.equal(checkPrint("SAKA7", "7").field, "name");
+  assert.equal(checkPrint("SAKA", "7").field, undefined);
+});
+
 test("emoji, digits, symbols and markup in a name are refused", () => {
   for (const n of ["SAKA ⚽", "SAKA7", "<b>SAKA</b>", "SAKA!", "-SAKA", "SAKA-", "'"]) assert.equal(checkPrint(n, "7").ok, false, n);
 });

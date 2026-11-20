@@ -10,7 +10,7 @@ Personalization apps run in the store theme's JavaScript, and their 1-star revie
 No server: Shopify runs the Functions, so there is nothing to host and nothing to go down.
 
 ## Status
-- [x] Day 0: the rules (`shared/print.js`), both Functions, 15 tests (`npm test`), checked by breaking the code on purpose.
+- [x] Day 0: the rules (`shared/print.js`), both Functions, tests (`npm test`), checked by breaking the code on purpose.
 - [x] Day 1: accounts, the dev store (Plus), the app, both Functions; SAKA 7 costs $104.99 and the four break-it checks hold (reports/day1.md).
 - [x] Days 2 to 3: the product page block with a live shirt preview, released as kit-printer-2 and checked with dev mode off (reports/day2.md, day2b.md).
 - [ ] Days 4 to 5: the printing price set per product (metafield `kit_printer.print_price`), the order page block showing the print.
@@ -24,5 +24,5 @@ No server: Shopify runs the Functions, so there is nothing to host and nothing t
 ## How to work on this (for any agent)
 - **Commands first, clicking last.** Admin API: `shopify app execute -s kitsbyzizo.myshopify.com --query-file q.graphql` (put the query in a file; inline quotes break in Windows PowerShell). Theme changes: `shopify theme pull`, edit, `shopify theme push`. That uses your staff login, not the app's permissions. The block's reference in a template is `shopify://apps/kit-printer/blocks/kit_printer/<uid>`, with the uid from `extensions/kit-printer-block/shopify.extension.toml`.
 - **Check pages by reading them, not photographing them:** look for `input[name="properties[Print name]"]`, read the cart from `/cart.js`. Take screenshots only for the report.
-- **Never test with `shopify app dev` running and call it done.** Dev mode serves a dev copy that disappears afterwards (see WHAT-BROKE.md). The last check is always on the released version, with dev mode off.
+- **Never test with `shopify app dev` running and call it done.** Dev mode serves a dev copy that disappears afterwards (see ../WHAT-BROKE.md). The last check is always on the released version, with dev mode off.
 - Changes to the block's look, wording or rules need only `shopify app deploy`; the theme already holds the released block.

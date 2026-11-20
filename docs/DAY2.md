@@ -20,7 +20,7 @@ Say yes to releasing the new version. It sends three things: the price Function,
 The switch-ons from day 1 (cartTransformCreate and the checkout rule) stay; they point at the Functions by name.
 
 ## 3. Put the block on the product page
-**Only with `shopify app dev` stopped.** While dev is running, the theme editor offers the dev copy of the block; that copy is deleted when dev mode ends, and the block turns red ("unresolved"). See `DAY2B.md`.
+**Only with `shopify app dev` stopped.** While dev is running, the theme editor offers the dev copy of the block; that copy is deleted when dev mode ends, and the block turns red ("unresolved"). See `DAY2B.md` in this folder.
 
 Admin: **Online Store, Themes, Customize** on the current theme. At the top, switch the page to **Products, Default product**. In the product information section, click **Add block**, choose the **Apps** tab, then **Kit Printer**. Drag it just above the Add to cart button. In its settings, set the shirt colour to match the kit. Click **Save**.
 

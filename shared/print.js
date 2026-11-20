@@ -7,6 +7,7 @@ export const NAME_MAX = 12;
 
 // Letters, plus the space, hyphen, apostrophe and full stop real kit names use (VAN DIJK, O'BRIEN, SMITH-ROWE).
 const NAME_OK = /^[A-Z](?:[A-Z .'-]*[A-Z.])?$/;
+const NUMBER_OK = /^[1-9][0-9]?$/;
 
 /** Normalise what the buyer typed. Returns "" for nothing. */
 export function cleanName(raw) {
@@ -20,7 +21,8 @@ export function cleanNumber(raw) {
 }
 
 /**
- * Check one line's print. Returns { ok, name, number, reason }.
+ * Check one line's print. Returns { ok, isPrint, name, number } and, when it fails, the field at fault
+ * ("name" or "number") and a reason written for the buyer.
  * A line with neither a name nor a number is not a print at all, and is fine.
  */
 export function checkPrint(rawName, rawNumber) {
@@ -29,19 +31,16 @@ export function checkPrint(rawName, rawNumber) {
   if (!name && !number) return { ok: true, name: "", number: "", isPrint: false };
 
   if (name) {
-    if ([...name].length > NAME_MAX) return fail(`Names can be up to ${NAME_MAX} letters.`);
-    if (!NAME_OK.test(name)) return fail("Names can only use letters, spaces, hyphens, apostrophes and full stops.");
+    // Count characters, not UTF-16 units, so an accented or unusual letter can't sneak past the limit.
+    if ([...name].length > NAME_MAX) return fail("name", `Names can be up to ${NAME_MAX} letters.`);
+    if (!NAME_OK.test(name)) return fail("name", "Names can only use letters, spaces, hyphens, apostrophes and full stops.");
   }
-  if (number) {
-    if (!/^\d{1,2}$/.test(number)) return fail("Numbers go from 1 to 99.");
-    const n = Number(number);
-    if (n < 1 || n > 99) return fail("Numbers go from 1 to 99.");
-    if (number.length === 2 && number[0] === "0") return fail("Numbers go from 1 to 99, with no leading zero.");
-  }
+  // 1 to 99, written the way it's printed: no 0, no leading zero, no decimals or signs.
+  if (number && !NUMBER_OK.test(number)) return fail("number", "Numbers go from 1 to 99.");
   return { ok: true, name, number, isPrint: true };
 
-  function fail(reason) {
-    return { ok: false, name, number, isPrint: true, reason };
+  function fail(field, reason) {
+    return { ok: false, name, number, isPrint: true, field, reason };
   }
 }
 

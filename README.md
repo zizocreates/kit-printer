@@ -51,10 +51,10 @@ The bugs are the interesting part, so I wrote them up in **[WHAT-BROKE.md](WHAT-
 - **Day 1:** SAKA 7 came to $104.99, and number 100, an emoji name and printing on socks were all refused.
 - **Day 2:** the box, on the released app with dev mode off.
 
-Each test day has a report in [`reports/`](reports).
+Each test day has a report in [`reports/`](reports), and the steps behind them are in [`docs/`](docs).
 
 ```bash
-npm test   # 21 tests: the rules, both Functions, and the box
+npm test   # 22 tests: the rules, both Functions, and the box
 ```
 
 I also break the code on purpose (accept number 100, skip the "can this product be printed" check, charge a bad print) to make sure the tests notice. They did, every time.
@@ -64,6 +64,19 @@ I also break the code on purpose (accept number 100, skip the "can this product 
 - One currency: the print price is in the store's currency.
 - Shopify only runs custom apps with Functions on Plus and test stores, so this lives on my test store unless it's published to the App Store.
 - The box needs the theme's standard add-to-cart form. If a theme doesn't have one, the box says printing isn't available, and the checkout rules still apply.
+
+## Run it
+
+You need Node 22+, the Shopify CLI and a development store.
+
+```bash
+npm install
+npm test
+shopify app config link   # create or pick the app in your Dev Dashboard
+shopify app deploy        # the two Functions and the product page block
+```
+
+Then switch on the price (`cartTransformCreate` with `functionHandle: "kit-printer-price"`), add **Kit Printer check** under Settings, Checkout, Checkout rules, give a product a `kit_printer.print_price`, and add the Kit Printer block to the product template. `docs/DAY1.md` and `docs/DAY2.md` have every step.
 
 ## Built with
 
