@@ -53,7 +53,8 @@ the design is all mine, while the cart, the price and the checks stay inside Sho
 - The **Cart Validation**'s refusals are shown word for word. The form checks as you type with the same
   `shared/print.js`, so nothing the site lets through is refused at checkout.
 - The shirt turns to the back as you type and draws your name at the exact place and size the printed kit uses.
-- Shopify's own checkout takes the payment. The store is a test store, so the bag hands over the password first.
+- Shopify's own checkout takes the payment. The store is a test store, and unlocking it lands on its home page, not
+  the checkout, so the bag does it in two steps: unlock in a new tab, then continue to checkout.
 - With no Storefront token it runs a demo mode that executes the **real Function code** in the browser, so the
   site can be built and tested without a store.
 
@@ -99,4 +100,4 @@ Then switch on the price (`cartTransformCreate` with `functionHandle: "kit-print
 
 ## Built with
 
-Shopify Functions (Cart Transform and Cart Validation, API 2026-07), a theme app extension, the Shopify CLI, and plain JavaScript with Node's built-in test runner. The storefront: the Storefront API (2026-10), React 19, Vite, Tailwind 4, Motion, Vitest and Playwright on Cloudflare Pages.
+Shopify Functions (Cart Transform and Cart Validation, API 2026-07), a theme app extension, the Shopify CLI, and plain JavaScript with Node's built-in test runner. The storefront: the Storefront API (2026-04), React 19, Vite, Tailwind 4, Motion, Vitest and Playwright on Cloudflare Pages.

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { check, NAME_MAX } from "../lib/print";
-import { MODE, REPO_URL } from "../lib/config";
+import { API_VERSION, MODE, REPO_URL } from "../lib/config";
 import { Button } from "../components/ui/Button";
 
 type Step = { id: string; tag: string; title: string; where: string; body: string; code: string };
@@ -15,7 +15,7 @@ const STEPS: Step[] = [
     code: `const kit = await getKit("kanata-fc-away-kit");\n// printPrice, backBlank, printColour come from\n// kit_printer.* metafields (Storefront read access)`,
   },
   {
-    id: "cart", tag: "02", title: "Storefront cart", where: "Storefront API 2026-10",
+    id: "cart", tag: "02", title: "Storefront cart", where: `Storefront API ${API_VERSION}`,
     body: "Adding to the bag is a cartLinesAdd with two line attributes. Nothing about price is sent from the browser: the site only says what to print.",
     code: `cartLinesAdd(cartId, lines: [{\n  merchandiseId, quantity: 1,\n  attributes: [\n    { key: "Print name", value: "RONALDO" },\n    { key: "Print number", value: "7" } ] }])`,
   },
@@ -108,7 +108,7 @@ export function HowItsBuilt() {
             The theme editor had offered the dev copy of the block, and cleaning up dev mode deleted it. Lesson kept: test the released version alone, with dev mode off, before calling anything done.
           </Bug>
           <Bug title="Checkout on a test store">
-            Every development store is password locked, and that lock covers checkout too. So the bag hands over the password before sending you to checkout, rather than letting the link land on a lock screen.
+            Every development store is password locked, and that lock covers checkout too. Worse, unlocking sends you to the store's home page, not back to your checkout. So the bag splits it in two: unlock in a new tab, then continue to checkout from here.
           </Bug>
         </div>
         <div className="mt-10 flex flex-wrap gap-3">
