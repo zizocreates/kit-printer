@@ -1,0 +1,486 @@
+{
+  "data": {
+    "collection": {
+      "id": "gid://shopify/Collection/354043691079",
+      "handle": "kits",
+      "title": "Kits",
+      "products": {
+        "nodes": [
+          {
+            "id": "gid://shopify/Product/9188481433671",
+            "handle": "capital-city-third-kit",
+            "title": "Capital City SC Third Kit 26/27",
+            "vendor": "Capital City SC",
+            "descriptionHtml": "<p>White with navy trim. Names and numbers print in navy.</p><p><strong>Add your name and number</strong> below: you'll see it on the shirt as you type, and printing is checked before you pay.</p><p><em>An original design for a made-up club, made for this demo store.</em></p>",
+            "images": {
+              "nodes": [
+                {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/capital-city-third-front_118ad081-1242-49ba-b67d-4dbbac33f3e5.png?v=1795193978",
+                  "altText": null,
+                  "width": 1600,
+                  "height": 1600
+                },
+                {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/capital-city-third-back_4871b021-d296-4cb8-9d34-d49ca8938972.png?v=1795193978",
+                  "altText": "Back of the Capital City SC Third Kit 26/27, printed with SAKA 7",
+                  "width": 1600,
+                  "height": 1600
+                }
+              ]
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "89.99",
+                "currencyCode": "USD"
+              }
+            },
+            "variants": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/ProductVariant/50197634187335",
+                  "title": "S",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "S"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197634220103",
+                  "title": "M",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "M"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197634252871",
+                  "title": "L",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "L"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197634285639",
+                  "title": "XL",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "XL"
+                    }
+                  ]
+                }
+              ]
+            },
+            "printPrice": {
+              "value": "15.0",
+              "type": "number_decimal"
+            },
+            "shirtColour": {
+              "value": "#f3f1ec",
+              "type": "color"
+            },
+            "printColour": {
+              "value": "#13294b",
+              "type": "color"
+            },
+            "backImage": {
+              "value": "gid://shopify/MediaImage/34971332018247",
+              "type": "file_reference",
+              "reference": {
+                "image": {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/capital-city-third-back-blank.png?v=1795193547",
+                  "altText": null,
+                  "width": 1600,
+                  "height": 1600
+                }
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/Product/9188481335367",
+            "handle": "rideau-united-home-kit",
+            "title": "Rideau United Home Kit 26/27",
+            "vendor": "Rideau United",
+            "descriptionHtml": "<p>Pink with black trim. Names and numbers print in black.</p><p><strong>Add your name and number</strong> below: you'll see it on the shirt as you type, and printing is checked before you pay.</p><p><em>An original design for a made-up club, made for this demo store.</em></p>",
+            "images": {
+              "nodes": [
+                {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/rideau-united-home-front_8e8a6e2a-e059-4c34-93b5-83f993780c2d.png?v=1795138562",
+                  "altText": "Front of the Rideau United Home Kit 26/27",
+                  "width": 1600,
+                  "height": 1600
+                },
+                {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/rideau-united-home-back_3b00b588-11c8-45d0-a652-318b8faf5c4c.png?v=1795138563",
+                  "altText": "Back of the Rideau United Home Kit 26/27, printed with MESSI 10",
+                  "width": 1600,
+                  "height": 1600
+                }
+              ]
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "89.99",
+                "currencyCode": "USD"
+              }
+            },
+            "variants": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/ProductVariant/50197633138759",
+                  "title": "S",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "S"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197633171527",
+                  "title": "M",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "M"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197633204295",
+                  "title": "L",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "L"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197633237063",
+                  "title": "XL",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "XL"
+                    }
+                  ]
+                }
+              ]
+            },
+            "printPrice": {
+              "value": "15.0",
+              "type": "number_decimal"
+            },
+            "shirtColour": {
+              "value": "#f4a7c6",
+              "type": "color"
+            },
+            "printColour": {
+              "value": "#111111",
+              "type": "color"
+            },
+            "backImage": {
+              "value": "gid://shopify/MediaImage/34971332247623",
+              "type": "file_reference",
+              "reference": {
+                "image": {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/rideau-united-home-back-blank.png?v=1795193547",
+                  "altText": null,
+                  "width": 1600,
+                  "height": 1600
+                }
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/Product/9188481237063",
+            "handle": "kanata-fc-away-kit",
+            "title": "Kanata FC Away Kit 26/27",
+            "vendor": "Kanata FC",
+            "descriptionHtml": "<p>Royal blue with white trim. Names and numbers print in white.</p><p><strong>Add your name and number</strong> below: you'll see it on the shirt as you type, and printing is checked before you pay.</p><p><em>An original design for a made-up club, made for this demo store.</em></p>",
+            "images": {
+              "nodes": [
+                {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/kanata-fc-away-front_40920d62-bfe9-4ad2-a4ae-fd71dbbeef16.png?v=1795138523",
+                  "altText": "Front of the Kanata FC Away Kit 26/27",
+                  "width": 1600,
+                  "height": 1600
+                },
+                {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/kanata-fc-away-back_06cdbbad-91d4-44c4-850d-7d083e9ebfac.png?v=1795138523",
+                  "altText": "Back of the Kanata FC Away Kit 26/27, printed with RONALDO 7",
+                  "width": 1600,
+                  "height": 1600
+                }
+              ]
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "89.99",
+                "currencyCode": "USD"
+              }
+            },
+            "variants": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/ProductVariant/50197631959111",
+                  "title": "S",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "S"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197631991879",
+                  "title": "M",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "M"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197632024647",
+                  "title": "L",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "L"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197632057415",
+                  "title": "XL",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "XL"
+                    }
+                  ]
+                }
+              ]
+            },
+            "printPrice": {
+              "value": "15.0",
+              "type": "number_decimal"
+            },
+            "shirtColour": {
+              "value": "#1d4fa3",
+              "type": "color"
+            },
+            "printColour": {
+              "value": "#ffffff",
+              "type": "color"
+            },
+            "backImage": {
+              "value": "gid://shopify/MediaImage/34971332051015",
+              "type": "file_reference",
+              "reference": {
+                "image": {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/kanata-fc-away-back-blank.png?v=1795193554",
+                  "altText": null,
+                  "width": 1600,
+                  "height": 1600
+                }
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/Product/9188481138759",
+            "handle": "kanata-fc-home-kit",
+            "title": "Kanata FC Home Kit 26/27",
+            "vendor": "Kanata FC",
+            "descriptionHtml": "<p>The red home shirt of Kanata FC, with white trim and the K crest. Names and numbers print in white.</p><p><strong>Add your name and number</strong> below: you'll see it on the shirt as you type, and printing is checked before you pay.</p><p><em>An original design for a made-up club, made for this demo store.</em></p>",
+            "images": {
+              "nodes": [
+                {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/kanata-fc-home-front_482c095d-209a-4e53-9f3d-e43ea9c5158f.png?v=1795138523",
+                  "altText": "Front of the Kanata FC Home Kit 26/27",
+                  "width": 1600,
+                  "height": 1600
+                },
+                {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/kanata-fc-home-back_f051d708-4277-43dc-af8a-13b320f1314e.png?v=1795138523",
+                  "altText": "Back of the Kanata FC Home Kit 26/27, printed with SALAH 11",
+                  "width": 1600,
+                  "height": 1600
+                }
+              ]
+            },
+            "priceRange": {
+              "minVariantPrice": {
+                "amount": "89.99",
+                "currencyCode": "USD"
+              }
+            },
+            "variants": {
+              "nodes": [
+                {
+                  "id": "gid://shopify/ProductVariant/50197630943303",
+                  "title": "S",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "S"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197630976071",
+                  "title": "M",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "M"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197631008839",
+                  "title": "L",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "L"
+                    }
+                  ]
+                },
+                {
+                  "id": "gid://shopify/ProductVariant/50197631041607",
+                  "title": "XL",
+                  "availableForSale": true,
+                  "price": {
+                    "amount": "89.99",
+                    "currencyCode": "USD"
+                  },
+                  "selectedOptions": [
+                    {
+                      "name": "Size",
+                      "value": "XL"
+                    }
+                  ]
+                }
+              ]
+            },
+            "printPrice": {
+              "value": "15.0",
+              "type": "number_decimal"
+            },
+            "shirtColour": {
+              "value": "#c8102e",
+              "type": "color"
+            },
+            "printColour": {
+              "value": "#ffffff",
+              "type": "color"
+            },
+            "backImage": {
+              "value": "gid://shopify/MediaImage/34971332280391",
+              "type": "file_reference",
+              "reference": {
+                "image": {
+                  "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/kanata-fc-home-back-blank.png?v=1795193547",
+                  "altText": null,
+                  "width": 1600,
+                  "height": 1600
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 102
+    }
+  }
+}

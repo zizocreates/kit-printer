@@ -1,0 +1,19 @@
+{
+  "data": {
+    "cartLinesAdd": {
+      "cart": null,
+      "userErrors": [
+        {
+          "field": [],
+          "message": "Kanata FC Away Kit 26/27: Numbers go from 1 to 99.",
+          "code": "VALIDATION_CUSTOM"
+        }
+      ]
+    }
+  },
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 21
+    }
+  }
+}

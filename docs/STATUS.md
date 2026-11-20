@@ -7,17 +7,17 @@
 - Note for the local agent: when your fixtures land I'll check `map.ts` against them. If a real response differs from the documented shape, put the diff in REQUESTS.
 
 ## Local agent
-- **Step 1, connectors (20 Nov 2026):**
-  - **Shopify connector: works.** Store confirmed **Kits by Zizo**, `kitsbyzizo.myshopify.com`, USD, EST, plan "Shopify Plus App Development". (It needed signing in first; Zyad connected it.) Server skills: `admin-graphql`, `editing-themes`.
-  - **Shopify CLI: also works**, logged in as zizodevs@gmail.com, org Zizo Development, app Kit Printer. Useful note: `shopify app execute` runs Admin GraphQL, but the app's only scope is `write_cart_transforms`, so it is refused for `products`. Admin work goes through the connector, not the CLI.
-  - **21st.dev: works.** "ecommerce product card with size pills on hover" returned 3 components (beratberkayg/product-card-1, deltacomponents/product-card, ravikatiyar162/product-card). Best starting point for the Kits grid: deltacomponents/product-card (image well plus title/price footer), restyled to our tokens.
-  - **Mobbin: unavailable.** "Mobbin MCP requires a paid plan." Same as Claude's session.
-  - **Claude in Chrome: available.** One browser connected (Windows, local).
-  - **Local tools:** Node v26.13.0, npm 11.20.0, Shopify CLI 5.0.2, Playwright 1.65.1. All fine (plan wants Node 22+).
-- **Step 2, Shopify setup: what the store already looks like.**
-  - **Metafield access (F7): already correct, nothing to change.** All four `kit_printer` PRODUCT definitions have `access.storefront = PUBLIC_READ`: `print_price` (number_decimal, id 577261207623), `shirt_colour` (color, 577310294087), `print_colour` (color, 577310883911), `back_image` (file_reference, 577953103943).
-  - **Products:** 4 kits plus socks, all ACTIVE: `kanata-fc-home-kit`, `kanata-fc-away-kit`, `rideau-united-home-kit`, `capital-city-third-kit`, `football-socks` (title "Kanata FC Socks"). An old `home-kit` is ARCHIVED; ignore it.
-  - **Collection `kits` exists** (id 354043691079) with exactly the 4 kits. The `frontpage` collection only holds the archived old kit.
-  - **Blocker: the Headless channel is not installed.** `publications` returns only Online Store, Shop and Point of Sale. So there is no Headless publication to publish to (F10) and no storefront token (F9). This has to be done in the browser admin, and everything after it (token, spike a to e, fixtures, pages on real data, deploy) waits on it.
-- **Now:** waiting on the Headless channel install plus "Create storefront" to get the **public** token.
-- **Next, the moment the token exists:** publish the 4 kits, the socks and the `kits` collection to the Headless publication, then spike checks a to e, fixtures, `docs/storefront-spike.md`.
+- **Step 1, connectors (20 Nov 2026):** Shopify **pass** (store confirmed Kits by Zizo, `kitsbyzizo.myshopify.com`, USD, plan "Shopify Plus App Development"; server skills `admin-graphql`, `editing-themes`). 21st.dev **pass** (3 cards back; best starting point for the Kits grid is `deltacomponents/product-card`). Mobbin **fail**, "requires a paid plan", same as Claude. Claude in Chrome **pass**. Local: Node v26.13.0, npm 11.20.0, Shopify CLI 5.0.2, Playwright 1.65.1.
+  - Note for later: the Shopify CLI can run Admin GraphQL (`shopify app execute`), but the Kit Printer app only holds `write_cart_transforms`, so it is ACCESS_DENIED on products. Admin work goes through the connector.
+- **Step 2, Shopify setup: DONE.**
+  - Headless channel installed. Installing it created the storefront "Kits By Zizo Headless" (id 432818) by itself, so nothing had to be created by hand. **Public** token is in `storefront/.env.production`. The private token is masked in the admin and was never read or stored.
+  - Published to Headless publication `220251324487`: the 4 kits, the socks, and the **`kits` collection** (the plan did not list the collection, but `collection(handle:)` does not resolve without it). No userErrors.
+  - Metafield access (F7) **was already correct**, all four `kit_printer` definitions on `PUBLIC_READ`. No mutation run.
+- **Step 2, the spike: a, b, c, d PASS. e half answered.** Full write-up in `docs/storefront-spike.md`, real responses in `storefront/src/fixtures/`.
+  - **b is the big one:** on a cart our own site built, `cost.amountPerQuantity` is **104.99** for the 89.99 away kit with SAKA 7. F1 and F3 hold. **The "+$15.00 applied at checkout" fallback is not needed**, the UI can show the real cart price.
+  - c: `VALIDATION_CUSTOM`, "Kanata FC Away Kit 26/27: Numbers go from 1 to 99." d: "Kanata FC Socks can't be printed. Remove the name and number to continue." Socks with no print are accepted.
+  - e: `checkoutUrl` redirects to `/password` (F6 confirmed on our store). Whether unlocking then continues to checkout is still open; the password form has no `return_to` field, so the plan's two step sheet is what to build.
+- **Fixtures pushed:** `collection.json`, `product-<handle>.json` for all 5 products, `cart-created.json`, `cart-two-lines.json`, `cart-error-number.json`, `cart-error-socks.json`. Cart ids and checkout URL keys are redacted in the cart fixtures (public repo); shapes are untouched.
+- **Now:** blocked on nothing of my own. Waiting on `docs/storefront-components.md` before I can start Home and the Kits page.
+- **Next:** Home and Kits page the moment the component list lands; then e2e, Cloudflare deploy, Lighthouse.
+- **Two things for Zyad:** the socks have **no images at all** (none in the store, none in the repo), and check e needs one manual password submission to finish.

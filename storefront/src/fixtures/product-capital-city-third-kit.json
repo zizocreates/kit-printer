@@ -1,0 +1,126 @@
+{
+  "data": {
+    "product": {
+      "id": "gid://shopify/Product/9188481433671",
+      "handle": "capital-city-third-kit",
+      "title": "Capital City SC Third Kit 26/27",
+      "vendor": "Capital City SC",
+      "descriptionHtml": "<p>White with navy trim. Names and numbers print in navy.</p><p><strong>Add your name and number</strong> below: you'll see it on the shirt as you type, and printing is checked before you pay.</p><p><em>An original design for a made-up club, made for this demo store.</em></p>",
+      "images": {
+        "nodes": [
+          {
+            "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/capital-city-third-front_118ad081-1242-49ba-b67d-4dbbac33f3e5.png?v=1795193978",
+            "altText": null,
+            "width": 1600,
+            "height": 1600
+          },
+          {
+            "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/capital-city-third-back_4871b021-d296-4cb8-9d34-d49ca8938972.png?v=1795193978",
+            "altText": "Back of the Capital City SC Third Kit 26/27, printed with SAKA 7",
+            "width": 1600,
+            "height": 1600
+          }
+        ]
+      },
+      "priceRange": {
+        "minVariantPrice": {
+          "amount": "89.99",
+          "currencyCode": "USD"
+        }
+      },
+      "variants": {
+        "nodes": [
+          {
+            "id": "gid://shopify/ProductVariant/50197634187335",
+            "title": "S",
+            "availableForSale": true,
+            "price": {
+              "amount": "89.99",
+              "currencyCode": "USD"
+            },
+            "selectedOptions": [
+              {
+                "name": "Size",
+                "value": "S"
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/ProductVariant/50197634220103",
+            "title": "M",
+            "availableForSale": true,
+            "price": {
+              "amount": "89.99",
+              "currencyCode": "USD"
+            },
+            "selectedOptions": [
+              {
+                "name": "Size",
+                "value": "M"
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/ProductVariant/50197634252871",
+            "title": "L",
+            "availableForSale": true,
+            "price": {
+              "amount": "89.99",
+              "currencyCode": "USD"
+            },
+            "selectedOptions": [
+              {
+                "name": "Size",
+                "value": "L"
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/ProductVariant/50197634285639",
+            "title": "XL",
+            "availableForSale": true,
+            "price": {
+              "amount": "89.99",
+              "currencyCode": "USD"
+            },
+            "selectedOptions": [
+              {
+                "name": "Size",
+                "value": "XL"
+              }
+            ]
+          }
+        ]
+      },
+      "printPrice": {
+        "value": "15.0",
+        "type": "number_decimal"
+      },
+      "shirtColour": {
+        "value": "#f3f1ec",
+        "type": "color"
+      },
+      "printColour": {
+        "value": "#13294b",
+        "type": "color"
+      },
+      "backImage": {
+        "value": "gid://shopify/MediaImage/34971332018247",
+        "type": "file_reference",
+        "reference": {
+          "image": {
+            "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/capital-city-third-back-blank.png?v=1795193547",
+            "altText": null,
+            "width": 1600,
+            "height": 1600
+          }
+        }
+      }
+    }
+  },
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 27
+    }
+  }
+}

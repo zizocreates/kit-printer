@@ -1,0 +1,67 @@
+{
+  "data": {
+    "cartCreate": {
+      "cart": {
+        "id": "gid://shopify/Cart/hWNJNG0COxO8l4aCHsZKzwbh?key=REDACTED",
+        "checkoutUrl": "https://kitsbyzizo.myshopify.com/cart/c/hWNJNG0COxO8l4aCHsZKzwbh?key=REDACTED&_s=REDACTED&_y=REDACTED",
+        "totalQuantity": 1,
+        "cost": {
+          "subtotalAmount": {
+            "amount": "104.99",
+            "currencyCode": "USD"
+          },
+          "totalAmount": {
+            "amount": "104.99",
+            "currencyCode": "USD"
+          }
+        },
+        "lines": {
+          "nodes": [
+            {
+              "id": "gid://shopify/CartLine/27f7780f-2ab7-4a94-bfaf-bee1fb4e9893?cart=hWNJNG0COxO8l4aCHsZKzwbh",
+              "quantity": 1,
+              "attributes": [
+                {
+                  "key": "Print name",
+                  "value": "SAKA"
+                },
+                {
+                  "key": "Print number",
+                  "value": "7"
+                }
+              ],
+              "cost": {
+                "amountPerQuantity": {
+                  "amount": "104.99",
+                  "currencyCode": "USD"
+                },
+                "totalAmount": {
+                  "amount": "104.99",
+                  "currencyCode": "USD"
+                }
+              },
+              "merchandise": {
+                "id": "gid://shopify/ProductVariant/50197631991879",
+                "title": "M",
+                "price": {
+                  "amount": "89.99",
+                  "currencyCode": "USD"
+                },
+                "product": {
+                  "handle": "kanata-fc-away-kit",
+                  "title": "Kanata FC Away Kit 26/27"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "userErrors": []
+    }
+  },
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 48
+    }
+  }
+}

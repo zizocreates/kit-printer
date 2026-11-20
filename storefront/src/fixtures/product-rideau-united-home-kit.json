@@ -1,0 +1,126 @@
+{
+  "data": {
+    "product": {
+      "id": "gid://shopify/Product/9188481335367",
+      "handle": "rideau-united-home-kit",
+      "title": "Rideau United Home Kit 26/27",
+      "vendor": "Rideau United",
+      "descriptionHtml": "<p>Pink with black trim. Names and numbers print in black.</p><p><strong>Add your name and number</strong> below: you'll see it on the shirt as you type, and printing is checked before you pay.</p><p><em>An original design for a made-up club, made for this demo store.</em></p>",
+      "images": {
+        "nodes": [
+          {
+            "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/rideau-united-home-front_8e8a6e2a-e059-4c34-93b5-83f993780c2d.png?v=1795138562",
+            "altText": "Front of the Rideau United Home Kit 26/27",
+            "width": 1600,
+            "height": 1600
+          },
+          {
+            "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/rideau-united-home-back_3b00b588-11c8-45d0-a652-318b8faf5c4c.png?v=1795138563",
+            "altText": "Back of the Rideau United Home Kit 26/27, printed with MESSI 10",
+            "width": 1600,
+            "height": 1600
+          }
+        ]
+      },
+      "priceRange": {
+        "minVariantPrice": {
+          "amount": "89.99",
+          "currencyCode": "USD"
+        }
+      },
+      "variants": {
+        "nodes": [
+          {
+            "id": "gid://shopify/ProductVariant/50197633138759",
+            "title": "S",
+            "availableForSale": true,
+            "price": {
+              "amount": "89.99",
+              "currencyCode": "USD"
+            },
+            "selectedOptions": [
+              {
+                "name": "Size",
+                "value": "S"
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/ProductVariant/50197633171527",
+            "title": "M",
+            "availableForSale": true,
+            "price": {
+              "amount": "89.99",
+              "currencyCode": "USD"
+            },
+            "selectedOptions": [
+              {
+                "name": "Size",
+                "value": "M"
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/ProductVariant/50197633204295",
+            "title": "L",
+            "availableForSale": true,
+            "price": {
+              "amount": "89.99",
+              "currencyCode": "USD"
+            },
+            "selectedOptions": [
+              {
+                "name": "Size",
+                "value": "L"
+              }
+            ]
+          },
+          {
+            "id": "gid://shopify/ProductVariant/50197633237063",
+            "title": "XL",
+            "availableForSale": true,
+            "price": {
+              "amount": "89.99",
+              "currencyCode": "USD"
+            },
+            "selectedOptions": [
+              {
+                "name": "Size",
+                "value": "XL"
+              }
+            ]
+          }
+        ]
+      },
+      "printPrice": {
+        "value": "15.0",
+        "type": "number_decimal"
+      },
+      "shirtColour": {
+        "value": "#f4a7c6",
+        "type": "color"
+      },
+      "printColour": {
+        "value": "#111111",
+        "type": "color"
+      },
+      "backImage": {
+        "value": "gid://shopify/MediaImage/34971332247623",
+        "type": "file_reference",
+        "reference": {
+          "image": {
+            "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/rideau-united-home-back-blank.png?v=1795193547",
+            "altText": null,
+            "width": 1600,
+            "height": 1600
+          }
+        }
+      }
+    }
+  },
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 27
+    }
+  }
+}

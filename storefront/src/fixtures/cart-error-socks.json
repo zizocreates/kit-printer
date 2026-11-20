@@ -1,0 +1,19 @@
+{
+  "data": {
+    "cartLinesAdd": {
+      "cart": null,
+      "userErrors": [
+        {
+          "field": [],
+          "message": "Kanata FC Socks can't be printed. Remove the name and number to continue.",
+          "code": "VALIDATION_CUSTOM"
+        }
+      ]
+    }
+  },
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 21
+    }
+  }
+}

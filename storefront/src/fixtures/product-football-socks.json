@@ -1,0 +1,48 @@
+{
+  "data": {
+    "product": {
+      "id": "gid://shopify/Product/9188422877255",
+      "handle": "football-socks",
+      "title": "Kanata FC Socks",
+      "vendor": "kitsbyzizo",
+      "descriptionHtml": "",
+      "images": {
+        "nodes": []
+      },
+      "priceRange": {
+        "minVariantPrice": {
+          "amount": "14.99",
+          "currencyCode": "USD"
+        }
+      },
+      "variants": {
+        "nodes": [
+          {
+            "id": "gid://shopify/ProductVariant/50197262499911",
+            "title": "Default Title",
+            "availableForSale": true,
+            "price": {
+              "amount": "14.99",
+              "currencyCode": "USD"
+            },
+            "selectedOptions": [
+              {
+                "name": "Title",
+                "value": "Default Title"
+              }
+            ]
+          }
+        ]
+      },
+      "printPrice": null,
+      "shirtColour": null,
+      "printColour": null,
+      "backImage": null
+    }
+  },
+  "extensions": {
+    "cost": {
+      "requestedQueryCost": 27
+    }
+  }
+}
