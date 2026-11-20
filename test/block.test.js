@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { NAME_KEY, NUMBER_KEY, NAME_MAX } from "../shared/print.js";
 
 const read = (p) => readFileSync(new URL("../" + p, import.meta.url), "utf8");
@@ -48,5 +48,12 @@ test("a long name is squeezed to fit the shirt, and the preview prints in the bu
   const js = read("extensions/kit-printer-block/assets/kit-printer.js");
   assert.match(js, /fit\(nameOut, \d+\)/);
   assert.match(js, /lengthAdjust", "spacingAndGlyphs"/);
-  assert.match(read("extensions/kit-printer-block/assets/kit-printer.css"), /url\("oswald-700\.woff2"\)/);
+  assert.match(read("extensions/kit-printer-block/assets/kit-printer.css"), /src: url\(data:font\/woff2;base64,/);
+});
+
+test("the block's assets are only file types Shopify accepts (a .woff2 here failed a real deploy)", () => {
+  const allowed = /\.(jpe?g|json|js|css|png|svg|wasm)$/;
+  const files = readdirSync(new URL("../extensions/kit-printer-block/assets/", import.meta.url));
+  assert.ok(files.length > 0);
+  for (const f of files) assert.match(f, allowed, f);
 });
