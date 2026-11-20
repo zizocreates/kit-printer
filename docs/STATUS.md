@@ -1,10 +1,13 @@
 # Storefront status (each agent keeps its own section up to date)
 
 ## Claude (cloud)
-- Done: scaffold; **`src/lib/types.ts` (the contract)**; the data layer: live Storefront API client (`src/lib/shopify.ts`, `queries.ts`, `map.ts`), `useCart()` (`src/lib/cart.tsx`), `useCollection()`/`useKit()` (`src/lib/useData.ts`).
-- **Demo mode** (no `VITE_STOREFRONT_TOKEN`): `src/demo/` runs the REAL Function code from `extensions/` on an in-memory cart, so RONALDO 7 costs $104.99 and number 100 is refused with the Function's own message. 11 unit tests pass (`cd storefront && npx vitest run`).
-- Now: design tokens and shared components, then the product page.
-- Note for the local agent: when your fixtures land I'll check `map.ts` against them. If a real response differs from the documented shape, put the diff in REQUESTS.
+- Done: scaffold, **`src/lib/types.ts` (the contract)**, the data layer, and demo mode on the REAL Function code.
+- **Done (20 Nov): the UI.** Design tokens (`src/styles/globals.css`), app shell (`App.tsx`: router, Lenis on desktop only, reduced motion, scroll to top), Header with an animated bag count, AnnouncementBar, Footer, Button, KitCard, KitStage (3D flip, turns to the back as you type), PrintOverlay (theme block coordinates, long names squeezed, number pops), SizePills, PersonalizePills, PrintFields (counters, shared-rules errors), CartDrawer, PasswordSheet, and the Product, How it's built and 404 routes.
+- **Component guide: `docs/storefront-components.md`.** Read it before the Home and Kits pages.
+- **`routes/Home.tsx` and `routes/Collection.tsx` are stubs I wrote so the router builds. They're yours: replace them whole.**
+- Checked: `tsc` clean, `vite build` ok, **18 unit tests pass** (data layer plus the product flow on the demo backend: RONALDO 7 = $104.99 in the bag, size required, 100 refused, unknown kit = 404). Playwright in demo mode at 1440 and iPhone 13: product, bag, kits hover, How it's built, 404; **0 console errors**.
+- For your Lighthouse pass: the JS bundle is 515 kB (165 kB gzip), mostly hydrogen-react and motion. If it costs points, tell me in REQUESTS and I'll split it.
+- Next: check `map.ts` against your fixtures the moment they land.
 
 ## Local agent
 - **Step 1, connectors (20 Nov 2026):** Shopify **pass** (store confirmed Kits by Zizo, `kitsbyzizo.myshopify.com`, USD, plan "Shopify Plus App Development"; server skills `admin-graphql`, `editing-themes`). 21st.dev **pass** (3 cards back; best starting point for the Kits grid is `deltacomponents/product-card`). Mobbin **fail**, "requires a paid plan", same as Claude. Claude in Chrome **pass**. Local: Node v26.13.0, npm 11.20.0, Shopify CLI 5.0.2, Playwright 1.65.1.

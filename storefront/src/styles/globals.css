@@ -1,0 +1,75 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+/* Oswald 700 (SIL OFL): headings, and the name and number printed on the kits. */
+@font-face {
+  font-family: "Oswald";
+  src: url("/fonts/oswald-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ---------- Design tokens (the one source for both agents: use these, don't invent new colours or fonts) ---------- */
+@theme {
+  --color-ink: #101010;
+  --color-ink-soft: #2a2a28;
+  --color-paper: #ffffff;
+  --color-sweep: #f2f2ef;
+  --color-line: #e6e6e1;
+  --color-muted: #6b6b66;
+  --color-accent: #c8102e;
+  --color-accent-ink: #ffffff;
+  --color-ok: #1f7a3e;
+  --color-error: #b3261e;
+
+  --font-display: "Oswald", "Arial Narrow", Arial, sans-serif;
+  --font-body: "Inter Variable", Inter, system-ui, sans-serif;
+
+  --radius-card: 20px;
+  --radius-field: 12px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgb(16 16 16 / 0.04), 0 8px 24px -12px rgb(16 16 16 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(16 16 16 / 0.05), 0 24px 48px -20px rgb(16 16 16 / 0.28);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@layer base {
+  html { color: var(--color-ink); background: var(--color-paper); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body { font-family: var(--font-body); }
+  :focus-visible { outline: 2px solid var(--color-ink); outline-offset: 3px; border-radius: 6px; }
+  ::selection { background: var(--color-accent); color: var(--color-accent-ink); }
+  img { user-select: none; }
+}
+
+/* A display heading: Oswald, capitals, tight. */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+}
+
+/* The small label above a heading. */
+@utility eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Lenis smooth scroll (desktop only, never with reduced motion). */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Shared-element hop from a kit card to the product page (View Transitions; browsers without it just navigate). */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.35s; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}

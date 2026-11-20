@@ -12,5 +12,5 @@ export default defineConfig({
       "@kit-printer/check": fn("kit-printer-check/src/cart_validations_generate_run.js"),
     },
   },
-  test: { environment: "jsdom", include: ["tests/unit/**/*.test.{ts,tsx}"] },
+  test: { environment: "jsdom", include: ["tests/unit/**/*.test.{ts,tsx}"], setupFiles: ["tests/unit/setup.ts"] },
 });
