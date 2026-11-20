@@ -1,4 +1,4 @@
-// The mappers against REAL Storefront API responses the local agent captured from kitsbyzizo (src/fixtures).
+// The mappers against REAL Storefront API responses captured from the kitsbyzizo store (src/fixtures).
 import { describe, expect, it } from "vitest";
 import { toCart, toErrors, toKit } from "../../src/lib/map";
 import collection from "../../src/fixtures/collection.json";

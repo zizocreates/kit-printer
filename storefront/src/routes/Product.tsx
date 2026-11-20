@@ -70,7 +70,6 @@ function ProductView({ kit }: { kit: Kit }) {
     if (ok) {
       setDone(true);
       setTimeout(() => setDone(false), 1800);
-      // the bag opens itself from here
     }
   }
 

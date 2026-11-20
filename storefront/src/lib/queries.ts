@@ -1,4 +1,4 @@
-// Storefront API GraphQL (version in config.ts). Metafields need Storefronts read access on their definitions (F7).
+// Storefront API GraphQL (version in config.ts). Metafields only come back if their definitions allow Storefront API reads.
 
 const KIT = /* GraphQL */ `
   fragment KitFields on Product {

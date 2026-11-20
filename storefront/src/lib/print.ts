@@ -9,7 +9,7 @@ export function check(name: string, number: string): PrintCheck {
   return checkPrint(name, number) as PrintCheck;
 }
 
-/** The cart line attributes our Functions read with attribute(key: "Print name") (F3). Empty print, no attributes. */
+/** The cart line attributes our Functions read with attribute(key: "Print name"). Empty print, no attributes. */
 export function toAttributes(print: Print | null): { key: string; value: string }[] {
   if (!print) return [];
   const out: { key: string; value: string }[] = [];

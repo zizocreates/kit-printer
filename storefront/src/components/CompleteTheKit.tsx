@@ -1,4 +1,4 @@
-// "Complete the look" from the big club stores: the socks, right on the kit's page, one tap to add.
+// The socks, offered on the kit's own page with a one-tap add.
 import { useState } from "react";
 import { Link } from "react-router";
 import { useCart } from "../lib/cart";

@@ -1,4 +1,4 @@
-// Local agent check: run the real queries from src/lib against the live store and map them with src/lib/map.ts.
+// Live check: run the real queries from src/lib against the live store and map them with src/lib/map.ts.
 // Not part of the Playwright suite. Run with: npx vite-node tests/e2e/live-data.check.mts
 import { COLLECTION, PRODUCT, CART_CREATE, CART_ADD } from "../../src/lib/queries";
 import { toKit, toCart, toErrors } from "../../src/lib/map";
@@ -24,7 +24,7 @@ const ok = (cond: unknown, label: string, extra = "") => {
   if (!cond) fails++;
 };
 
-// 1. The collection, through Claude's query and mapper
+// 1. The collection, through the app's query and mapper
 const col = await gql(COLLECTION, { handle: "kits" });
 const kits = col.collection.products.nodes.map(toKit).filter(Boolean);
 ok(kits.length === 4, "collection maps to 4 kits", `got ${kits.length}`);
@@ -43,7 +43,7 @@ const socks = toKit(socksRaw.product)!;
 ok(socks.printPrice === null, "socks: printPrice is null (no Personalize)");
 ok(socks.images.length === 0, "socks: zero images (needs art or a placeholder)", `got ${socks.images.length}`);
 
-// 3. A real cart: the Cart Transform through Claude's mapper
+// 3. A real cart: the Cart Transform through the app's mapper
 const away = kits.find((k) => k.handle === "kanata-fc-away-kit")!;
 const m = away.variants.find((v) => v.size === "M")!;
 const created = await gql(CART_CREATE, {

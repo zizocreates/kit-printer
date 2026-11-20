@@ -1,4 +1,4 @@
-// "None" or "Personalize +$15.00", the way big club shops offer it.
+// "No print" or "Personalize +$15.00".
 import { format } from "../lib/money";
 import type { Money } from "../lib/types";
 

@@ -1,4 +1,4 @@
-// End to end tests against the REAL store (local agent). The build carries the public Storefront token from
+// End to end tests against the REAL store. The build carries the public Storefront token from
 // .env.production, so `npm run preview` is already live mode.
 //
 //   npx playwright test                              the local production build

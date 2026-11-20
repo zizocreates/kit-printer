@@ -9,7 +9,7 @@
   font-display: swap;
 }
 
-/* ---------- Design tokens (the one source for both agents: use these, don't invent new colours or fonts) ---------- */
+/* ---------- Design tokens: every colour, font, radius and shadow on the site comes from here ---------- */
 @theme {
   --color-ink: #101010;
   --color-ink-soft: #2a2a28;

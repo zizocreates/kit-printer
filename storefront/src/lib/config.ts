@@ -1,4 +1,5 @@
-// The public Storefront token is meant for browsers (F9). No token at build time means demo mode.
+// The public Storefront token is meant for browsers: it can only read products and build carts.
+// No token at build time means demo mode.
 export const STORE_DOMAIN = (import.meta.env.VITE_STORE_DOMAIN as string | undefined) || "kitsbyzizo.myshopify.com";
 export const STOREFRONT_TOKEN = (import.meta.env.VITE_STOREFRONT_TOKEN as string | undefined) || "";
 // Match the version hydrogen-react 2026.4 is built against, or its client logs a mismatch warning on every page.

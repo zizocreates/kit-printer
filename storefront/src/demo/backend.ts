@@ -66,7 +66,7 @@ function toCart(id: string, rows: Row[]): Cart {
   return { id, lines, subtotal: fromCents(subtotal), totalQuantity: rows.reduce((n, r) => n + r.quantity, 0), checkoutUrl: "" };
 }
 
-// Shopify refuses the whole change when the check fails (F2); the cart stays as it was.
+// Shopify refuses the whole change when the check fails; the cart stays as it was.
 function commit(id: string, next: Row[]): CartResult {
   const errors = errorsFor(next);
   if (errors.length) return { cart: carts.has(id) ? toCart(id, carts.get(id)!) : null, errors };

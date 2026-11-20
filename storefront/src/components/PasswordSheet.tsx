@@ -1,5 +1,5 @@
 // Before checkout: the store is a password-locked test store (every development store is). Unlocking lands on
-// the store's home page (spike e), so it's two steps: unlock in a new tab, then follow the checkout link here.
+// the store's home page, not the checkout, so it's two steps: unlock in a new tab, then follow the checkout link here.
 // In demo mode there's no real cart to check out, so say so and point at the live store.
 import { useState } from "react";
 import { MODE, STORE_DOMAIN, STORE_PASSWORD } from "../lib/config";

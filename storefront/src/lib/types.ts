@@ -1,4 +1,4 @@
-// The contract between the data layer and the UI (docs/STOREFRONT-PLAN.md). Change it only by agreement.
+// The shapes the UI works with. The live Storefront API and the demo backend both map their data into these.
 
 export type Money = { amount: string; currencyCode: string };
 export type Img = { url: string; altText: string | null; width: number; height: number };
@@ -17,11 +17,11 @@ export type Print = { name: string; number: string };   // already cleaned by sh
 export type CartLine = {
   id: string; quantity: number; kit: Pick<Kit, "handle" | "title" | "images">; variant: Pick<Variant, "id" | "size">;
   print: Print | null;           // from attributes "Print name" / "Print number"
-  unitPrice: Money;              // AFTER the Cart Transform: 104.99 for a printed 89.99 kit (F1)
+  unitPrice: Money;              // AFTER the Cart Transform: 104.99 for a printed 89.99 kit
   lineTotal: Money;
 };
 export type Cart = { id: string; lines: CartLine[]; subtotal: Money; totalQuantity: number; checkoutUrl: string };
-export type CartError = { code: string; message: string };   // VALIDATION_CUSTOM from our check (F2)
+export type CartError = { code: string; message: string };   // VALIDATION_CUSTOM from our check
 
 /** What a cart change returns: the new cart (or the old one if Shopify refused) and any errors, never a throw. */
 export type CartResult = { cart: Cart | null; errors: CartError[] };

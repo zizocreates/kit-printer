@@ -53,7 +53,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     update: (lineId, quantity) => (cart ? run(() => backend.updateLine(cart.id, lineId, quantity)) : Promise.resolve(false)),
     remove: (lineId) => (cart ? run(() => backend.removeLine(cart.id, lineId)) : Promise.resolve(false)),
     clearErrors: () => setErrors([]),
-    // Ask for a fresh checkout URL when the buyer is ready: an old one can go stale (F4).
+    // Ask for a fresh checkout URL when the buyer is ready: an old one can go stale.
     checkoutUrl: async () => (cart ? (await backend.getCart(cart.id))?.checkoutUrl || cart.checkoutUrl || null : null),
   }), [cart, busy, errors, open, run]);
 

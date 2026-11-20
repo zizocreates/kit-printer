@@ -107,7 +107,7 @@ function Line({ line, onNavigate }: { line: CartLine; onNavigate: () => void }) 
   );
 }
 
-// Big club shops finish the bag with "complete the kit". Shown only while the bag has no socks in it.
+// "Complete the kit": offers the socks, only while the bag has none.
 function SocksOffer() {
   const { cart, add, busy } = useCart();
   const { data: socks } = useKit("football-socks");

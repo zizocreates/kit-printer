@@ -61,7 +61,7 @@ export function toCart(c: any): Cart | null {
   };
 }
 
-/** userErrors (VALIDATION_CUSTOM from our check, F2) and warnings, as one list. */
+/** userErrors (VALIDATION_CUSTOM from our check) and warnings, as one list. */
 export function toErrors(payload: any): CartError[] {
   const errs = [...(payload?.userErrors ?? []), ...(payload?.warnings ?? [])];
   return errs.filter((e) => e?.message).map((e) => ({ code: String(e.code ?? "ERROR"), message: String(e.message) }));

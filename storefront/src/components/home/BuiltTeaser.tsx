@@ -1,4 +1,4 @@
-// The teaser for recruiters: this storefront is custom code, and the rules still cannot be skipped, because they
+// A teaser for the How it's built page: this storefront is custom code, and the rules still cannot be skipped, because they
 // live in checkout. The full version is the How it's built page.
 import { Button } from "../ui/Button";
 

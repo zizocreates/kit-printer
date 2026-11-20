@@ -1,4 +1,4 @@
-// How the store works, for the curious (and for recruiters). An interactive map of the request path, a live
+// How the store works. An interactive map of the request path, a live
 // run of the shared print rules, and the bugs worth telling.
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";

@@ -1,5 +1,5 @@
 // The big shirt on the product page. Front photo on one face, the blank back plus the live print on the other.
-// It turns to the back by itself while the buyer types, like the big club shops do.
+// It turns to the back by itself while the buyer types.
 import { motion } from "motion/react";
 import type { Kit } from "../lib/types";
 import { PrintOverlay } from "./PrintOverlay";

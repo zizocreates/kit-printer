@@ -1,4 +1,4 @@
-// The live-mode checkout sheet. Unlocking a Shopify test store lands on its home page (spike e), so the sheet
+// The live-mode checkout sheet. Unlocking a Shopify test store lands on its home page, so the sheet
 // must offer the unlock as its own step, in a new tab, and keep the checkout link here.
 import { describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";

@@ -10,12 +10,15 @@ That's because they live in the theme's JavaScript. Kit Printer doesn't. The pri
 
 ## Try it
 
-The demo store is **[kitsbyzizo.myshopify.com](https://kitsbyzizo.myshopify.com)**. It's a Shopify test store, so it asks for a password: **`futureshopifolk`**. Payments are fake.
+**[kitsbyzizo.pages.dev](https://kitsbyzizo.pages.dev)** is the store: my own React site on Shopify's Storefront API, with Kit Printer doing the pricing and checking inside Shopify.
 
-1. Open any kit and type a name and number. The shirt fills in as you type.
-2. Add it to the cart: the price goes up by $15.00 for the printing, on the shirt's own line.
-3. Try number `100`, or an emoji in the name. You're stopped before it ever reaches the cart.
-4. Try the socks: there's no box at all, because they can't be printed.
+1. Open any kit, pick **Personalize** and type a name and number. The shirt turns round and prints it as you type.
+2. Add it to the bag: $89.99 becomes **$104.99**, a price set by Shopify, not by the site.
+3. Try number `100`, or an emoji in the name. It's refused before it reaches the cart, in Shopify's own words.
+4. Try the socks: there's no name and number at all, because they can't be printed.
+5. Checkout is Shopify's. It's a test store, so it asks for a password: **`futureshopifolk`**. Payments are fake.
+
+Kit Printer is a Shopify app, so it also works in any ordinary Shopify theme. That version runs on the same store's theme at [kitsbyzizo.myshopify.com](https://kitsbyzizo.myshopify.com) (same password).
 
 The four kits are **original designs for made-up clubs**. No real club or brand appears anywhere.
 
@@ -68,13 +71,14 @@ The bugs are the interesting part, so I wrote them up in **[WHAT-BROKE.md](WHAT-
 
 ## Tested on the real store
 
-- **Day 1:** SAKA 7 came to $104.99, and number 100, an emoji name and printing on socks were all refused.
-- **Day 2:** the box, on the released app with dev mode off.
-
-Each test day has a report in [`reports/`](reports), and the steps behind them are in [`docs/`](docs).
+- SAKA 7 on an $89.99 kit came to **$104.99** in Shopify's checkout, on one line, with the name and number on the order.
+- Number 100, an emoji name and a print on socks were all refused, in the theme and on the storefront.
+- Three SAKA 7 kits came to $314.97: the print price follows the quantity, with no separate "printing" item to lose.
+- The storefront's own tests run the same buy flow against the live store, on desktop and phone sizes.
 
 ```bash
-npm test   # 23 tests: the rules, both Functions, and the box
+npm test                           # the rules, both Functions, and the theme box
+cd storefront && npm test          # the storefront: data layer, product page, bag, checkout sheet
 ```
 
 I also break the code on purpose (accept number 100, skip the "can this product be printed" check, charge a bad print) to make sure the tests notice. They did, every time.
@@ -96,7 +100,22 @@ shopify app config link   # create or pick the app in your Dev Dashboard
 shopify app deploy        # the two Functions and the product page block
 ```
 
-Then switch on the price (`cartTransformCreate` with `functionHandle: "kit-printer-price"`), add **Kit Printer check** under Settings, Checkout, Checkout rules, give a product a `kit_printer.print_price`, and add the Kit Printer block to the product template. `docs/DAY1.md` and `docs/DAY2.md` have every step.
+Then, once per store:
+
+1. Switch the price on: in GraphiQL (press `g` while `shopify app dev` runs), run `cartTransformCreate(functionHandle: "kit-printer-price")`.
+2. Switch the check on: Settings, Checkout, Checkout rules, add **Kit Printer check**.
+3. Give each printable product a `kit_printer.print_price` (and optionally `shirt_colour`, `print_colour` and a `back_image` of the blank back).
+4. Add the Kit Printer block to the product template in the theme editor, with `shopify app dev` stopped.
+
+The storefront runs on its own:
+
+```bash
+cd storefront
+npm install
+npm run dev     # with no token it runs in demo mode, on the real Function code
+```
+
+Put a public Storefront API token from the Headless channel in `storefront/.env.production` (`VITE_STORE_DOMAIN`, `VITE_STOREFRONT_TOKEN`) to build against a real store.
 
 ## Built with
 
