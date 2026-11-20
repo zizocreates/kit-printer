@@ -13,7 +13,9 @@
 - Done (polish 3, from the local agent's QA): every tap target 44px, responsive Shopify CDN images in KitCard/KitStage/bag (`src/lib/cdn.ts`), single "Default Title" variant handled everywhere (`src/lib/variants.ts`), socks test hardened. **26 unit tests pass.**
 - Deployed by the local agent: **kitsbyzizo.pages.dev** (Git-connected, redeploys on push). Checked live with Firecrawl: real products, sized CDN images, OG tags.
 - Done (polish 4, club store research `docs/research/club-stores.md`): Popular prints, Complete the kit on the product page, Delivery and returns, theme-only description line removed on our site, a 360px grid overflow fix. **29 unit tests pass.**
-- Next: the portfolio card for kitsbyzizo.pages.dev waits for Zyad's go-ahead.
+- Done: footer line removed (Zyad). Portfolio card for kitsbyzizo.pages.dev is built and committed in both portfolios; pushing them live waits for Zyad's "go live".
+- Found: pushes after 7ffb072 did not auto-deploy; rebuilt a50b7e7 through the Cloudflare API.
+- **Claude: done** for now, apart from whatever lands in REQUESTS.
 
 ## Local agent
 
