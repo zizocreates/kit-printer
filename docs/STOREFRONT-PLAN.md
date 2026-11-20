@@ -1,8 +1,18 @@
 # Kits by Zizo: the custom storefront (plan)
 
-A fully custom store, our own code end to end, built on Shopify's **Storefront API**, with checkout still guarded by Kit Printer's **Functions**. Written 20 November 2026 from Shopify's docs, Baymard's usability research and real sports stores (sources at the bottom). Two agents build it in parallel:
-- **Claude (cloud)** writes all the storefront code (data layer, UI, motion, unit tests) and pushes it. Its container can't reach Shopify.
-- **The local agent** on Zyad's computer does everything that needs his machine or logins: the Shopify admin, the token, the spike against the real store, e2e on the live store, and the deploy.
+A fully custom store, our own code end to end, built on Shopify's **Storefront API**, with checkout still guarded by Kit Printer's **Functions**. Written 20 November 2026 from Shopify's docs, Baymard's usability research and real sports stores (sources at the bottom). Two agents build it in parallel, and **both build the design**:
+- **Claude (cloud)**:
+  - the design system (tokens, type, motion rules) and the shared components;
+  - the data layer;
+  - the **product page** (the turning shirt), the cart drawer, How it's built and the 404;
+  - unit tests.
+
+  Its container can't reach Shopify, so it builds against fixtures and demo mode.
+- **The local agent** (Zyad's computer):
+  - the Shopify admin, the token, the spike and the fixtures;
+  - the **homepage** and the **Kits page**, built from Claude's components and tokens;
+  - visual checks in a real browser with real data;
+  - e2e, Lighthouse and the deploy.
 
 Read this whole file before starting.
 
@@ -57,9 +67,14 @@ storefront/
     styles/     Claude: tokens.css, globals.css
   tests/        unit/ (Claude), e2e/ (local agent)
 ```
-Branch: **`storefront`**, from `main`.
-- Claude owns everything under `storefront/` except `src/fixtures/` and `tests/e2e/`, which the local agent owns.
-- The local agent pushes real API responses to `src/fixtures/` (Phase 0). Claude codes against them and against the documented shapes.
+Branch: **`storefront`**. Both agents push to it.
+- **Folder ownership** is what keeps two agents from colliding:
+  - The local agent owns `src/routes/Home.tsx`, `src/routes/Collection.tsx`, `src/components/home/**`, `src/fixtures/**`, `tests/e2e/**` and `storefront/.env.production`.
+  - Claude owns everything else under `storefront/`.
+  - Never edit the other's files. Ask in `docs/REQUESTS.md` instead (one section per agent, newest at the top).
+- **Before every push:** `git pull --rebase origin storefront`. Commit small and often.
+- **Status:** each agent keeps a short running log in `docs/STATUS.md` (its own section) of what's done and what's next, so the other can see it without asking.
+- Claude publishes the component list and how to use each one in `docs/storefront-components.md` early, so the local agent can build pages from them.
 - Merge to `main` only after the live e2e passes.
 
 ## The contract (`src/lib/types.ts`, written by Claude first)

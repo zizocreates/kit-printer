@@ -1,43 +1,86 @@
-# Kickoff: the local agent (Kits by Zizo storefront)
+# Kickoff: the local agent
 
-You're on Zyad's computer, in the kit-printer repo (https://github.com/zizocreates/kit-printer). We're building **Kits by Zizo**, a fully custom storefront on Shopify's Storefront API, with checkout guarded by Kit Printer's Functions. **Read `docs/STOREFRONT-PLAN.md` completely first.** It holds the verified facts (F1 to F10), so don't re-research them.
+You're joining a project already in progress. You have none of the context, so this file and the repo give you all of it.
 
-**Who does what:**
-- **Claude** (in the cloud) writes all the storefront code and pushes it to the `storefront` branch. Its container can't reach Shopify.
-- **You** do everything that needs this computer or Zyad's logins:
-  1. the Shopify admin setup;
-  2. the spike against the real store;
+## The project in one paragraph
+Zyad (Grade 12) is applying for Shopify's Summer 2027 software engineering internship. Deadline: 30 November 2026.
+
+His project is **Kit Printer**, a Shopify app that puts names and numbers on football kits:
+- the **price** and the **check** run inside Shopify's checkout as **Shopify Functions**, already built, tested and live on his test store `kitsbyzizo.myshopify.com`;
+- a product page block lets buyers type a name and see it on the shirt.
+
+Now we're building **Kits by Zizo**, a fully custom storefront: our own React site on Shopify's **Storefront API**, hosted on Cloudflare Pages. Checkout stays Shopify's, so Kit Printer's Functions still price and check every print. The pitch to recruiters: *a 100% custom site, and the rules still can't be skipped.*
+
+## Step 0: get the code
+```bash
+git clone https://github.com/zizocreates/kit-printer.git   # or, if it's already here:
+cd kit-printer && git fetch origin && git checkout storefront && git pull
+```
+Read these, in order, completely, before doing anything else:
+1. `docs/STOREFRONT-PLAN.md`: the plan, the verified facts F1 to F10 (don't re-research them), the design, the contract and who owns which folder.
+2. `README.md` and `WHAT-BROKE.md`: what Kit Printer is.
+3. `docs/STATUS.md` and `docs/REQUESTS.md`: where things stand. Keep your section of each up to date as you work.
+
+## Who does what (you work at the same time as Claude)
+- **Claude (in the cloud, another session).** Its container can't reach Shopify, so it builds against fixtures and a demo mode that runs the real Function code. It's building now:
+  - the types contract;
+  - the data layer;
+  - the design system (tokens, fonts, motion);
+  - the shared components (buttons, size pills, kit card, cart drawer, password sheet, header and footer);
+  - the product page with the turning shirt, How it's built and the 404.
+
+  It lists its components in `docs/storefront-components.md`.
+- **You:**
+  1. the connector check below;
+  2. the Shopify setup and the spike (Phase 0 in the plan);
   3. the fixtures;
-  4. running the site locally against the real store;
-  5. the e2e tests;
-  6. the deploy.
+  4. **the homepage and the Kits page**, built from Claude's components and tokens, in the files you own;
+  5. checking the site in a real browser with real data;
+  6. the e2e tests, Lighthouse and the deploy.
 
-## Step 1: setup and the spike (now)
-1. `git pull`, then `git checkout -b storefront` and push it. If Claude already pushed it, `git checkout storefront && git pull`.
-2. **The admin (the only clicks in this job):**
-   - install the **Headless** channel (Shopify App Store, free), then Create storefront, and copy the **public** access token;
+  Both of you build the design, so it has to look like one site: use Claude's tokens and components, and don't invent new colours or fonts.
+
+## Step 1: check the connectors (report before anything else)
+Run one small, read-only call on each, and report the result in `docs/STATUS.md` (your section) and in chat:
+- **Shopify:** get the shop info. It must be **kitsbyzizo** (`kitsbyzizo.myshopify.com`). If it's another store, or it asks for sign-in, stop and tell Zyad. Then list the server's skills.
+- **21st.dev:** search or get inspiration for "ecommerce product card with size pills on hover", limit 3.
+- **Mobbin:** one screen search, limit 2 ("sports apparel product page with personalization"). Claude's session got "requires a paid plan"; say what you get.
+- **Claude in Chrome:** confirm it's available.
+- **Locally:** `node -v` (22 or newer), `shopify version`, and `npx playwright --version`.
+
+## Step 2: Shopify setup and the spike
+Follow Phase 0 in the plan:
+1. **Use the Shopify connector for the admin work where it can do it:**
    - publish the 4 kits and the socks to the Headless channel;
-   - set **Storefronts access** to read on the product metafields `kit_printer.print_price`, `shirt_colour`, `print_colour` and `back_image`.
-3. Put the public token in `storefront/.env.production` as `VITE_STORE_DOMAIN=kitsbyzizo.myshopify.com` and `VITE_STOREFRONT_TOKEN=...`. Create the folder if Claude hasn't yet. It's public by design (F9). **Never store the private token anywhere.**
-4. **The spike:** checks a to e in Phase 0 of the plan, with curl against `https://kitsbyzizo.myshopify.com/api/2026-10/graphql.json` and the header `X-Shopify-Storefront-Access-Token`.
-   - Save each real response, pretty-printed, to `storefront/src/fixtures/`:
-     - `collection.json` (the kits collection with everything the `Kit` type needs);
-     - `product-<handle>.json` for all 4 kits and the socks;
-     - `cart-saka7.json` (check b);
-     - `cart-error-100.json` (check c);
-     - `cart-error-socks.json` (check d).
-   - Write `docs/storefront-spike.md` with each check's result, and for e, exactly what happens when you open `checkoutUrl` in a fresh browser.
-   - Commit and push to `storefront`. **Tell Zyad "spike done" with the 5 results in one line each.** If a or b fails, stop there.
+   - set `access.storefront = PUBLIC_READ` on the metafield definitions `kit_printer.print_price`, `shirt_colour`, `print_colour` and `back_image` (`metafieldDefinitionUpdate`; look up the ids first, never guess them);
+   - upload images if needed.
+2. **Only installing the Headless channel and creating its storefront token needs the admin in the browser.**
+3. Put the **public** token in `storefront/.env.production`; it's public by design. Never store the private token.
+4. Run checks a to e from the plan with curl, save the real responses to `storefront/src/fixtures/`, and write `docs/storefront-spike.md`. Push, update STATUS, and tell Zyad the 5 results in one line each. If a or b fails, stop.
 
-## Step 2: when Claude says the code is ready
-- `git pull`, `cd storefront && npm ci && npm run dev`, and check it works against the real store by reading the DOM and console (no screenshot hunting).
-- Write the e2e suite from the plan's quality bar in `storefront/tests/e2e/` (Playwright, `--trace off`).
-- Run it locally, then deploy to Cloudflare Pages project `kitsbyzizo` (`npx wrangler pages deploy storefront/dist --project-name kitsbyzizo`, logging in to Zyad's Cloudflare in the browser if asked), and run e2e against `https://kitsbyzizo.pages.dev`.
-- Report in `docs/storefront-report-local.md`: e2e results, Lighthouse mobile scores, the live URL, and anything Claude needs to fix (exact errors). Push, then tell Zyad "local done".
+## Step 3: your pages
+When `docs/storefront-components.md` exists, build `src/routes/Home.tsx` and `src/routes/Collection.tsx` (and anything under `src/components/home/`) to the plan's design section:
+- **Home:** the hero with the fanned kits and scroll parallax, the kit grid, "How printing works" with a tiny live demo, and the "How it's built" teaser.
+- **Kits page:** the grid of Claude's kit cards.
+- Use 21st.dev for starting points, restyled to the tokens.
+- Respect `prefers-reduced-motion`.
+- No horizontal scroll at 360 px.
+
+## Step 4: when Claude marks the product page done in STATUS
+Run the site against the real store (`cd storefront && npm ci && npm run dev`), then:
+1. write and run the e2e suite from the plan;
+2. deploy to Cloudflare Pages project `kitsbyzizo`;
+3. run e2e against the live URL;
+4. run Lighthouse on mobile.
+
+Write `docs/storefront-report-local.md`, then tell Zyad "local done".
 
 ## Rules
-- Commands and code, not screenshots. At most 3 screenshots in total, for the report.
-- Don't edit Claude's code (`storefront/src` except `fixtures/`, plus the config files). If something's wrong, write it in your report with the exact error; Claude fixes it.
-- Don't change `extensions/` or `shared/`.
-- Never show the store password in screenshots, or any card details.
+- **Code and commands, not clicks or screenshots.** Check pages by reading the DOM and console. At most 5 screenshots in the whole job, for judging visuals and for the report.
+- **Stay in your own files.** Ask Claude for anything else in `docs/REQUESTS.md`. Run `git pull --rebase origin storefront` before every push, and commit small and often.
+- Don't touch `extensions/` or `shared/` (the live Functions).
+- **What's public and what isn't:**
+  - The store password `futureshopifolk` is public on purpose: recruiters use it. It's fine in UI copy, never in screenshots of the admin.
+  - No card details anywhere.
+  - Don't name the client of Zyad's other project, BasilBot.
 - Write plainly, with no em or en dashes.
