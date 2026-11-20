@@ -5,7 +5,7 @@ import { Link } from "react-router";
 import { PrintOverlay } from "../PrintOverlay";
 import { check, NAME_MAX } from "../../lib/print";
 import { sized } from "../../lib/cdn";
-import { format } from "../../lib/money";
+import { add as addMoney, format } from "../../lib/money";
 import type { Kit } from "../../lib/types";
 
 function StepCard({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
@@ -75,7 +75,55 @@ function LiveDemo({ kit }: { kit: Kit | undefined }) {
   );
 }
 
+// Step 1, shown rather than described: the kit, and the sizes as the pills the product page really uses. These
+// are decoration (the real controls are on the product page), so they are spans and hidden from screen readers.
+function KitAndSizes({ kit }: { kit: Kit | undefined }) {
+  const sizes = (kit?.variants ?? []).map((v) => v.size).filter((s) => s && s !== "Default Title");
+  const front = kit?.images[0];
+  return (
+    <div className="mt-4">
+      <div className="relative mx-auto aspect-square w-full max-w-[13rem] overflow-hidden rounded-field bg-sweep">
+        {front && (
+          <img src={sized(front.url, 416)} alt="" width={416} height={416} loading="lazy" className="absolute inset-0 size-full object-cover" />
+        )}
+      </div>
+      {sizes.length > 0 && (
+        <div className="mt-4 flex justify-center gap-2" aria-hidden>
+          {sizes.map((s) => (
+            <span key={s} className="grid h-9 min-w-10 place-items-center rounded-pill border border-ink/15 px-3 text-xs font-semibold text-ink">
+              {s}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Step 3: the sum the Cart Transform makes, written out. One line, not two, which is the whole point.
+function PriceMaths({ base, print, total }: { base: string; print: string; total: string }) {
+  return (
+    <dl className="mt-4 rounded-field bg-sweep p-4 text-sm">
+      <div className="flex items-baseline justify-between gap-3">
+        <dt>Kit</dt>
+        <dd className="font-semibold tabular-nums text-ink">{base}</dd>
+      </div>
+      <div className="mt-2 flex items-baseline justify-between gap-3">
+        <dt>Printing</dt>
+        <dd className="font-semibold tabular-nums text-ink">+{print}</dd>
+      </div>
+      <div className="mt-3 flex items-baseline justify-between gap-3 border-t border-line pt-3">
+        <dt className="font-semibold text-ink">One line at checkout</dt>
+        <dd className="display text-lg tabular-nums text-ink">{total}</dd>
+      </div>
+    </dl>
+  );
+}
+
 export function PrintingSteps({ kit, printPrice }: { kit: Kit | undefined; printPrice: string }) {
+  const base = kit?.priceRange.min;
+  const print = kit?.printPrice;
+  const total = base && print ? format(addMoney(base, print)) : null;
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
       <p className="eyebrow">How printing works</p>
@@ -91,6 +139,7 @@ export function PrintingSteps({ kit, printPrice }: { kit: Kit | undefined; print
             Four kits for the 26/27 season, in S, M, L and XL. Sizes are buttons you can see, never hidden in a
             dropdown.
           </p>
+          <KitAndSizes kit={kit} />
           <Link to="/kits" className="mt-auto pt-4 font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
             See the kits
           </Link>
@@ -109,6 +158,7 @@ export function PrintingSteps({ kit, printPrice }: { kit: Kit | undefined; print
             Printing adds {printPrice} to the shirt&apos;s own line, applied by a Shopify Function in the checkout. There
             is no separate printing item, so changing the quantity can never leave the charge behind.
           </p>
+          {base && print && total && <PriceMaths base={format(base)} print={format(print)} total={total} />}
           <Link to="/how-its-built" className="mt-auto pt-4 font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
             How that works
           </Link>
