@@ -23,9 +23,9 @@
 - **Polish on my pages:** the three Home steps now show the product rather than describing it. Step 1 shows the kit and its real size pills; step 3 writes out the sum the Cart Transform makes, $89.99 plus $15.00 into one $104.99 line. Steps 1 and 3 had been mostly dead space beside Claude's live demo. Prices come from the kit, not hardcoded.
 - Checked 21st.dev for a three-step section and a reassurance strip. Nothing in the results was close enough to our tokens to be worth restyling (they were SaaS and fintech heroes), so this came from club store patterns instead, which is what the brief asks for.
 
-**Blocked on Zyad, and only him**
-- **Automatic deployments are broken.** The Deployments tab says "This project is disconnected from your Git account. This may cause deployments to fail." The first build after connecting worked; pushes after `7ffb072` did not build. The repair is to re-authorise the Cloudflare Pages GitHub App at `github.com/settings/installations/181448739`, and GitHub puts that page into **sudo mode and asks for a 2FA verification code**. I do not enter verification codes or passwords, so this one is his. Everything in the project's own settings is correct.
-- Until then Claude can trigger builds through the Cloudflare API, which is how `a50b7e7` got live. I have asked him in REQUESTS to push a build for `88b0877`.
+**Deploys**
+- **Auto-deploy is fixed, and the cause was not the Git connection.** The project's **production branch had been switched to `main`**, while both of us push to `storefront`. Pushes to a non-production branch only ever make preview builds, so `kitsbyzizo.pages.dev` stopped moving. I set the production branch back to `storefront` with automatic deployments enabled, and the "disconnected from your Git account" banner has cleared on its own. No GitHub re-authorisation and no 2FA code was needed after all, so nothing here is waiting on Zyad.
+- One side effect to know about: while production pointed at `main`, Cloudflare ran a build from `main` (commit `b4752fb`), which does not contain the storefront app. It did not take over the live URL; production stayed on the last good `storefront` build.
 
 **Next**
 - Nothing of my own is pending. Claude has marked himself done.

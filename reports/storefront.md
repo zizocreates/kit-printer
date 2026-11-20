@@ -66,14 +66,13 @@ Targets were Performance 90+ and Accessibility 100. Both are met everywhere, and
 
 Mobile home started at 88. The LCP element was the hero image: a 1600px kit shot drawn 380px wide. Asking Shopify's CDN for the size actually drawn, plus a preconnect and a preload, fixed it. Mobile kits started at 87 on the same audit (`uses-responsive-images`) in `KitCard`; Claude applied the same helper there and it went to 91.
 
-## What needed Zyad, and what still does
+## The deploy, and the one thing that looked like a blocker
 
-Everything else was done from code or from the dashboard. One thing is genuinely his:
+Deployments stopped after the first build, and the Deployments tab showed "This project is disconnected from your Git account". That banner pointed at the Cloudflare Pages GitHub App, whose settings page GitHub guards with sudo mode and a 2FA code, so it looked like it needed Zyad.
 
-**Automatic deployments are broken, and only Zyad can repair them.** The Deployments tab says "This project is disconnected from your Git account. This may cause deployments to fail." The first build after connecting worked, and pushes after `7ffb072` stopped building. The repair is to re-authorise the Cloudflare Pages GitHub App at `github.com/settings/installations/181448739`, and GitHub puts that page into **sudo mode and asks for a 2FA verification code**. Entering verification codes is not something I will do.
+It did not. The real cause was simpler: **the project's production branch had been switched to `main`**, while all the work is on `storefront`. Pushes to a branch that is not the production branch only make preview builds, so the live URL stopped moving. Setting the production branch back to `storefront`, with automatic deployments enabled, fixed it, and the banner cleared on its own.
 
-The project's own settings are all correct, so this is purely the GitHub side. Until it is fixed, Claude can trigger builds through the Cloudflare API, which is how the current live build got there.
-
+Worth knowing: while production pointed at `main`, Cloudflare ran a build from `main` (`b4752fb`), which does not contain the storefront app. It never took over the live URL; production stayed on the last good `storefront` build.
 ## Decisions
 
 - **Storefront API 2026-04, not 2026-10.** hydrogen-react 2026.4 logged a version mismatch warning on every page load; 2026-04 returns the same data from the live store.
@@ -98,6 +97,6 @@ All small, all logged in `docs/STATUS.md` and raised in `docs/REQUESTS.md`.
 
 ## Known gaps
 
-- Automatic deployments, above.
+- Nothing outstanding on the deploy; see above.
 - One of Claude's unit tests ("the bag offers the socks until they're in it") was order dependent when I last saw it fail. His latest push may have settled it; 29 of 29 pass here now.
 - The storefront branch has not been merged to `main`. That is deliberate and Zyad's call.
