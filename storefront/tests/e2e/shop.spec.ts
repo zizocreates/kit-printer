@@ -141,11 +141,19 @@ test.describe("Kits by Zizo, against the real store", () => {
 
     await bag(page).getByRole("button", { name: "Checkout" }).click();
 
-    // The sheet hands over the password first: a dev store's checkout sits behind it (F6), and submitting it
-    // lands the buyer on the store home page, so this sheet is the only thing that keeps the flow sane.
+    // The sheet hands over the password first: a dev store's checkout sits behind it (F6). Spike e proved that
+    // submitting the password lands the buyer on the store HOME page, not their checkout, so the sheet has to be
+    // two steps. Step one has to open /password in its own tab, or the buyer loses the cart page they came from.
     const sheet = page.getByRole("dialog", { name: "Checkout" });
     await expect(sheet).toBeVisible();
     await expect(sheet.getByText("futureshopifolk")).toBeVisible();
+
+    await expect(sheet.getByText("Unlock the store")).toBeVisible();
+    const unlock = sheet.getByRole("link", { name: /password page/i });
+    await expect(unlock).toHaveAttribute("href", /\/password$/);
+    await expect(unlock).toHaveAttribute("target", "_blank");
+
+    await expect(sheet.getByRole("button", { name: "Continue to checkout" })).toBeVisible();
 
     expect(errors).toEqual([]);
   });
