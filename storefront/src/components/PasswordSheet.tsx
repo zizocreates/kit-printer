@@ -58,7 +58,7 @@ export function PasswordSheet({ open, onClose, checkoutUrl }: Props) {
                 <p className="mt-0.5 text-sm text-muted">Opens in a new tab. Enter the password there, then come back to this tab.</p>
                 <div className="mt-3 flex items-center justify-between gap-3 rounded-field border border-dashed border-ink/25 bg-sweep px-4 py-2.5">
                   <code className="font-mono text-base font-semibold tracking-wide">{STORE_PASSWORD}</code>
-                  <button type="button" onClick={copy} className="rounded-pill bg-paper px-3 py-1.5 text-xs font-semibold shadow-card transition-colors hover:bg-ink hover:text-paper" data-autofocus>
+                  <button type="button" onClick={copy} className="min-h-11 rounded-pill bg-paper px-4 text-xs font-semibold shadow-card transition-colors hover:bg-ink hover:text-paper" data-autofocus>
                     {copied ? "Copied" : "Copy"}
                   </button>
                 </div>

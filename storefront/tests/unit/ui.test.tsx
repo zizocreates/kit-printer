@@ -58,12 +58,25 @@ describe("product page", () => {
   it("the bag offers the socks until they're in it, and they add without a print", async () => {
     open("/kits/kanata-fc-home-kit");
     await screen.findByRole("heading", { level: 1 });
-    fireEvent.click(screen.getByRole("radio", { name: "S" }));
+    const small = screen.getByRole("radio", { name: "S" }) as HTMLInputElement;
+    fireEvent.click(small);
+    await waitFor(() => expect(small.checked).toBe(true));
     fireEvent.click(screen.getAllByRole("button", { name: /Add to bag/ })[0]);
-    const bag = await screen.findByRole("dialog", { name: "Your bag" });
-    fireEvent.click(await within(bag).findByRole("button", { name: "Add Kanata FC Socks, size M" }));
-    await waitFor(() => expect(within(bag).queryByText("Complete the kit")).toBeNull());
+    const bag = await screen.findByRole("dialog", { name: "Your bag" }, { timeout: 4000 });
+    // Like the real store: the socks have one "Default Title" variant, so it's a single Add, no size pills.
+    fireEvent.click(await within(bag).findByRole("button", { name: "Add Kanata FC Socks to the bag" }, { timeout: 4000 }));
+    await waitFor(() => expect(within(bag).queryByText("Complete the kit")).toBeNull(), { timeout: 4000 });
     expect(within(bag).getByText("$104.98")).toBeTruthy(); // 89.99 + 14.99, no print on either
+    expect(within(bag).queryByText(/Default Title/)).toBeNull();
+  });
+
+  it("a product with one default variant has no size picker and adds straight away", async () => {
+    open("/kits/football-socks");
+    await screen.findByRole("heading", { level: 1, name: /Socks/ });
+    expect(screen.queryByRole("radiogroup", { name: "Size" })).toBeNull();
+    fireEvent.click(screen.getAllByRole("button", { name: /Add to bag · \$14\.99/ })[0]);
+    const bag = await screen.findByRole("dialog", { name: "Your bag" }, { timeout: 4000 });
+    await waitFor(() => expect(within(bag).getAllByText("$14.99").length).toBeGreaterThan(0));
   });
 
   it("the size guide opens as a dialog", async () => {

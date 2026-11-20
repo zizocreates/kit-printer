@@ -32,5 +32,7 @@ export const DEMO_SOCKS: Kit = {
   id: "gid://shopify/Product/demo-football-socks", handle: "football-socks", title: "Kanata FC Socks", vendor: "Kanata FC",
   descriptionHtml: "<p>Red match socks. Socks can't be printed, so there's no name and number here.</p>",
   images: [pic("football-socks", "Kanata FC red match socks")], backBlank: null, printPrice: null, shirtColour: null, printColour: null,
-  variants: sizes("football-socks", "14.99"), priceRange: { min: usd("14.99") },
+  // Like the real product: no options, so one variant called "Default Title".
+  variants: [{ id: "gid://shopify/ProductVariant/demo-football-socks", title: "Default Title", size: "Default Title", availableForSale: true, price: usd("14.99") }],
+  priceRange: { min: usd("14.99") },
 };

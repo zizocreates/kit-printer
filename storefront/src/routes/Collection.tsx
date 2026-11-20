@@ -8,7 +8,7 @@ import { NoPhoto } from "../components/NoPhoto";
 import { Button } from "../components/ui/Button";
 import { format } from "../lib/money";
 import type { Kit } from "../lib/types";
-import { sized } from "../components/home/cdn";
+import { sized } from "../lib/cdn";
 
 const ALL = "All";
 

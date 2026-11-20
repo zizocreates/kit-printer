@@ -13,7 +13,7 @@ export function SizeGuide() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} className="text-sm text-muted underline underline-offset-4 hover:text-ink">
+      <button type="button" onClick={() => setOpen(true)} className="-my-3 inline-flex min-h-11 items-center text-sm text-muted underline underline-offset-4 hover:text-ink">
         Size guide
       </button>
       <Sheet open={open} onClose={() => setOpen(false)} label="Size guide" side="center">

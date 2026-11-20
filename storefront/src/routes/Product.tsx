@@ -7,6 +7,8 @@ import { useCart } from "../lib/cart";
 import { useCollection, useKit } from "../lib/useData";
 import { add as addMoney, format } from "../lib/money";
 import { check } from "../lib/print";
+import { onlyVariant } from "../lib/variants";
+import { sized } from "../lib/cdn";
 import type { Kit } from "../lib/types";
 import { KitStage } from "../components/KitStage";
 import { PrintOverlay } from "../components/PrintOverlay";
@@ -30,7 +32,8 @@ export function Product() {
 
 function ProductView({ kit }: { kit: Kit }) {
   const { add, busy, errors, setOpen } = useCart();
-  const [variantId, setVariantId] = useState<string | null>(null);
+  const single = onlyVariant(kit);
+  const [variantId, setVariantId] = useState<string | null>(single?.id ?? null);
   const [personal, setPersonal] = useState(false);
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
@@ -94,13 +97,13 @@ function ProductView({ kit }: { kit: Kit }) {
             </div>
           </header>
 
-          <div className="space-y-3">
+          {!single && <div className="space-y-3">
             <div className="flex items-baseline justify-between">
               <h2 className="text-sm font-semibold">Size {needSize && <span role="alert" className="ml-2 font-medium text-error">Pick a size first.</span>}</h2>
               <SizeGuide />
             </div>
             <SizePills variants={kit.variants} value={variantId} onChange={setVariantId} error={needSize} />
-          </div>
+          </div>}
 
           {kit.printPrice ? (
             <div className="space-y-4">
@@ -112,7 +115,7 @@ function ProductView({ kit }: { kit: Kit }) {
                     <div className="flex gap-4 pt-1">
                       {kit.backBlank && (
                         <div className="relative mt-7 size-24 shrink-0 overflow-hidden rounded-[14px] bg-[#ececea] lg:hidden" aria-hidden>
-                          <img src={kit.backBlank.url} alt="" className="size-full object-cover" />
+                          <img src={sized(kit.backBlank.url, 200)} alt="" className="size-full object-cover" />
                           <PrintOverlay name={result.name} number={result.number} ink={kit.printColour ?? "#ffffff"} />
                         </div>
                       )}
@@ -148,14 +151,14 @@ function ProductView({ kit }: { kit: Kit }) {
             <li className="rounded-field bg-sweep px-2 py-3"><span className="block text-base">↺</span>Same rules at checkout</li>
           </ul>
 
-          {kit.descriptionHtml.trim() && <details className="group border-t border-line pt-5" open>
-            <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold">
+          {kit.descriptionHtml.trim() && <details className="group border-t border-line pt-2" open>
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-sm font-semibold">
               Details <span className="transition-transform group-open:rotate-45">+</span>
             </summary>
             <div className="prose-sm mt-3 space-y-2 text-sm leading-relaxed text-muted" dangerouslySetInnerHTML={{ __html: kit.descriptionHtml }} />
           </details>}
-          <details className="group border-t border-line pt-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold">
+          <details className="group border-t border-line pt-2">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-sm font-semibold">
               Print rules <span className="transition-transform group-open:rotate-45">+</span>
             </summary>
             <p className="mt-3 text-sm leading-relaxed text-muted">

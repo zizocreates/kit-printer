@@ -2,6 +2,8 @@
 // is the Cart Validation's own words.
 import { useState } from "react";
 import { useKit } from "../lib/useData";
+import { isDefaultSize, onlyVariant } from "../lib/variants";
+import { sized } from "../lib/cdn";
 import { Link } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { useCart } from "../lib/cart";
@@ -75,14 +77,14 @@ function Line({ line, onNavigate }: { line: CartLine; onNavigate: () => void }) 
   return (
     <div className="flex gap-4 py-5">
       <Link to={`/kits/${line.kit.handle}`} onClick={onNavigate} className="size-24 shrink-0 overflow-hidden rounded-[14px] bg-[#ececea]">
-        {img && <img src={img.url} alt="" className="size-full object-cover" />}
+        {img && <img src={sized(img.url, 200)} alt="" className="size-full object-cover" />}
       </Link>
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex justify-between gap-3">
           <Link to={`/kits/${line.kit.handle}`} onClick={onNavigate} className="font-semibold leading-snug hover:underline">{line.kit.title}</Link>
           <span className="shrink-0 font-semibold tabular-nums">{format(line.lineTotal)}</span>
         </div>
-        <p className="mt-1 text-sm text-muted">Size {line.variant.size}</p>
+        {!isDefaultSize(line.variant.size) && <p className="mt-1 text-sm text-muted">Size {line.variant.size}</p>}
         {line.print && (
           <p className="mt-1 text-sm">
             <span className="text-muted">Print: </span>
@@ -95,7 +97,7 @@ function Line({ line, onNavigate }: { line: CartLine; onNavigate: () => void }) 
             <span className="w-8 text-center text-sm font-semibold tabular-nums" aria-label={`Quantity ${line.quantity}`}>{line.quantity}</span>
             <Step label="One more" disabled={busy} onClick={() => update(line.id, line.quantity + 1)}>+</Step>
           </div>
-          <button type="button" disabled={busy} onClick={() => remove(line.id)} className="text-xs font-medium text-muted underline-offset-4 hover:text-ink hover:underline">
+          <button type="button" disabled={busy} onClick={() => remove(line.id)} className="-mr-2 inline-flex min-h-11 items-center px-2 text-xs font-medium text-muted underline-offset-4 hover:text-ink hover:underline">
             Remove
           </button>
         </div>
@@ -113,18 +115,25 @@ function SocksOffer() {
   const img = socks.images[0];
   return (
     <div className="mx-6 mb-4 flex items-center gap-3 rounded-[16px] border border-line p-3">
-      <div className="size-14 shrink-0 overflow-hidden rounded-[10px] bg-[#ececea]">{img && <img src={img.url} alt="" className="size-full object-cover" />}</div>
+      <div className="size-14 shrink-0 overflow-hidden rounded-[10px] bg-[#ececea]">{img && <img src={sized(img.url, 120)} alt="" className="size-full object-cover" />}</div>
       <div className="min-w-0 flex-1">
         <p className="text-sm font-semibold">Complete the kit</p>
         <p className="truncate text-xs text-muted">{socks.title} · {format(socks.priceRange.min)}</p>
+        {onlyVariant(socks) ? (
+          <button type="button" disabled={busy || !socks.variants[0].availableForSale} onClick={() => add(socks.variants[0].id, 1, null)} aria-label={`Add ${socks.title} to the bag`}
+            className="mt-2 inline-flex h-11 items-center rounded-pill bg-ink px-4 text-xs font-semibold text-paper transition-colors hover:bg-ink-soft disabled:opacity-40">
+            Add
+          </button>
+        ) : (
         <div className="mt-2 flex gap-1.5" role="group" aria-label={`Add ${socks.title} in size`}>
           {socks.variants.map((v) => (
             <button key={v.id} type="button" disabled={busy || !v.availableForSale} onClick={() => add(v.id, 1, null)} aria-label={`Add ${socks.title}, size ${v.size}`}
-              className="h-8 min-w-9 rounded-pill border border-ink/15 px-2 text-xs font-semibold transition-colors hover:border-ink hover:bg-ink hover:text-paper disabled:opacity-40">
+              className="h-11 min-w-11 rounded-pill border border-ink/15 px-2 text-xs font-semibold transition-colors hover:border-ink hover:bg-ink hover:text-paper disabled:opacity-40">
               {v.size}
             </button>
           ))}
         </div>
+        )}
       </div>
     </div>
   );
@@ -132,7 +141,7 @@ function SocksOffer() {
 
 function Step({ children, label, onClick, disabled }: { children: string; label: string; onClick: () => void; disabled?: boolean }) {
   return (
-    <button type="button" aria-label={label} disabled={disabled} onClick={onClick} className="grid size-9 place-items-center rounded-full text-lg leading-none transition-colors hover:bg-sweep disabled:opacity-40">
+    <button type="button" aria-label={label} disabled={disabled} onClick={onClick} className="grid size-11 place-items-center rounded-full text-lg leading-none transition-colors hover:bg-sweep disabled:opacity-40">
       {children}
     </button>
   );

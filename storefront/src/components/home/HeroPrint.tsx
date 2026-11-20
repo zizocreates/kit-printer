@@ -5,7 +5,7 @@ import { PrintOverlay } from "../PrintOverlay";
 import { NoPhoto } from "../NoPhoto";
 import type { Kit } from "../../lib/types";
 import { useCalm } from "./useCalm";
-import { sized, srcSet } from "./cdn";
+import { sized, srcSet } from "../../lib/cdn";
 
 // The hero is the page's largest image, so it is the LCP. It is drawn about 380px wide on a phone and about
 // 560px in the two column layout, hence these widths rather than the 1600px original.

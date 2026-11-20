@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { PrintOverlay } from "../PrintOverlay";
 import { check, NAME_MAX } from "../../lib/print";
-import { sized } from "./cdn";
+import { sized } from "../../lib/cdn";
 import { format } from "../../lib/money";
 import type { Kit } from "../../lib/types";
 

@@ -30,11 +30,6 @@ async function pickSize(page: Page, size: string) {
   await expect(page.getByRole("radio", { name: size, exact: true })).toBeChecked();
 }
 
-/** For a product with one unnamed variant, like the socks. */
-async function pickFirstSize(page: Page) {
-  await page.getByRole("radiogroup", { name: "Size" }).locator("label").first().click();
-}
-
 async function noSidewaysScroll(page: Page) {
   const over = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(over, "the page should not scroll sideways").toBeLessThanOrEqual(1);
@@ -120,7 +115,9 @@ test.describe("Kits by Zizo, against the real store", () => {
     await expect(page.getByRole("radio", { name: /Personalize/ })).toHaveCount(0);
     await expect(page.getByText(/can't be printed/i)).toBeVisible();
 
-    await pickFirstSize(page);
+    // One "Default Title" variant: there is no size to pick, and none is shown.
+    await expect(page.getByRole("radiogroup", { name: "Size" })).toHaveCount(0);
+    await expect(page.getByText("Default Title")).toHaveCount(0);
     await addToBag(page).click();
 
     await expect(bag(page)).toBeVisible();

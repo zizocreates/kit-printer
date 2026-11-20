@@ -7,7 +7,7 @@ import { useCollection } from "../lib/useData";
 import { KitCard } from "../components/KitCard";
 import { Button } from "../components/ui/Button";
 import { HeroPrint, HERO_SIZES, HERO_WIDTHS } from "../components/home/HeroPrint";
-import { sized, srcSet } from "../components/home/cdn";
+import { sized, srcSet } from "../lib/cdn";
 import { PrintingSteps, priceLabel } from "../components/home/PrintingSteps";
 import { BuiltTeaser } from "../components/home/BuiltTeaser";
 import { useCalm } from "../components/home/useCalm";

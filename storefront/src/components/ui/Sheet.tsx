@@ -69,7 +69,7 @@ export function Sheet({ open, onClose, label, side = "right", children }: Props)
 
 export function CloseButton({ onClick, label = "Close" }: { onClick: () => void; label?: string }) {
   return (
-    <button type="button" onClick={onClick} aria-label={label} className="grid size-10 place-items-center rounded-full transition-colors hover:bg-sweep">
+    <button type="button" onClick={onClick} aria-label={label} className="-mr-2 grid size-11 place-items-center rounded-full transition-colors hover:bg-sweep">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden><path d="M6 6l12 12M18 6L6 18" /></svg>
     </button>
   );

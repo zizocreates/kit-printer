@@ -6,6 +6,10 @@ import { useCart } from "../lib/cart";
 import { format } from "../lib/money";
 import type { Kit } from "../lib/types";
 import { NoPhoto } from "./NoPhoto";
+import { sized, srcSet } from "../lib/cdn";
+
+const CARD_WIDTHS = [360, 540, 720, 960];
+const CARD_SIZES = "(min-width: 1024px) 23vw, (min-width: 640px) 46vw, 92vw";
 
 /** `level`: the heading level of the kit title. 2 under a page h1 (the Kits page), 3 under a section h2 (Home). */
 export function KitCard({ kit, priority = false, level = 2 }: { kit: Kit; priority?: boolean; level?: 2 | 3 }) {
@@ -35,16 +39,23 @@ export function KitCard({ kit, priority = false, level = 2 }: { kit: Kit; priori
         {!front && <div className="absolute inset-0"><NoPhoto title={kit.title} /></div>}
         {front && (
           <img
-            src={front.url}
+            src={sized(front.url, 720)}
+            srcSet={srcSet(front.url, CARD_WIDTHS) || undefined}
+            sizes={CARD_SIZES}
+            width={front.width}
+            height={front.height}
             alt=""
             loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : undefined}
             className="absolute inset-0 size-full object-cover transition-[opacity,transform] duration-500 ease-[var(--ease-out-expo)] group-hover:scale-[1.03] group-hover:opacity-0"
             style={{ viewTransitionName: `kit-${kit.handle}` }}
           />
         )}
         {back && (
           <img
-            src={back.url}
+            src={sized(back.url, 720)}
+            srcSet={srcSet(back.url, CARD_WIDTHS) || undefined}
+            sizes={CARD_SIZES}
             alt=""
             loading="lazy"
             className="absolute inset-0 size-full scale-[1.03] object-cover opacity-0 transition-[opacity,transform] duration-500 ease-[var(--ease-out-expo)] group-hover:scale-100 group-hover:opacity-100"

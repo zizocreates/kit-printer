@@ -23,7 +23,7 @@ export function Header() {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="relative -mr-2 grid size-10 place-items-center rounded-full transition-colors hover:bg-sweep"
+            className="relative -mr-2 grid size-11 place-items-center rounded-full transition-colors hover:bg-sweep"
             aria-label={`Bag, ${count} ${count === 1 ? "item" : "items"}`}
           >
             <BagIcon />

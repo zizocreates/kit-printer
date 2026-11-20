@@ -4,6 +4,11 @@ import { motion } from "motion/react";
 import type { Kit } from "../lib/types";
 import { PrintOverlay } from "./PrintOverlay";
 import { NoPhoto } from "./NoPhoto";
+import { sized, srcSet } from "../lib/cdn";
+
+const W = [600, 900, 1200, 1600];
+const SIZES = "(min-width: 1024px) 56vw, 100vw";
+const img = (url: string) => ({ src: sized(url, 1200), srcSet: srcSet(url, W) || undefined, sizes: SIZES });
 
 type Props = { kit: Kit; side: "front" | "back"; onSide: (side: "front" | "back") => void; name: string; number: string };
 
@@ -21,13 +26,13 @@ export function KitStage({ kit, side, onSide, name, number }: Props) {
           transition={{ type: "spring", stiffness: 140, damping: 20, mass: 0.9 }}
         >
           <Face>
-            {front ? <img src={front.url} alt={front.altText ?? `Front of the ${kit.title}`} className="size-full object-cover" fetchPriority="high" style={{ viewTransitionName: `kit-${kit.handle}` }} /> : kit.printPrice ? <DrawnShirt colour={kit.shirtColour} /> : <NoPhoto title={kit.title} />}
+            {front ? <img {...img(front.url)} alt={front.altText ?? `Front of the ${kit.title}`} className="size-full object-cover" fetchPriority="high" style={{ viewTransitionName: `kit-${kit.handle}` }} /> : kit.printPrice ? <DrawnShirt colour={kit.shirtColour} /> : <NoPhoto title={kit.title} />}
           </Face>
           <Face back>
             {back ? (
-              <img src={back.url} alt={back.altText ?? `Back of the ${kit.title}`} className="size-full object-cover" />
+              <img {...img(back.url)} alt={back.altText ?? `Back of the ${kit.title}`} className="size-full object-cover" />
             ) : sample && !kit.printPrice ? (
-              <img src={sample.url} alt={sample.altText ?? ""} className="size-full object-cover" />
+              <img {...img(sample.url)} alt={sample.altText ?? ""} className="size-full object-cover" />
             ) : (
               <DrawnShirt colour={kit.shirtColour} />
             )}
@@ -49,7 +54,7 @@ export function KitStage({ kit, side, onSide, name, number }: Props) {
             type="button"
             aria-pressed={side === s}
             onClick={() => onSide(s)}
-            className={`h-9 rounded-pill px-5 text-xs font-semibold uppercase tracking-[0.14em] transition-colors ${side === s ? "bg-ink text-paper" : "bg-sweep text-muted hover:text-ink"}`}
+            className={`h-11 rounded-pill px-6 text-xs font-semibold uppercase tracking-[0.14em] transition-colors ${side === s ? "bg-ink text-paper" : "bg-sweep text-muted hover:text-ink"}`}
           >
             {s === "front" ? "Front" : "Back"}
           </button>

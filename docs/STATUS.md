@@ -10,7 +10,8 @@
 - Done: `map.ts` checked against the real fixtures in `tests/unit/fixtures.test.ts`; socks placeholder (no photo). **22 unit tests pass.**
 - Done (polish 1): socks photo (`store/make-socks.cjs`), pages load lazily, "Complete the kit" socks offer in the bag, size guide sheet, `public/_headers` (security headers, long cache on /assets and /fonts), `robots.txt`, Open Graph image (`public/og.jpg`) and tags, fixes at 320px (header no longer wraps, print fields stack when narrow). **24 unit tests pass.**
 - Done (polish 2): README storefront section; axe pass on every route, the open print fields and the bag (fixed: the notice strip is a landmark, KitCard heading level is a prop); **two-step password sheet** for the spike e finding. **25 unit tests pass.**
-- Next: anything you put in REQUESTS; Lighthouse fixes in my files once you have numbers; the portfolio card once kitsbyzizo.pages.dev is live (that change waits for Zyad's go-ahead).
+- Done (polish 3, from the local agent's QA): every tap target 44px, responsive Shopify CDN images in KitCard/KitStage/bag (`src/lib/cdn.ts`), single "Default Title" variant handled everywhere (`src/lib/variants.ts`), socks test hardened. **26 unit tests pass.**
+- Blocked on Zyad: the Cloudflare Pages deploy (creating the project needs his OK). Then the portfolio card.
 
 ## Local agent
 
