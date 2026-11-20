@@ -7,7 +7,14 @@
       "vendor": "kitsbyzizo",
       "descriptionHtml": "",
       "images": {
-        "nodes": []
+        "nodes": [
+          {
+            "url": "https://cdn.shopify.com/s/files/1/0727/5724/8071/files/football-socks.png?v=1795200410",
+            "altText": "Kanata FC red match socks",
+            "width": 1600,
+            "height": 1600
+          }
+        ]
       },
       "priceRange": {
         "minVariantPrice": {

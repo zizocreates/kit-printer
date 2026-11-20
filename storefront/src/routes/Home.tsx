@@ -89,7 +89,8 @@ export function Home() {
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" aria-busy={loading}>
           {loading && kits.length === 0 && [0, 1, 2, 3].map((i) => <KitSkeleton key={i} />)}
           {kits.map((kit, i) => (
-            <KitCard key={kit.handle} kit={kit} priority={i < 2} />
+            // This grid sits under the section h2, so the card titles are h3.
+            <KitCard key={kit.handle} kit={kit} priority={i < 2} level={3} />
           ))}
         </div>
 

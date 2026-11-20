@@ -22,11 +22,14 @@ describe("real store responses", () => {
     }
   });
 
-  it("a kit and the socks: the socks can't be printed and have no photo", () => {
+  it("a kit and the socks: the socks have a photo now, and still can't be printed", () => {
     expect(toKit((away as any).data.product)?.priceRange.min.amount).toMatch(/^89\.99/);
     const s = toKit((socks as any).data.product)!;
     expect(s.printPrice).toBeNull();
-    expect(s.images).toEqual([]);
+    // The photo was uploaded to the real product on 20 Nov, so the fixture carries it now. The NoPhoto
+    // placeholder still matters: it is what any future product without a photo gets.
+    expect(s.images).toHaveLength(1);
+    expect(s.images[0].altText).toBe("Kanata FC red match socks");
   });
 
   it("a real two-line cart keeps the Function's printed price and the print", () => {
