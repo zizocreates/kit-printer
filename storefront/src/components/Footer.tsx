@@ -11,7 +11,6 @@ export function Footer() {
           <p className="max-w-sm text-sm leading-relaxed text-muted">
             A custom storefront on Shopify's Storefront API. The cart, the price and the checks on your name and number all run on Shopify.
           </p>
-          <p className="text-xs text-muted">Made-up clubs, original designs. No real club marks.</p>
         </div>
         <nav aria-label="Shop" className="space-y-2 text-sm">
           <p className="eyebrow mb-3">Shop</p>
