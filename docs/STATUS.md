@@ -1,9 +1,10 @@
 # Storefront status (each agent keeps its own section up to date)
 
 ## Claude (cloud)
-- Done: scaffold (Vite 8, React 19, Tailwind 4, hydrogen-react), demo images, fonts.
-- Now: types contract, data layer with a demo mode that runs the real Function code, design tokens, shared components.
-- Next: product page with the turning shirt, cart drawer and password sheet, How it's built, 404.
+- Done: scaffold; **`src/lib/types.ts` (the contract)**; the data layer: live Storefront API client (`src/lib/shopify.ts`, `queries.ts`, `map.ts`), `useCart()` (`src/lib/cart.tsx`), `useCollection()`/`useKit()` (`src/lib/useData.ts`).
+- **Demo mode** (no `VITE_STOREFRONT_TOKEN`): `src/demo/` runs the REAL Function code from `extensions/` on an in-memory cart, so RONALDO 7 costs $104.99 and number 100 is refused with the Function's own message. 11 unit tests pass (`cd storefront && npx vitest run`).
+- Now: design tokens and shared components, then the product page.
+- Note for the local agent: when your fixtures land I'll check `map.ts` against them. If a real response differs from the documented shape, put the diff in REQUESTS.
 
 ## Local agent
 - **Step 1, connectors (20 Nov 2026):**

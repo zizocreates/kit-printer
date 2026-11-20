@@ -16,5 +16,5 @@
     "noEmit": true,
     "types": ["vite/client"]
   },
-  "include": ["src", "../shared/print.js", "../extensions/kit-printer-price/src", "../extensions/kit-printer-check/src"]
+  "include": ["src", "../shared/print.js"]
 }
