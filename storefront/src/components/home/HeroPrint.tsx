@@ -5,6 +5,12 @@ import { PrintOverlay } from "../PrintOverlay";
 import { NoPhoto } from "../NoPhoto";
 import type { Kit } from "../../lib/types";
 import { useCalm } from "./useCalm";
+import { sized, srcSet } from "./cdn";
+
+// The hero is the page's largest image, so it is the LCP. It is drawn about 380px wide on a phone and about
+// 560px in the two column layout, hence these widths rather than the 1600px original.
+export const HERO_WIDTHS = [400, 600, 800, 1120];
+export const HERO_SIZES = "(min-width: 1024px) 560px, calc(100vw - 2rem)";
 
 const PRINTS = [
   { name: "RONALDO", number: "7" },
@@ -51,7 +57,9 @@ export function HeroPrint({ kit }: { kit: Kit | undefined }) {
     <div className="relative aspect-square w-full overflow-hidden rounded-card bg-sweep shadow-card">
       {kit?.backBlank ? (
         <img
-          src={kit.backBlank.url}
+          src={sized(kit.backBlank.url, 800)}
+          srcSet={srcSet(kit.backBlank.url, HERO_WIDTHS) || undefined}
+          sizes={HERO_SIZES}
           alt={`The back of the ${kit.title}, blank and ready to print`}
           width={kit.backBlank.width}
           height={kit.backBlank.height}

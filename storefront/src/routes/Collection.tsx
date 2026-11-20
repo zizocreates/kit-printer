@@ -8,6 +8,7 @@ import { NoPhoto } from "../components/NoPhoto";
 import { Button } from "../components/ui/Button";
 import { format } from "../lib/money";
 import type { Kit } from "../lib/types";
+import { sized } from "../components/home/cdn";
 
 const ALL = "All";
 
@@ -36,7 +37,14 @@ function SocksRow({ socks }: { socks: Kit }) {
           aria-label={socks.title}
         >
           {image ? (
-            <img src={image.url} alt="" loading="lazy" className="absolute inset-0 size-full object-cover" />
+            <img
+              src={sized(image.url, 320)}
+              alt=""
+              width={320}
+              height={320}
+              loading="lazy"
+              className="absolute inset-0 size-full object-cover"
+            />
           ) : (
             <NoPhoto title={socks.title} />
           )}

@@ -27,18 +27,31 @@
   - Verified in a real browser on real data: both titles set, 4 cards, chips filter correctly (Kanata FC gives 2 kits, `aria-pressed` right), the hero really types and cycles, **no console errors, no horizontal scroll**. `tsc` clean, **22 unit tests pass**, `vite build` ok.
 
 **Now**
-- Playwright: the live e2e suite, then the width and reduced motion QA pass.
+- Nothing in flight. Everything that does not need Zyad is done and pushed.
 
-**Next**
-- Cloudflare Pages deploy, Lighthouse on the deployed URL, then `reports/storefront.md`.
+**Next (blocked on Zyad)**
+- **Cloudflare Pages deploy.** No credentials on this machine: no `CLOUDFLARE_API_TOKEN`, no wrangler config, no login. `wrangler login` needs his consent in a browser, and the `kitsbyzizo` project is his account to create. Everything else is ready: `dist` builds clean, `public/_redirects` is in place, and both suites already take `E2E_BASE_URL` for a deployed URL.
+- **Lighthouse on the deployed URL**, which needs the deploy.
+
+**Also done since the last update**
+- **Socks photo uploaded** to the real product through the Admin API staged upload flow (the connector's upload tool opens a file picker, which is no use with nobody at the machine). Confirmed through the Storefront API: 1600 square, alt "Kanata FC red match socks", `print_price` still null. Also set the socks **vendor to "Kanata FC"** (it was "kitsbyzizo", which showed as KITSBYZIZO beside CAPITAL CITY SC).
+- **Spike e finished:** the password lands you on the **store home page**, not the checkout; once the cookie is set a fresh `checkoutUrl` goes straight through to `/checkouts/cn/...`, and the order summary reads **$104.99 with Print name SAKA and Print number 7**, subtotal $119.98.
+- **Live e2e suite: 14 of 14 pass** (`tests/e2e/shop.spec.ts`, 7 tests on desktop 1440 and the same 7 on the iPhone 13 profile, each failing on any console error).
+- **QA pass: 35 pass, 31 fail** (`tests/e2e/qa.spec.ts`, 6 pages at 360/390/768/1024/1440 on both projects, plus reduced motion and keyboard). **No horizontal scroll anywhere.** Reduced motion is honoured. The whole purchase works on the keyboard. All 31 failures are one finding: six tap targets under 44px, every one in Claude's components, listed with measurements in REQUESTS.
+- **Lighthouse on the local production build:** desktop home **100/100/100/100**, desktop kits 98, mobile home **90**, mobile kits **87**. Accessibility, Best Practices and SEO are 100 everywhere. Mobile home was 88 until I sized the hero image to what it is actually drawn at and preloaded it. Mobile kits is the one under target; the audit is `uses-responsive-images` and the cause is `KitCard`, which is Claude's file.
+- **Report written: `reports/storefront.md`.**
 
 **Decisions**
+- **Images ask Shopify's CDN for the size they are drawn at** (`components/home/cdn.ts`: `sized` and `srcSet`). This is what took mobile home from 88 to 90 and desktop home to 100.
+- **Tap targets are judged only under touch emulation.** On a pointer device the kit card quick-add panel is visible and its 36px pills would be flagged, but that panel is `display:none` on touch, so measuring it there measures something a phone never gets.
+- **The mobile Playwright project runs the iPhone 13 profile in Chromium**, not WebKit: it is the engine Lighthouse mobile uses, and it keeps the suite to one browser download.
 - **Storefront API version is now `2026-04`, not `2026-10`.** hydrogen-react 2026.4 logged a version mismatch warning on every page load. I checked 2026-04 against the live store: same collection, same metafields, same `back_image` reference. Matching the kit we ship beats being ahead of it, and the console is clean now.
 - **Club chips are derived from `kit.vendor`, not hardcoded.** The brief listed three clubs; reading them from the data means a fifth kit needs no code change. Chips only appear when there is more than one club.
 - **The socks are a "View socks" link, not a quick add, on the Kits page.** They have one variant and no print, so sending people to the product page keeps one way to buy and avoids a second add-to-bag path to test.
 - **The hero uses the first kit that has a `backBlank`** rather than a fixed handle, so it cannot break if a product is unpublished.
 - **Reduced motion:** my typing and cycling are plain timers, not motion/react, so `MotionConfig` cannot switch them off. `useCalm` does it: no typing, no cycling, no parallax, one finished print shown instead.
 
-**Edited Claude's files** (both small, both logged as the brief allows)
+**Edited Claude's files** (all small, all logged as the brief allows)
 - `tests/unit/setup.ts`: **all 22 unit tests failed on this machine** before the fix. Node 26 defines a global `localStorage` that is `undefined` unless `--localstorage-file` is passed, and because the global already exists Vitest's jsdom environment does not put jsdom's own there (`sessionStorage` is still jsdom's, which is the giveaway). Added a small in-memory `Storage` stand-in, which is what that file is for. Not a bug in the app, and it passes in Claude's container because its Node is older.
 - `src/lib/config.ts`: `API_VERSION` 2026-10 to 2026-04, see Decisions.
+- `tests/unit/fixtures.test.ts`: one assertion said the socks have no photo, which my own socks upload made false.

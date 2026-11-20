@@ -1,11 +1,13 @@
 // Home. The hero prints a name onto a kit back as you watch, then the kits, then how the printing is priced,
 // then the teaser for how the whole thing is built.
 import { useEffect, useRef } from "react";
+import { preconnect, preload } from "react-dom";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useCollection } from "../lib/useData";
 import { KitCard } from "../components/KitCard";
 import { Button } from "../components/ui/Button";
-import { HeroPrint } from "../components/home/HeroPrint";
+import { HeroPrint, HERO_SIZES, HERO_WIDTHS } from "../components/home/HeroPrint";
+import { sized, srcSet } from "../components/home/cdn";
 import { PrintingSteps, priceLabel } from "../components/home/PrintingSteps";
 import { BuiltTeaser } from "../components/home/BuiltTeaser";
 import { useCalm } from "../components/home/useCalm";
@@ -36,6 +38,18 @@ export function Home() {
   const kits = data ?? [];
   const hero = kits.find((k) => k.backBlank) ?? kits[0];
   const printable = kits.find((k) => k.printPrice);
+
+  // The hero image is the LCP. The kit shots come from Shopify's CDN, so open that connection early and start
+  // fetching the hero as soon as we know which kit it is, instead of waiting for the <img> to be laid out.
+  preconnect("https://cdn.shopify.com");
+  if (hero?.backBlank) {
+    const set = srcSet(hero.backBlank.url, HERO_WIDTHS);
+    preload(sized(hero.backBlank.url, 800), {
+      as: "image",
+      fetchPriority: "high",
+      ...(set ? { imageSrcSet: set, imageSizes: HERO_SIZES } : {}),
+    });
+  }
 
   return (
     <>

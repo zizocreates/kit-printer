@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { PrintOverlay } from "../PrintOverlay";
 import { check, NAME_MAX } from "../../lib/print";
+import { sized } from "./cdn";
 import { format } from "../../lib/money";
 import type { Kit } from "../../lib/types";
 
@@ -29,7 +30,15 @@ function LiveDemo({ kit }: { kit: Kit | undefined }) {
     <div className="mt-4">
       <div className="relative mx-auto aspect-square w-full max-w-[13rem] overflow-hidden rounded-field bg-sweep">
         {kit?.backBlank && (
-          <img src={kit.backBlank.url} alt="" className="absolute inset-0 size-full object-cover" loading="lazy" />
+          // Drawn at most 208px wide, so ask the CDN for that rather than the 1600px original.
+          <img
+            src={sized(kit.backBlank.url, 416)}
+            alt=""
+            width={416}
+            height={416}
+            className="absolute inset-0 size-full object-cover"
+            loading="lazy"
+          />
         )}
         <PrintOverlay name={result.name || name.toUpperCase()} number={result.number || number} ink={ink} animate />
       </div>
