@@ -53,7 +53,7 @@ Read on us.shop.realmadrid.com (a men's home shirt page and the home kit listing
 
 All HTTP 200 after the password page: `/`, `/collections/kits`, `/cart`, and all five products. The Kits link in the nav points at `/collections/kits`.
 
-One note: the socks product is titled "Kanata FC Socks" but its handle is still `football-socks`, so `/products/kanata-fc-socks` is a 404. Renaming a product does not change its URL. Say the word and I will add a URL redirect.
+One note: the socks product is titled "Kanata FC Socks" but its handle is still `football-socks`, because renaming a product does not change its URL. `/products/kanata-fc-socks` was a 404, so I added a URL redirect from `/products/kanata-fc-socks` to `/products/football-socks`. Both addresses now land on the socks page.
 
 ## 7. Checks
 
