@@ -147,12 +147,12 @@ function ProductView({ kit }: { kit: Kit }) {
             <li className="rounded-field bg-sweep px-2 py-3"><span className="block text-base">↺</span>Same rules at checkout</li>
           </ul>
 
-          <details className="group border-t border-line pt-5" open>
+          {kit.descriptionHtml.trim() && <details className="group border-t border-line pt-5" open>
             <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold">
-              About this kit <span className="transition-transform group-open:rotate-45">+</span>
+              Details <span className="transition-transform group-open:rotate-45">+</span>
             </summary>
             <div className="prose-sm mt-3 space-y-2 text-sm leading-relaxed text-muted" dangerouslySetInnerHTML={{ __html: kit.descriptionHtml }} />
-          </details>
+          </details>}
           <details className="group border-t border-line pt-5">
             <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold">
               Print rules <span className="transition-transform group-open:rotate-45">+</span>

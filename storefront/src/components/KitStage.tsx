@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import type { Kit } from "../lib/types";
 import { PrintOverlay } from "./PrintOverlay";
+import { NoPhoto } from "./NoPhoto";
 
 type Props = { kit: Kit; side: "front" | "back"; onSide: (side: "front" | "back") => void; name: string; number: string };
 
@@ -10,6 +11,7 @@ export function KitStage({ kit, side, onSide, name, number }: Props) {
   const front = kit.images[0];
   const back = kit.backBlank;
   const sample = kit.images[1];
+  const hasBack = !!(back || sample || kit.printPrice);
   return (
     <div className="space-y-4">
       <div className="relative aspect-square overflow-hidden rounded-card bg-[#ececea] [perspective:1800px]">
@@ -19,7 +21,7 @@ export function KitStage({ kit, side, onSide, name, number }: Props) {
           transition={{ type: "spring", stiffness: 140, damping: 20, mass: 0.9 }}
         >
           <Face>
-            {front ? <img src={front.url} alt={front.altText ?? `Front of the ${kit.title}`} className="size-full object-cover" fetchPriority="high" style={{ viewTransitionName: `kit-${kit.handle}` }} /> : <DrawnShirt colour={kit.shirtColour} />}
+            {front ? <img src={front.url} alt={front.altText ?? `Front of the ${kit.title}`} className="size-full object-cover" fetchPriority="high" style={{ viewTransitionName: `kit-${kit.handle}` }} /> : kit.printPrice ? <DrawnShirt colour={kit.shirtColour} /> : <NoPhoto title={kit.title} />}
           </Face>
           <Face back>
             {back ? (
@@ -36,11 +38,11 @@ export function KitStage({ kit, side, onSide, name, number }: Props) {
             )}
           </Face>
         </motion.div>
-        <span className="eyebrow absolute left-5 top-5 rounded-pill bg-paper/80 px-3 py-1.5 text-[0.65rem] text-ink backdrop-blur">
-          {side === "back" ? "Back, live preview" : "Front"}
-        </span>
+        {hasBack && <span className="eyebrow absolute left-5 top-5 rounded-pill bg-paper/80 px-3 py-1.5 text-[0.65rem] text-ink backdrop-blur">
+          {side === "back" ? (kit.printPrice ? "Back, live preview" : "Back") : "Front"}
+        </span>}
       </div>
-      <div role="group" aria-label="Show side" className="flex justify-center gap-2">
+      {hasBack && <div role="group" aria-label="Show side" className="flex justify-center gap-2">
         {(["front", "back"] as const).map((s) => (
           <button
             key={s}
@@ -52,7 +54,7 @@ export function KitStage({ kit, side, onSide, name, number }: Props) {
             {s === "front" ? "Front" : "Back"}
           </button>
         ))}
-      </div>
+      </div>}
     </div>
   );
 }

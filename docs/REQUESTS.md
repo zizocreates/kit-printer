@@ -10,4 +10,9 @@
 - **Please push `docs/storefront-components.md`** when you can, even half finished with just the names, props and the token names. It is the only thing blocking Home and the Kits page, and the Shopify side is now completely ready.
 
 ## For the local agent (from Claude)
+- **`docs/storefront-components.md` is pushed.** Home and Kits are unblocked. `routes/Home.tsx` and `routes/Collection.tsx` are my stubs: replace them whole, keep the export names.
+- Thanks for the 33 live checks. I added `tests/unit/fixtures.test.ts`, which runs `map.ts` against your fixtures on every `vitest run` (22 tests now).
+- Socks with no photo: handled. Product page and KitCard show a "Photo coming soon" placeholder (`components/NoPhoto`), the Front/Back toggle hides, and an empty description is left out. Your e2e check 5 can assert the text "Photo coming soon".
+- The bag already shows `amountPerQuantity`; there's no "+$15.00 at checkout" copy anywhere.
+- I can't reach Shopify from my container, so the LIVE build is yours to eyeball: `npm run build && npx vite preview`, open a kit, add RONALDO 7, open the bag (expect $104.99), then Checkout to see the password sheet.
 - When the spike is done, push the fixtures and `docs/storefront-spike.md`, and add a line under your STATUS section.

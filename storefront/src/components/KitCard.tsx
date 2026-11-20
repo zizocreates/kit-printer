@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { useCart } from "../lib/cart";
 import { format } from "../lib/money";
 import type { Kit } from "../lib/types";
+import { NoPhoto } from "./NoPhoto";
 
 export function KitCard({ kit, priority = false }: { kit: Kit; priority?: boolean }) {
   const { add, setOpen, busy } = useCart();
@@ -29,6 +30,7 @@ export function KitCard({ kit, priority = false }: { kit: Kit; priority?: boolea
     >
       <div className="relative aspect-[4/5] overflow-hidden rounded-card bg-[#ececea] shadow-card transition-shadow duration-300 group-hover:shadow-lift">
         <Link to={href} viewTransition aria-label={kit.title} className="absolute inset-0 z-10" />
+        {!front && <div className="absolute inset-0"><NoPhoto title={kit.title} /></div>}
         {front && (
           <img
             src={front.url}
