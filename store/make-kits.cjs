@@ -1,116 +1,130 @@
-// Renders the demo store's kit photos: original designs for made-up clubs, in the "ghost mannequin" style kit
-// shops use (the shirt as if worn, with the inside of the back neck showing). Front and back, 1600 x 1600 PNG,
-// plus transparent cut-outs of each back for the homepage banner. No real club, brand or sponsor appears.
-// Run: node store/make-kits.cjs   (needs Playwright; uses store/fonts/oswald-latin-700-normal.woff2, SIL OFL)
+// Renders the demo store's kit photos in the style kit makers use for product shots: the shirt on an invisible
+// mannequin, front and back, on a light grey sweep. Original designs for made-up clubs: no real crest, kit maker
+// or sponsor appears. 1600 x 1600 PNG, plus transparent cut-outs of each back for the homepage banner.
+// Run: node store/make-kits.cjs   (needs Playwright; font: store/fonts/oswald-latin-700-normal.woff2, SIL OFL)
 const { chromium } = require("playwright");
 const fs = require("fs");
 const path = require("path");
 
 const KITS = [
-  { slug: "kanata-fc-home", initials: "K", body: "#c40d2b", trim: "#ffffff", panel: "#9e0a22", print: "#ffffff", pattern: "plain", back: { name: "SAKA", number: "7" } },
-  { slug: "kanata-fc-away", initials: "K", body: "#14284a", trim: "#d6a531", panel: "#0e1d38", print: "#d6a531", pattern: "sash", accent: "#d6a531", back: { name: "RICE", number: "41" } },
-  { slug: "rideau-united-home", initials: "RU", body: "#f4f4f1", trim: "#0b5d34", panel: "#0b5d34", print: "#0d2240", pattern: "stripes", accent: "#0b5d34", back: { name: "VAN DIJK", number: "4" } },
-  { slug: "capital-city-third", initials: "CC", body: "#108a8c", trim: "#0a3a3b", panel: "#0a3a3b", print: "#ffffff", pattern: "hoops", accent: "#0b4f50", crest: "#ffffff", crestText: "#0a3a3b", back: { name: "O'BRIEN", number: "10" } },
+  { slug: "kanata-fc-home", initials: "K", body: "#c8102e", trim: "#ffffff", rib: "#c8102e", print: "#ffffff", pattern: "plain", back: { name: "SALAH", number: "11" } },
+  { slug: "kanata-fc-away", initials: "K", body: "#1d4fa3", trim: "#ffffff", rib: "#0f2f6b", print: "#ffffff", pattern: "plain", back: { name: "RONALDO", number: "7" } },
+  { slug: "rideau-united-home", initials: "RU", body: "#f4a7c6", trim: "#111111", rib: "#111111", print: "#111111", pattern: "plain", back: { name: "MESSI", number: "10" } },
+  { slug: "capital-city-third", initials: "CC", body: "#108a8c", trim: "#0a3a3b", rib: "#ffffff", print: "#ffffff", pattern: "hoops", accent: "#0b4f50", crest: "#ffffff", crestText: "#0a3a3b", back: { name: "O'BRIEN", number: "10" } },
 ];
 
-// The shirt, worn: sloped shoulders, sleeves angled down, a slightly tapered body and a curved hem (1000 x 1000).
-const SHIRT = "M408 148 Q500 212 592 148 L742 186 Q800 205 838 262 L905 418 L792 478 L712 352 Q700 620 690 872 Q500 902 310 872 Q300 620 288 352 L208 478 L95 418 L162 262 Q200 205 258 186 Z";
-const SLEEVES = "M258 186 Q200 205 162 262 L95 418 L208 478 L288 352 Q282 270 258 186 Z M742 186 Q800 205 838 262 L905 418 L792 478 L712 352 Q718 270 742 186 Z";
+// The shirt as worn: square shoulders, short sleeves angled down, a straight body with a slight waist and a
+// gently curved hem. `neck` is how low the neckline sits at the centre: low on the front, high on the back.
+const shirt = (neck) => `M402 140 Q500 ${neck} 598 140 C650 150 700 158 732 176 L852 392 L764 448 L700 332 C694 420 690 520 690 600 C690 700 694 800 694 880 Q500 900 306 880 C306 800 310 700 310 600 C310 520 306 420 300 332 L236 448 L148 392 L268 176 C300 158 350 150 402 140 Z`;
+const SLEEVES = "M268 176 L148 392 L236 448 L300 332 C292 262 282 214 268 176 Z M732 176 L852 392 L764 448 L700 332 C708 262 718 214 732 176 Z";
+const CUFFS = "M148 392 L236 448 L244 433 L157 378 Z M852 392 L764 448 L756 433 L843 378 Z";
 const font = fs.readFileSync(path.join(__dirname, "fonts", "oswald-latin-700-normal.woff2")).toString("base64");
 
 function pattern(k, side) {
-  // Striped kits often keep the back plain so the name and number stay readable; this one does.
-  if (k.pattern === "stripes" && side === "back") return "";
-  if (k.pattern === "stripes") return Array.from({ length: 10 }, (_, i) => `<rect x="${118 + i * 82}" y="0" width="41" height="1000" fill="${k.accent}"/>`).join("");
   if (k.pattern === "hoops") return Array.from({ length: 7 }, (_, i) => `<rect x="0" y="${292 + i * 92}" width="1000" height="46" fill="${k.accent}"/>`).join("");
-  if (k.pattern === "sash" && side === "front") return `<polygon points="292,270 392,215 712,812 712,900 640,900" fill="${k.accent}"/>`;
   return "";
 }
 
 function svg(k, side, cut = false) {
   const front = side === "front";
-  const esc = (t) => t.replace(/&/g, "&amp;").replace(/'/g, "&#39;");
+  const outline = shirt(front ? 198 : 160);
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1600" height="1600">
   <defs>
     <style>@font-face{font-family:Kit;src:url(data:font/woff2;base64,${font}) format("woff2");font-weight:700}</style>
-    <clipPath id="shirt"><path d="${SHIRT}"/></clipPath>
+    <clipPath id="shirt"><path d="${outline}"/></clipPath>
+    <!-- the tonal pattern woven into modern match shirts, and the mesh of the fabric -->
+    <pattern id="jacquard" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate(32)">
+      <rect width="9" height="22" fill="#fff" opacity=".055"/>
+    </pattern>
+    <pattern id="mesh" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r=".9" fill="#000" opacity=".06"/></pattern>
     <filter id="cloth" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="4" result="n"/>
-      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .14 0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="7"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .10 0"/>
     </filter>
-    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9"/></filter>
-    <filter id="softer" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="22"/></filter>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="22" stdDeviation="22" flood-color="#1b1d1a" flood-opacity=".22"/></filter>
-    <filter id="emb" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#000" flood-opacity=".35"/></filter>
-    <radialGradient id="body" cx=".46" cy=".34" r=".7">
-      <stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"/></filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="26" stdDeviation="26" flood-color="#20221f" flood-opacity=".20"/></filter>
+    <filter id="stitch" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1.5" stdDeviation="1.2" flood-color="#000" flood-opacity=".4"/></filter>
+    <radialGradient id="chest" cx=".5" cy=".32" r=".62">
+      <stop offset="0" stop-color="#fff" stop-opacity=".18"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/>
     </radialGradient>
     <linearGradient id="sides" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#000" stop-opacity=".30"/><stop offset=".16" stop-color="#000" stop-opacity="0"/>
-      <stop offset=".84" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/>
+      <stop offset=".28" stop-color="#000" stop-opacity=".22"/><stop offset=".38" stop-color="#000" stop-opacity="0"/>
+      <stop offset=".62" stop-color="#000" stop-opacity="0"/><stop offset=".72" stop-color="#000" stop-opacity=".26"/>
     </linearGradient>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6f6f3"/><stop offset="1" stop-color="#e8e8e3"/></linearGradient>
+    <linearGradient id="hem" x1="0" y1="0" x2="0" y2="1"><stop offset=".75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient>
+    <radialGradient id="sweep" cx=".5" cy=".42" r=".8"><stop offset="0" stop-color="#fafaf8"/><stop offset="1" stop-color="#e6e6e2"/></radialGradient>
   </defs>
-  ${cut ? "" : `<rect width="1000" height="1000" fill="url(#bg)"/>`}
+  ${cut ? "" : `<rect width="1000" height="1000" fill="url(#sweep)"/>`}
   <g filter="url(#shadow)">
     <g clip-path="url(#shirt)">
       <rect width="1000" height="1000" fill="${k.body}"/>
       ${pattern(k, side)}
-      <!-- side panels and cuffs -->
-      <path d="M288 352 Q300 620 310 872 L342 874 Q330 620 318 360 Z M712 352 Q700 620 690 872 L658 874 Q670 620 682 360 Z" fill="${k.panel}" opacity=".9"/>
-      <path d="M95 418 L208 478 L218 458 L104 398 Z M905 418 L792 478 L782 458 L896 398 Z" fill="${k.trim}"/>
-      ${front ? "" : printBack(k, esc)}
-      <!-- light and shade -->
-      <rect width="1000" height="1000" fill="url(#body)"/>
+      <rect width="1000" height="1000" fill="url(#jacquard)"/>
+      <path d="${CUFFS}" fill="${k.trim}"/>
+      <path d="M148 392 L236 448 M852 392 L764 448" stroke="${k.rib}" stroke-width="5" opacity=".7"/>
+      ${front ? "" : printBack(k)}
+      <!-- light: the chest catches it, the sides and sleeves fall away, creases at the armpits and waist -->
+      <rect width="1000" height="1000" fill="url(#chest)"/>
       <rect width="1000" height="1000" fill="url(#sides)"/>
-      <path d="${SLEEVES}" fill="#000" opacity=".10"/>
+      <rect width="1000" height="1000" fill="url(#hem)"/>
+      <path d="${SLEEVES}" fill="#000" opacity=".09"/>
       <g filter="url(#soft)" fill="none" stroke-linecap="round">
-        <path d="M296 380 Q360 440 352 520" stroke="#000" stroke-opacity=".20" stroke-width="18"/>
-        <path d="M704 380 Q640 440 648 520" stroke="#000" stroke-opacity=".20" stroke-width="18"/>
-        <path d="M330 760 Q420 800 470 870" stroke="#000" stroke-opacity=".12" stroke-width="16"/>
-        <path d="M600 770 Q560 820 545 875" stroke="#000" stroke-opacity=".10" stroke-width="14"/>
-        <path d="M420 300 Q470 420 455 560" stroke="#fff" stroke-opacity=".10" stroke-width="30"/>
-        <path d="M150 300 Q190 360 196 440" stroke="#fff" stroke-opacity=".10" stroke-width="16"/>
+        <path d="M304 360 Q356 420 350 500" stroke="#000" stroke-opacity=".22" stroke-width="20"/>
+        <path d="M696 360 Q644 420 650 500" stroke="#000" stroke-opacity=".22" stroke-width="20"/>
+        <path d="M322 610 Q380 640 420 700" stroke="#000" stroke-opacity=".10" stroke-width="18"/>
+        <path d="M678 610 Q620 640 580 700" stroke="#000" stroke-opacity=".10" stroke-width="18"/>
+        <path d="M430 820 Q470 850 480 885" stroke="#000" stroke-opacity=".10" stroke-width="14"/>
+        <path d="M440 260 Q480 400 470 560" stroke="#fff" stroke-opacity=".12" stroke-width="34"/>
+        <path d="M196 250 Q220 300 226 380" stroke="#fff" stroke-opacity=".10" stroke-width="18"/>
       </g>
-      <path d="M288 352 Q282 270 258 186 M712 352 Q718 270 742 186" stroke="#000" stroke-opacity=".22" stroke-width="3" fill="none"/>
+      <path d="M300 332 Q292 262 268 176 M700 332 Q708 262 732 176" stroke="#000" stroke-opacity=".25" stroke-width="2.5" fill="none"/>
+      <path d="M300 332 Q292 262 268 176 M700 332 Q708 262 732 176" stroke="#fff" stroke-opacity=".12" stroke-width="2" fill="none" transform="translate(3 0)"/>
+      <rect width="1000" height="1000" fill="url(#mesh)"/>
       <rect width="1000" height="1000" filter="url(#cloth)"/>
     </g>
-    ${front ? frontNeck(k) : backNeck(k)}
+    ${front ? frontCollar(k) : backCollar(k)}
   </g>
-  ${front ? crest(k) : ""}
+  ${front ? badges(k) : ""}
 </svg>`;
 }
 
-function frontNeck(k) {
-  // The inside of the back neck shows above the front collar, as on a worn shirt.
-  return `<path d="M408 148 Q500 116 592 148 Q500 212 408 148 Z" fill="${shade(k.body, -0.45)}"/>
-    <path d="M412 147 Q500 121 588 147" fill="none" stroke="${k.trim}" stroke-width="9" opacity=".9"/>
-    <path d="M408 148 Q500 212 592 148" fill="none" stroke="${k.trim}" stroke-width="16" stroke-linecap="round"/>
-    <path d="M414 156 Q500 214 586 156" fill="none" stroke="#000" stroke-opacity=".18" stroke-width="3"/>`;
+// Front: a ribbed crew collar, with the inside of the back neck showing above it, as on a worn shirt.
+function frontCollar(k) {
+  return `<path d="M402 140 Q500 108 598 140 Q500 198 402 140 Z" fill="${shade(k.body, -0.5)}"/>
+    <rect x="484" y="128" width="32" height="12" rx="2" fill="#fff" opacity=".55"/>
+    <path d="M404 140 Q500 112 596 140" fill="none" stroke="${k.trim}" stroke-width="10"/>
+    <path d="M402 140 Q500 198 598 140" fill="none" stroke="${k.trim}" stroke-width="20" stroke-linejoin="round"/>
+    <path d="M405 139 Q500 194 595 139" fill="none" stroke="${k.rib}" stroke-width="3" opacity=".75"/>
+    <path d="M410 150 Q500 207 590 150" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="3"/>`;
 }
 
-function backNeck(k) {
-  return `<path d="M408 148 Q500 172 592 148" fill="none" stroke="${k.trim}" stroke-width="14" stroke-linecap="round"/>
-    <path d="M414 156 Q500 180 586 156" fill="none" stroke="#000" stroke-opacity=".15" stroke-width="3"/>`;
+// Back: the same collar, sitting on the shirt's high back neckline.
+function backCollar(k) {
+  return `<path d="M402 140 Q500 160 598 140" fill="none" stroke="${k.trim}" stroke-width="18"/>
+    <path d="M404 138 Q500 157 596 138" fill="none" stroke="${k.rib}" stroke-width="3" opacity=".75"/>
+    <path d="M408 150 Q500 170 592 150" fill="none" stroke="#000" stroke-opacity=".16" stroke-width="3"/>`;
 }
 
-function printBack(k, esc) {
-  const size = k.back.name.length > 6 ? 54 : 62;
+// Name and number, squeezed to fit between the side seams if the name is long (it never runs off the shirt).
+function printBack(k) {
+  const name = k.back.name.replace(/&/g, "&amp;").replace(/'/g, "&#39;");
+  const fit = k.back.name.length > 8 ? ` textLength="330" lengthAdjust="spacingAndGlyphs"` : "";
   return `<g font-family="Kit" font-weight="700" fill="${k.print}" text-anchor="middle">
-      <text x="500" y="300" font-size="${size}" letter-spacing="7">${esc(k.back.name)}</text>
+      <text x="500" y="292" font-size="60" letter-spacing="8"${fit}>${name}</text>
       <text x="500" y="640" font-size="300">${k.back.number}</text>
     </g>`;
 }
 
-function crest(k) {
+// A stitched club crest on the left chest and a small maker's mark on the right, both original.
+function badges(k) {
   const fill = k.crest || k.trim;
   const ink = k.crestText || k.body;
-  return `<g transform="translate(598 262)" filter="url(#emb)">
-      <path d="M0 0 H64 V40 Q64 78 32 94 Q0 78 0 40 Z" fill="${fill}"/>
-      <path d="M6 6 H58 V40 Q58 72 32 86 Q6 72 6 40 Z" fill="none" stroke="${ink}" stroke-width="2.5" opacity=".7"/>
-      <text x="32" y="${k.initials.length > 1 ? 52 : 56}" text-anchor="middle" font-family="Kit" font-weight="700" font-size="${k.initials.length > 1 ? 26 : 36}" fill="${ink}">${k.initials}</text>
+  return `<g transform="translate(596 250)" filter="url(#stitch)">
+      <path d="M0 0 H66 V42 Q66 80 33 96 Q0 80 0 42 Z" fill="${fill}"/>
+      <path d="M5 5 H61 V42 Q61 75 33 89 Q5 75 5 42 Z" fill="none" stroke="${ink}" stroke-width="2" stroke-dasharray="4 3" opacity=".7"/>
+      <text x="33" y="${k.initials.length > 1 ? 54 : 58}" text-anchor="middle" font-family="Kit" font-weight="700" font-size="${k.initials.length > 1 ? 26 : 38}" fill="${ink}">${k.initials}</text>
     </g>
-    <g transform="translate(372 272)" opacity=".85"><path d="M0 14 L14 0 L28 14 L14 28 Z" fill="${k.trim}"/></g>`;
+    <g transform="translate(366 262)" filter="url(#stitch)"><path d="M0 12 L12 0 L24 12 L12 24 Z" fill="${k.trim}"/></g>`;
 }
 
 // Darken (negative) or lighten a #rrggbb colour.

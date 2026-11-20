@@ -43,3 +43,10 @@ test("the preview takes the kit's own colours, falling back to the block's setti
   assert.match(block, /product\.metafields\.kit_printer\.print_colour\.value \| default: block\.settings\.ink_colour/);
   assert.match(block, /--kp-shirt: \{\{ shirt_colour \}\}; --kp-ink: \{\{ print_colour \}\}/);
 });
+
+test("a long name is squeezed to fit the shirt, and the preview prints in the bundled kit font", () => {
+  const js = read("extensions/kit-printer-block/assets/kit-printer.js");
+  assert.match(js, /fit\(nameOut, \d+\)/);
+  assert.match(js, /lengthAdjust", "spacingAndGlyphs"/);
+  assert.match(read("extensions/kit-printer-block/assets/kit-printer.css"), /url\("oswald-700\.woff2"\)/);
+});

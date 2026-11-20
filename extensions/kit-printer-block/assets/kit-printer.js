@@ -32,6 +32,7 @@ function setUp(box) {
     tidy(number, number.value.replace(/\D/g, ""));
     nameOut.textContent = name.value.trim();
     numberOut.textContent = number.value;
+    fit(nameOut, 330);
     show(checkPrint(name.value, number.value));
   };
   for (const input of [name, number]) {
@@ -62,6 +63,16 @@ function setUp(box) {
     error.hidden = !bad;
     name.setAttribute("aria-invalid", String(bad && result.field === "name"));
     number.setAttribute("aria-invalid", String(bad && result.field === "number"));
+  }
+}
+
+// Squeeze a long name to fit between the side seams, the way kit printers do, instead of running off the shirt.
+function fit(text, width) {
+  text.removeAttribute("textLength");
+  text.removeAttribute("lengthAdjust");
+  if (text.textContent && text.getComputedTextLength() > width) {
+    text.setAttribute("textLength", width);
+    text.setAttribute("lengthAdjust", "spacingAndGlyphs");
   }
 }
 

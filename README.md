@@ -1,4 +1,4 @@
-<p align="center"><img src="store/images/banner.png" alt="Three football kits with names and numbers printed on the back: SAKA 7, RICE 41, VAN DIJK 4" width="100%"></p>
+<p align="center"><img src="store/images/banner.png" alt="Three football kits with names and numbers printed on the back: RONALDO 7, MESSI 10, SALAH 11" width="100%"></p>
 
 # Kit Printer
 
@@ -10,7 +10,7 @@ That's because they live in the theme's JavaScript. Kit Printer doesn't. The pri
 
 ## Try it
 
-The demo store is **[kitsbyzizo.myshopify.com](https://kitsbyzizo.myshopify.com)**. It's a Shopify test store, so it asks for a password: **`teoway`**. Payments are fake.
+The demo store is **[kitsbyzizo.myshopify.com](https://kitsbyzizo.myshopify.com)**. It's a Shopify test store, so it asks for a password: **`futureshopifolk`**. Payments are fake.
 
 1. Open any kit and type a name and number. The shirt fills in as you type.
 2. Add it to the cart: the price goes up by $15.00 for the printing, on the shirt's own line.
@@ -54,7 +54,7 @@ The bugs are the interesting part, so I wrote them up in **[WHAT-BROKE.md](WHAT-
 Each test day has a report in [`reports/`](reports), and the steps behind them are in [`docs/`](docs).
 
 ```bash
-npm test   # 22 tests: the rules, both Functions, and the box
+npm test   # 23 tests: the rules, both Functions, and the box
 ```
 
 I also break the code on purpose (accept number 100, skip the "can this product be printed" check, charge a bad print) to make sure the tests notice. They did, every time.

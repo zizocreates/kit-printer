@@ -32,6 +32,6 @@
    - **About:** "Kits by Zizo is a demo store for Kit Printer, a Shopify app I built that adds names and numbers to football kits. The kits are original designs for made-up clubs."
 3. **Collection "Kits":** the four kits (tag `kits`).
 4. **Navigation:** Home, Kits. The footer gets the About line and nothing else of note.
-5. **Products:** from `products.csv`, each with its front then back image. Alt text: "Front of the <kit>" and "Back of the <kit>, printed with <NAME> <number>".
+5. **Products:** from `products.csv`, each with its front then back image. Alt text: "Front of the <kit>" and "Back of the <kit>, printed with <NAME> <number>" (Kanata FC home: SALAH 11; away: RONALDO 7; Rideau United: MESSI 10; Capital City: O'BRIEN 10).
 6. **The old "Home kit":** set to **Archived** (not deleted). **"Football socks":** rename to "Kanata FC Socks". Keep it at $14.99 with no print price: it's the "can't be printed" example.
 7. **Password page message:** "Kits by Zizo: the demo store for Kit Printer."
