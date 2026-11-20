@@ -155,8 +155,9 @@ function RulesPlayground() {
           This runs <code className="rounded bg-sweep px-1">checkPrint()</code> from <code className="rounded bg-sweep px-1">shared/print.js</code> in your browser{MODE === "demo" ? ", and in demo mode the bag runs both Functions here too" : ""}. Up to {NAME_MAX} letters; numbers 1 to 99.
         </p>
       </div>
-      <div className="rounded-card bg-sweep p-6">
-        <div className="grid grid-cols-[1fr_6rem] gap-3">
+      <div className="min-w-0 rounded-card bg-sweep p-6">
+        {/* minmax(0,1fr): a bare 1fr cannot shrink past the input&apos;s intrinsic width, which pushed this card 3px wider than a 360px screen. */}
+        <div className="grid grid-cols-[minmax(0,1fr)_6rem] gap-3">
           <label className="text-sm font-semibold">Name
             <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1.5 h-12 w-full rounded-field border border-ink/15 bg-paper px-3 font-normal outline-none focus:border-ink" />
           </label>
