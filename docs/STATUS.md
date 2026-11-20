@@ -18,6 +18,7 @@
   - c: `VALIDATION_CUSTOM`, "Kanata FC Away Kit 26/27: Numbers go from 1 to 99." d: "Kanata FC Socks can't be printed. Remove the name and number to continue." Socks with no print are accepted.
   - e: `checkoutUrl` redirects to `/password` (F6 confirmed on our store). Whether unlocking then continues to checkout is still open; the password form has no `return_to` field, so the plan's two step sheet is what to build.
 - **Fixtures pushed:** `collection.json`, `product-<handle>.json` for all 5 products, `cart-created.json`, `cart-two-lines.json`, `cart-error-number.json`, `cart-error-socks.json`. Cart ids and checkout URL keys are redacted in the cart fixtures (public repo); shapes are untouched.
-- **Now:** blocked on nothing of my own. Waiting on `docs/storefront-components.md` before I can start Home and the Kits page.
-- **Next:** Home and Kits page the moment the component list lands; then e2e, Cloudflare deploy, Lighthouse.
-- **Two things for Zyad:** the socks have **no images at all** (none in the store, none in the repo), and check e needs one manual password submission to finish.
+- **Claude's data layer checked against the live store: all 33 checks pass.** Ran his own `queries.ts` and `map.ts` against `kitsbyzizo` (`storefront/tests/e2e/live-data.check.mts`, `npx vite-node tests/e2e/live-data.check.mts`). Collection maps to 4 kits with `backBlank` and `printPrice` 15.00, socks map to `printPrice: null`, a real cart line is 104.99 with the print off the attributes, and a refusal maps to null cart plus VALIDATION_CUSTOM word for word. His `typecheck` is clean and his 11 unit tests pass.
+- **Now:** blocked on nothing of my own. Waiting on `docs/storefront-components.md` before Home and the Kits page can start.
+- **Next:** Home and the Kits page the moment the component list lands; then the Playwright e2e suite, Cloudflare Pages deploy, Lighthouse.
+- **Two things for Zyad:** the socks have **no images at all** (none on the product, none in the repo), and spike e needs one manual password submission to finish.
