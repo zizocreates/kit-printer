@@ -193,7 +193,7 @@ function MoreKits({ not }: { not: string }) {
     <section className="mx-auto max-w-7xl px-4 pb-28 sm:px-6 lg:pb-8">
       <h2 className="display mb-6 text-3xl">More kits</h2>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {others.map((k) => <KitCard key={k.handle} kit={k} />)}
+        {others.map((k) => <KitCard key={k.handle} kit={k} level={3} />)}
       </div>
     </section>
   );

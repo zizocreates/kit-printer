@@ -7,7 +7,9 @@ import { format } from "../lib/money";
 import type { Kit } from "../lib/types";
 import { NoPhoto } from "./NoPhoto";
 
-export function KitCard({ kit, priority = false }: { kit: Kit; priority?: boolean }) {
+/** `level`: the heading level of the kit title. 2 under a page h1 (the Kits page), 3 under a section h2 (Home). */
+export function KitCard({ kit, priority = false, level = 2 }: { kit: Kit; priority?: boolean; level?: 2 | 3 }) {
+  const H = level === 2 ? "h2" : "h3";
   const { add, setOpen, busy } = useCart();
   const [added, setAdded] = useState<string | null>(null);
   const front = kit.images[0];
@@ -75,11 +77,11 @@ export function KitCard({ kit, priority = false }: { kit: Kit; priority?: boolea
       <div className="mt-4 flex items-start justify-between gap-3 px-1">
         <div>
           <p className="eyebrow text-[0.65rem]">{kit.vendor}</p>
-          <h3 className="mt-1 font-semibold leading-snug">
+          <H className="mt-1 font-semibold leading-snug">
             <Link to={href} viewTransition className="hover:underline">
               {kit.title}
             </Link>
-          </h3>
+          </H>
         </div>
         <p className="shrink-0 text-sm font-semibold tabular-nums">
           <span className="font-normal text-muted">From </span>{format(kit.priceRange.min)}

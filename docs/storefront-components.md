@@ -18,7 +18,7 @@ Types are in `lib/types.ts` (the contract). `Kit.images[0]` is the front, `[1]` 
 ## Components
 | Component | Props | Notes |
 |---|---|---|
-| `KitCard` (`components/KitCard`) | `kit`, `priority?` | The grid card: lifts on hover, turns to the printed back, sizes slide up for a one-tap add (pointer devices only). Links to `/kits/:handle` with a view transition. Use `priority` for the first row. Aspect 4:5. |
+| `KitCard` (`components/KitCard`) | `kit`, `priority?`, `level?` (2 or 3) | The grid card: lifts on hover, turns to the printed back, sizes slide up for a one-tap add (pointer devices only). Links to `/kits/:handle` with a view transition. Use `priority` for the first row. Aspect 4:5. Pass `level={3}` when the grid sits under a section `h2` (Home), keep the default 2 under the page `h1` (Kits); axe flags a skipped level. |
 | `Button` (`components/ui/Button`) | `variant` solid/accent/outline/ghost, `size` md/lg, plus `to` (router link), `href` (a) or button props | `buttonClass()` gives the classes if you need them on something else. |
 | `Logo` | `className?` | The wordmark. |
 | `PrintOverlay` | `name`, `number`, `ink?`, `animate?` | The name and number at the theme block's exact coordinates, in a 1000-unit SVG. Put it over a square `backBlank` image with `absolute inset-0`. Good for a hero. |
