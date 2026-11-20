@@ -1,5 +1,5 @@
 // The app shell: router, layout, smooth scroll on desktop only, and one MotionConfig that honours reduced motion.
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { createBrowserRouter, Outlet, RouterProvider, useLocation, useNavigationType } from "react-router";
 import { MotionConfig } from "motion/react";
 import { CartProvider } from "./lib/cart";
@@ -9,9 +9,10 @@ import { Footer } from "./components/Footer";
 import { CartDrawer } from "./components/CartDrawer";
 import { Home } from "./routes/Home";
 import { Collection } from "./routes/Collection";
-import { Product } from "./routes/Product";
-import { HowItsBuilt } from "./routes/HowItsBuilt";
-import { NotFound } from "./routes/NotFound";
+// Pages past the first load arrive as their own small files, so the home page ships less JavaScript.
+const Product = lazy(() => import("./routes/Product").then((m) => ({ default: m.Product })));
+const HowItsBuilt = lazy(() => import("./routes/HowItsBuilt").then((m) => ({ default: m.HowItsBuilt })));
+const NotFound = lazy(() => import("./routes/NotFound").then((m) => ({ default: m.NotFound })));
 
 function useSmoothScroll() {
   useEffect(() => {
@@ -50,7 +51,9 @@ function Layout() {
         <AnnouncementBar />
         <Header />
         <main id="main" className="min-h-[70vh]">
-          <Outlet />
+          <Suspense fallback={<div className="min-h-[70vh]" aria-busy="true" />}>
+            <Outlet />
+          </Suspense>
         </main>
         <Footer />
         <CartDrawer />

@@ -55,6 +55,25 @@ describe("product page", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
+  it("the bag offers the socks until they're in it, and they add without a print", async () => {
+    open("/kits/kanata-fc-home-kit");
+    await screen.findByRole("heading", { level: 1 });
+    fireEvent.click(screen.getByRole("radio", { name: "S" }));
+    fireEvent.click(screen.getAllByRole("button", { name: /Add to bag/ })[0]);
+    const bag = await screen.findByRole("dialog", { name: "Your bag" });
+    fireEvent.click(await within(bag).findByRole("button", { name: "Add Kanata FC Socks, size M" }));
+    await waitFor(() => expect(within(bag).queryByText("Complete the kit")).toBeNull());
+    expect(within(bag).getByText("$104.98")).toBeTruthy(); // 89.99 + 14.99, no print on either
+  });
+
+  it("the size guide opens as a dialog", async () => {
+    open("/kits/kanata-fc-home-kit");
+    await screen.findByRole("heading", { level: 1 });
+    fireEvent.click(screen.getByRole("button", { name: "Size guide" }));
+    const guide = await screen.findByRole("dialog", { name: "Size guide" });
+    expect(within(guide).getByRole("rowheader", { name: "XL" })).toBeTruthy();
+  });
+
   it("an unknown kit is a 404, not a crash", async () => {
     open("/kits/no-such-kit");
     expect(await screen.findByRole("heading", { name: "Off the pitch" })).toBeTruthy();

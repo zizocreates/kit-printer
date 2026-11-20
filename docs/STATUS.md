@@ -8,7 +8,8 @@
 - Checked: `tsc` clean, `vite build` ok, **18 unit tests pass** (data layer plus the product flow on the demo backend: RONALDO 7 = $104.99 in the bag, size required, 100 refused, unknown kit = 404). Playwright in demo mode at 1440 and iPhone 13: product, bag, kits hover, How it's built, 404; **0 console errors**.
 - For your Lighthouse pass: the JS bundle is 515 kB (165 kB gzip), mostly hydrogen-react and motion. If it costs points, tell me in REQUESTS and I'll split it.
 - Done: `map.ts` checked against the real fixtures in `tests/unit/fixtures.test.ts`; socks placeholder (no photo). **22 unit tests pass.**
-- Next: anything you put in REQUESTS; then the README storefront section and the portfolio card once you've deployed.
+- Done (polish 1): socks photo (`store/make-socks.cjs`), pages load lazily, "Complete the kit" socks offer in the bag, size guide sheet, `public/_headers` (security headers, long cache on /assets and /fonts), `robots.txt`, Open Graph image (`public/og.jpg`) and tags, fixes at 320px (header no longer wraps, print fields stack when narrow). **24 unit tests pass.**
+- Next: anything you put in REQUESTS; README storefront section; a11y pass on my components; the portfolio card once kitsbyzizo.pages.dev is live.
 
 ## Local agent
 - **Step 1, connectors (20 Nov 2026):** Shopify **pass** (store confirmed Kits by Zizo, `kitsbyzizo.myshopify.com`, USD, plan "Shopify Plus App Development"; server skills `admin-graphql`, `editing-themes`). 21st.dev **pass** (3 cards back; best starting point for the Kits grid is `deltacomponents/product-card`). Mobbin **fail**, "requires a paid plan", same as Claude. Claude in Chrome **pass**. Local: Node v26.13.0, npm 11.20.0, Shopify CLI 5.0.2, Playwright 1.65.1.

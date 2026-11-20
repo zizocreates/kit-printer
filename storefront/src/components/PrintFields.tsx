@@ -25,8 +25,8 @@ export function PrintFields({ name, number, onName, onNumber, onFocusChange, res
   const focus = { onFocus: () => onFocusChange?.(true), onBlur: () => onFocusChange?.(false) };
 
   return (
-    <div className="space-y-2">
-      <div className="grid grid-cols-[1fr_6.5rem] gap-3">
+    <div className="@container space-y-2">
+      <div className="grid grid-cols-1 gap-3 @xs:grid-cols-[1fr_6.5rem]">
         <div className="space-y-1.5">
           <label htmlFor={`${id}-name`} className="text-sm font-semibold">Name</label>
           <input

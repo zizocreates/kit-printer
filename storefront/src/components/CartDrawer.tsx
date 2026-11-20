@@ -1,6 +1,7 @@
 // The bag. Prices here are what Shopify's Cart Transform set (a printed line costs kit + print), and any refusal
 // is the Cart Validation's own words.
 import { useState } from "react";
+import { useKit } from "../lib/useData";
 import { Link } from "react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { useCart } from "../lib/cart";
@@ -47,6 +48,8 @@ export function CartDrawer() {
             </AnimatePresence>
           </ul>
         )}
+
+        {lines.length > 0 && <SocksOffer />}
 
         {lines.length > 0 && cart && (
           <div className="border-t border-line bg-sweep/60 px-6 py-5">
@@ -97,6 +100,31 @@ function Line({ line, onNavigate }: { line: CartLine; onNavigate: () => void }) 
           </button>
         </div>
         {line.quantity > 1 && <p className="mt-2 text-xs text-muted tabular-nums">{format(line.unitPrice)} each</p>}
+      </div>
+    </div>
+  );
+}
+
+// Big club shops finish the bag with "complete the kit". Shown only while the bag has no socks in it.
+function SocksOffer() {
+  const { cart, add, busy } = useCart();
+  const { data: socks } = useKit("football-socks");
+  if (!socks || cart?.lines.some((l) => l.kit.handle === socks.handle)) return null;
+  const img = socks.images[0];
+  return (
+    <div className="mx-6 mb-4 flex items-center gap-3 rounded-[16px] border border-line p-3">
+      <div className="size-14 shrink-0 overflow-hidden rounded-[10px] bg-[#ececea]">{img && <img src={img.url} alt="" className="size-full object-cover" />}</div>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-semibold">Complete the kit</p>
+        <p className="truncate text-xs text-muted">{socks.title} · {format(socks.priceRange.min)}</p>
+        <div className="mt-2 flex gap-1.5" role="group" aria-label={`Add ${socks.title} in size`}>
+          {socks.variants.map((v) => (
+            <button key={v.id} type="button" disabled={busy || !v.availableForSale} onClick={() => add(v.id, 1, null)} aria-label={`Add ${socks.title}, size ${v.size}`}
+              className="h-8 min-w-9 rounded-pill border border-ink/15 px-2 text-xs font-semibold transition-colors hover:border-ink hover:bg-ink hover:text-paper disabled:opacity-40">
+              {v.size}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

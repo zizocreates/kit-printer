@@ -14,6 +14,7 @@ import { SizePills } from "../components/SizePills";
 import { PersonalizePills } from "../components/PersonalizePills";
 import { PrintFields } from "../components/PrintFields";
 import { KitCard } from "../components/KitCard";
+import { SizeGuide } from "../components/SizeGuide";
 import { Button } from "../components/ui/Button";
 import { NotFound } from "./NotFound";
 
@@ -95,8 +96,8 @@ function ProductView({ kit }: { kit: Kit }) {
 
           <div className="space-y-3">
             <div className="flex items-baseline justify-between">
-              <h2 className="text-sm font-semibold">Size</h2>
-              {needSize && <p role="alert" className="text-sm font-medium text-error">Pick a size first.</p>}
+              <h2 className="text-sm font-semibold">Size {needSize && <span role="alert" className="ml-2 font-medium text-error">Pick a size first.</span>}</h2>
+              <SizeGuide />
             </div>
             <SizePills variants={kit.variants} value={variantId} onChange={setVariantId} error={needSize} />
           </div>

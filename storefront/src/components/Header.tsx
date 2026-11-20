@@ -12,9 +12,9 @@ export function Header() {
   const count = cart?.totalQuantity ?? 0;
   return (
     <header className="sticky top-0 z-40 border-b border-line/80 bg-paper/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link to="/" aria-label="Kits by Zizo, home"><Logo /></Link>
-        <nav aria-label="Main" className="flex items-center gap-5 sm:gap-8">
+        <nav aria-label="Main" className="flex items-center gap-4 whitespace-nowrap sm:gap-8">
           <NavLink to="/kits" className={nav}>Kits</NavLink>
           <NavLink to="/how-its-built" className={nav}>
             <span className="hidden sm:inline">How it's built</span>
