@@ -93,6 +93,36 @@ describe("product page", () => {
   });
 });
 
+describe("ideas from club stores", () => {
+  it("a popular print fills both boxes in one tap and shows on the shirt", async () => {
+    open("/kits/rideau-united-home-kit");
+    await screen.findByRole("heading", { level: 1 });
+    fireEvent.click(screen.getByRole("radio", { name: /Personalize/ }));
+    fireEvent.click(screen.getByRole("button", { name: "MESSI 10" }));
+    expect((screen.getByLabelText("Name") as HTMLInputElement).value).toBe("MESSI");
+    expect((screen.getByLabelText("Number") as HTMLInputElement).value).toBe("10");
+    expect(screen.getAllByTestId("print-number")[0].textContent).toBe("10");
+    expect(screen.getByRole("button", { name: "MESSI 10" }).getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("the kit page offers the socks, and says personalised kits can't be returned", async () => {
+    open("/kits/kanata-fc-away-kit");
+    await screen.findByRole("heading", { level: 1 });
+    const offer = await screen.findByRole("region", { name: "Complete the kit" });
+    expect(within(offer).getByRole("button", { name: "Add Kanata FC Socks to the bag" })).toBeTruthy();
+    expect(screen.getByText(/can only be returned if it's faulty/)).toBeTruthy();
+  });
+
+  it("the theme-only 'add your name below' line is left out of the real description", async () => {
+    const { forThisSite } = await import("../../src/routes/Product");
+    const real = (await import("../../src/fixtures/product-kanata-fc-away-kit.json")).default.data.product.descriptionHtml;
+    const out = forThisSite(real);
+    expect(out).not.toMatch(/below/);
+    expect(out).toContain("Royal blue with white trim.");
+    expect(out).toContain("made-up club");
+  });
+});
+
 describe("pieces", () => {
   it("PrintFields shows counters and the error only when asked", () => {
     const r = check("VAN DIJK", "4");

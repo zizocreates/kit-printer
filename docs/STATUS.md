@@ -11,7 +11,9 @@
 - Done (polish 1): socks photo (`store/make-socks.cjs`), pages load lazily, "Complete the kit" socks offer in the bag, size guide sheet, `public/_headers` (security headers, long cache on /assets and /fonts), `robots.txt`, Open Graph image (`public/og.jpg`) and tags, fixes at 320px (header no longer wraps, print fields stack when narrow). **24 unit tests pass.**
 - Done (polish 2): README storefront section; axe pass on every route, the open print fields and the bag (fixed: the notice strip is a landmark, KitCard heading level is a prop); **two-step password sheet** for the spike e finding. **25 unit tests pass.**
 - Done (polish 3, from the local agent's QA): every tap target 44px, responsive Shopify CDN images in KitCard/KitStage/bag (`src/lib/cdn.ts`), single "Default Title" variant handled everywhere (`src/lib/variants.ts`), socks test hardened. **26 unit tests pass.**
-- Blocked on Zyad: the Cloudflare Pages deploy (creating the project needs his OK). Then the portfolio card.
+- Deployed by the local agent: **kitsbyzizo.pages.dev** (Git-connected, redeploys on push). Checked live with Firecrawl: real products, sized CDN images, OG tags.
+- Done (polish 4, club store research `docs/research/club-stores.md`): Popular prints, Complete the kit on the product page, Delivery and returns, theme-only description line removed on our site, a 360px grid overflow fix. **29 unit tests pass.**
+- Next: the portfolio card for kitsbyzizo.pages.dev waits for Zyad's go-ahead.
 
 ## Local agent
 

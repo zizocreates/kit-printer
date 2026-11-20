@@ -17,6 +17,8 @@ import { PersonalizePills } from "../components/PersonalizePills";
 import { PrintFields } from "../components/PrintFields";
 import { KitCard } from "../components/KitCard";
 import { SizeGuide } from "../components/SizeGuide";
+import { PopularPrints } from "../components/PopularPrints";
+import { CompleteTheKit } from "../components/CompleteTheKit";
 import { Button } from "../components/ui/Button";
 import { NotFound } from "./NotFound";
 
@@ -83,7 +85,7 @@ function ProductView({ kit }: { kit: Kit }) {
           <KitStage kit={kit} side={side} onSide={setSide} name={printing ? result.name : ""} number={printing ? result.number : ""} />
         </div>
 
-        <div className="space-y-7">
+        <div className="min-w-0 space-y-7">
           <header>
             <p className="eyebrow">{kit.vendor}</p>
             <h1 className="display mt-3 text-4xl sm:text-5xl">{kit.title}</h1>
@@ -112,7 +114,10 @@ function ProductView({ kit }: { kit: Kit }) {
               <AnimatePresence initial={false}>
                 {personal && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }} className="overflow-hidden">
-                    <div className="flex gap-4 pt-1">
+                    <div className="pb-3 pt-1">
+                      <PopularPrints current={`${result.name} ${result.number}`} onPick={(n, num) => { setName(n); setNumber(num); setSide("back"); }} />
+                    </div>
+                    <div className="flex gap-4">
                       {kit.backBlank && (
                         <div className="relative mt-7 size-24 shrink-0 overflow-hidden rounded-[14px] bg-[#ececea] lg:hidden" aria-hidden>
                           <img src={sized(kit.backBlank.url, 200)} alt="" className="size-full object-cover" />
@@ -145,25 +150,37 @@ function ProductView({ kit }: { kit: Kit }) {
             <CartErrors errors={errors} />
           </div>
 
+          {kit.printPrice && <CompleteTheKit not={kit.handle} />}
+
           <ul className="grid grid-cols-3 gap-3 text-center text-xs text-muted">
             <li className="rounded-field bg-sweep px-2 py-3"><span className="block text-base">✓</span>Checked as you type</li>
             <li className="rounded-field bg-sweep px-2 py-3"><span className="block text-base">$</span>Priced by Shopify</li>
             <li className="rounded-field bg-sweep px-2 py-3"><span className="block text-base">↺</span>Same rules at checkout</li>
           </ul>
 
-          {kit.descriptionHtml.trim() && <details className="group border-t border-line pt-2" open>
+          {forThisSite(kit.descriptionHtml).trim() && <details className="group border-t border-line pt-2" open>
             <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-sm font-semibold">
               Details <span className="transition-transform group-open:rotate-45">+</span>
             </summary>
-            <div className="prose-sm mt-3 space-y-2 text-sm leading-relaxed text-muted" dangerouslySetInnerHTML={{ __html: kit.descriptionHtml }} />
+            <div className="prose-sm mt-3 space-y-2 text-sm leading-relaxed text-muted" dangerouslySetInnerHTML={{ __html: forThisSite(kit.descriptionHtml) }} />
           </details>}
           <details className="group border-t border-line pt-2">
             <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-sm font-semibold">
               Print rules <span className="transition-transform group-open:rotate-45">+</span>
             </summary>
             <p className="mt-3 text-sm leading-relaxed text-muted">
-              Up to 12 letters, plus spaces, hyphens, apostrophes and full stops (VAN DIJK, O'BRIEN). Numbers 1 to 99. These are the same rules Shopify's checkout runs, from one shared file, so nothing you're shown here can be refused later.
+              Up to 12 letters, plus spaces, hyphens, apostrophes and full stops (VAN DIJK, O'BRIEN). Numbers 1 to 99. Names are always printed in capitals, so a stray lowercase letter can never reach the shirt. These are the same rules Shopify's checkout runs, from one shared file, so nothing you're shown here can be refused later.
             </p>
+          </details>
+          <details className="group border-t border-line pt-2">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-sm font-semibold">
+              Delivery and returns <span className="transition-transform group-open:rotate-45">+</span>
+            </summary>
+            <div className="mt-3 space-y-2 text-sm leading-relaxed text-muted">
+              <p>Plain kits ship in 2 to 4 working days. Printed kits are made to order and ship in 4 to 6.</p>
+              <p>Plain kits can be returned within 30 days. A printed kit is made for you, so it can only be returned if it's faulty or printed wrong.</p>
+              <p className="text-xs">This is a demo store: payments are fake and nothing ships.</p>
+            </div>
           </details>
         </div>
       </section>
@@ -224,4 +241,10 @@ function LoadError() {
       <Button className="mt-6" onClick={() => location.reload()}>Try again</Button>
     </div>
   );
+}
+
+// The store's descriptions also serve the Online Store theme, where the name box sits below them. That one
+// paragraph ("Add your name and number below...") doesn't fit this page, so it's left out here only.
+export function forThisSite(html: string) {
+  return html.replace(/<p>\s*<strong>\s*Add your name and number\s*<\/strong>[\s\S]*?<\/p>/i, "");
 }

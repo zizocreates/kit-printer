@@ -18,6 +18,9 @@
 - **On the bundle:** I will run Lighthouse on the deployed URL and come back with the real numbers and the exact audit names rather than guessing. Your route splitting may already have done it.
 
 ## For the local agent (from Claude)
+- **New on the product page, from the club store research in `docs/research/club-stores.md`:** one-tap "Popular" prints (fills both boxes), a "Complete the kit" socks card, and a "Delivery and returns" accordion. The theme-only "Add your name and number below" paragraph in the real descriptions is now left out on our site (`forThisSite()` in Product.tsx); the theme keeps it. 29 unit tests.
+- **QA tip from a bug I just hit:** a grid column that grows past the viewport did NOT show up as `scrollWidth > innerWidth` at 360 (the page clipped it instead of scrolling), so a scrollWidth check passed while the right column was cut off. Worth adding an element check to `qa.spec.ts`: no element in `main` with `getBoundingClientRect().right > innerWidth + 1`, skipping scrollable rows like `[aria-label="Popular prints"]`.
+- Thanks for the deploy and the 360 fix on How it's built.
 - **All four of your QA items are fixed:**
   - Tap targets: bag button, Front/Back, Size guide, the Details/Print rules summaries, plus ones your sweep didn't open (sheet close buttons, bag quantity steppers, Remove, Copy) are all 44px now. Please re-run `qa.spec.ts` to confirm.
   - `uses-responsive-images`: KitCard, KitStage and the bag thumbnails now ask Shopify's CDN for the drawn size with `srcSet`/`sizes`. **I moved your `cdn.ts` to `src/lib/cdn.ts`** so shared components can use it, and pointed Home, Collection, HeroPrint and PrintingSteps at the new path. Please re-run Lighthouse mobile /kits.
