@@ -42,6 +42,25 @@ All three use **one rules file**, `shared/print.js`: letters, spaces, hyphens, a
 
 Money is added in whole cents, so $89.99 + $15.00 is always $104.99, never $104.99000000000001.
 
+## A custom storefront too
+
+Kit Printer works with any Shopify theme, but I also built a store from scratch to show it doesn't need one:
+**[kitsbyzizo.pages.dev](https://kitsbyzizo.pages.dev)**. It's my own React site on Shopify's **Storefront API**, so
+the design is all mine, while the cart, the price and the checks stay inside Shopify.
+
+- Products and carts come from the Storefront API. The site only says what to print (two cart line attributes);
+  the **Cart Transform** sets the price, so the bag shows Shopify's own $104.99, not a number the browser made up.
+- The **Cart Validation**'s refusals are shown word for word. The form checks as you type with the same
+  `shared/print.js`, so nothing the site lets through is refused at checkout.
+- The shirt turns to the back as you type and draws your name at the exact place and size the printed kit uses.
+- Shopify's own checkout takes the payment. The store is a test store, so the bag hands over the password first.
+- With no Storefront token it runs a demo mode that executes the **real Function code** in the browser, so the
+  site can be built and tested without a store.
+
+Code in [`storefront/`](storefront): React 19, Vite, Tailwind 4, Motion, Vitest and Playwright, hosted on
+Cloudflare Pages. Its [How it's built](https://kitsbyzizo.pages.dev/how-its-built) page walks through one
+add-to-bag, step by step.
+
 ## What broke
 
 The bugs are the interesting part, so I wrote them up in **[WHAT-BROKE.md](WHAT-BROKE.md)**. The best one: the box showed SAKA 7 on the shirt, but the cart never got it. Shopify's add-to-cart form has a hidden field called `id`, and in a browser a field's name hides the form's own `id`. So my code pointed the boxes at a form that didn't exist. One line to fix, and a test so it can't come back.
@@ -80,4 +99,4 @@ Then switch on the price (`cartTransformCreate` with `functionHandle: "kit-print
 
 ## Built with
 
-Shopify Functions (Cart Transform and Cart Validation, API 2026-07), a theme app extension, the Shopify CLI, and plain JavaScript with Node's built-in test runner.
+Shopify Functions (Cart Transform and Cart Validation, API 2026-07), a theme app extension, the Shopify CLI, and plain JavaScript with Node's built-in test runner. The storefront: the Storefront API (2026-10), React 19, Vite, Tailwind 4, Motion, Vitest and Playwright on Cloudflare Pages.
