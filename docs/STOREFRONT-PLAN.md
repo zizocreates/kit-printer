@@ -1,6 +1,10 @@
 # Kits by Zizo: the custom storefront (plan)
 
-A fully custom store, our own code end to end, built on Shopify's **Storefront API**, with checkout still guarded by Kit Printer's **Functions**. Written 20 November 2026 from Shopify's docs, Baymard's usability research and real sports stores (sources at the bottom). Two agents build it in parallel: **Agent D (data, Opus)** and **Agent U (UI, Fable)**. Read this whole file before writing code.
+A fully custom store, our own code end to end, built on Shopify's **Storefront API**, with checkout still guarded by Kit Printer's **Functions**. Written 20 November 2026 from Shopify's docs, Baymard's usability research and real sports stores (sources at the bottom). Two agents build it in parallel:
+- **Claude (cloud)** writes all the storefront code (data layer, UI, motion, unit tests) and pushes it. Its container can't reach Shopify.
+- **The local agent** on Zyad's computer does everything that needs his machine or logins: the Shopify admin, the token, the spike against the real store, e2e on the live store, and the deploy.
+
+Read this whole file before starting.
 
 ## Why this is the strongest version of Kit Printer
 - **Our site** reads products and builds carts through the Storefront API (GraphQL).
@@ -46,16 +50,19 @@ storefront/
   package.json, vite.config.ts, index.html, tailwind (v4: css-first), .env.example
   public/_redirects                 # "/* /index.html 200" for SPA routes on Cloudflare
   src/
-    lib/        AGENT D owns: shopify.ts (client), queries.ts, cart.ts (store + hooks), types.ts, print.ts (re-exports ../../shared/print.js), errors.ts
-    fixtures/   AGENT D owns: products.json, collection.json, cart-*.json (real API responses, captured in Phase 0)
-    components/ AGENT U owns
-    routes/     AGENT U owns: Home.tsx, Collection.tsx, Product.tsx, Cart drawer, NotFound.tsx, HowItsBuilt.tsx
-    styles/     AGENT U owns: tokens.css, globals.css
-  tests/        e2e/ (D), unit/ (D for lib, U for components)
+    lib/        Claude: shopify.ts (client), queries.ts, cart.ts (store + hooks), types.ts, print.ts (re-exports ../../shared/print.js), errors.ts
+    fixtures/   LOCAL AGENT: collection.json, product-*.json, cart-*.json (real API responses, captured in Phase 0)
+    components/ Claude
+    routes/     Claude: Home.tsx, Collection.tsx, Product.tsx, Cart drawer, NotFound.tsx, HowItsBuilt.tsx
+    styles/     Claude: tokens.css, globals.css
+  tests/        unit/ (Claude), e2e/ (local agent)
 ```
-Branches: `storefront-data` (D) and `storefront-ui` (U), both from `main`. U builds against `src/fixtures` until D's `lib` lands. Merge order: D first, then U. Folder ownership keeps the merge clean. Push after every meaningful piece.
+Branch: **`storefront`**, from `main`.
+- Claude owns everything under `storefront/` except `src/fixtures/` and `tests/e2e/`, which the local agent owns.
+- The local agent pushes real API responses to `src/fixtures/` (Phase 0). Claude codes against them and against the documented shapes.
+- Merge to `main` only after the live e2e passes.
 
-## The contract (Agent D writes `src/lib/types.ts` exactly like this FIRST and pushes it)
+## The contract (`src/lib/types.ts`, written by Claude first)
 ```ts
 export type Money = { amount: string; currencyCode: string };
 export type Img = { url: string; altText: string | null; width: number; height: number };
@@ -89,7 +96,7 @@ API surface (`src/lib`), all async, all typed:
   - The cart id persists in `localStorage` (wrapped in try/catch).
   - `checkout()` re-fetches `checkoutUrl` (F4), then follows "Checkout and the password" below.
 
-## Phase 0: the spike (Agent D, about 30 minutes, BEFORE anything else)
+## Phase 0: the spike (local agent, about 30 minutes, while Claude scaffolds)
 Prove F1 to F6 on our store, with curl or a small script, and record the real responses in `docs/storefront-spike.md` and `src/fixtures/`. Setup first:
 1. Admin: install the **Headless** channel, Create storefront, copy the **public** token into `storefront/.env.local` (gitignored). Never commit the private token.
 2. Publish the 4 kits and the socks to the Headless channel (F10).
@@ -102,7 +109,7 @@ Then check:
 - **d.** Socks with a print returns "can't be printed".
 - **e.** Open `checkoutUrl` in a fresh browser. Record exactly what happens: password page, then does it continue to checkout or land on the home page? (F6)
 
-If a or b fails, stop and report. Everything else depends on them.
+If a or b fails, stop and report: everything else depends on them. Push `docs/storefront-spike.md` and the fixtures to the `storefront` branch as soon as they exist.
 
 ## Checkout and the password (decided now, adjusted by spike e)
 Dev stores can't drop their password (F6). The cart drawer's Checkout button opens a small sheet first:
@@ -110,7 +117,7 @@ Dev stores can't drop their password (F6). The cart drawer's Checkout button ope
 - Then **Continue to checkout** opens `checkoutUrl`.
 - If spike e shows the password page dumps you on the store's home page, the sheet does two steps instead: **1. Unlock the store** (opens `/password` in a new tab), then **2. Continue to checkout** (the password cookie then lets `checkoutUrl` through). Test both in e2e.
 
-## Design (backed by the research; Agent U)
+## Design (backed by the research; Claude builds it)
 **Look:** white and near-black (`#101010`), kit red `#c8102e` as the single accent, Oswald capitals for headings and prints, Inter for text, generous white space, and the kit renders on a soft `#f2f2ef` sweep. Rounded cards (14 to 20 px radius), as on Real Madrid's shop.
 
 **Pages:**
@@ -157,7 +164,7 @@ Dev stores can't drop their password (F6). The cart drawer's Checkout button ope
 - contrast AA;
 - images have alt text from Shopify.
 
-## Quality bar (both agents; Agent D runs the e2e)
+## Quality bar (Claude writes the unit tests; the local agent writes and runs the e2e)
 - **Unit:** the cart mapping (attributes in, `Print` out, money in cents), the print rules (reuse `shared/print.js`, don't copy them), and the flip component's states.
 - **E2E (Playwright, live store, fixed viewport, `--trace off`):**
   1. the collection shows 4 kits;
@@ -170,10 +177,10 @@ Dev stores can't drop their password (F6). The cart drawer's Checkout button ope
 - No console errors; no horizontal scroll at 360 px.
 - `npm test` at the repo root still passes (the Functions are untouched).
 
-## Deploy (Agent D)
+## Deploy (local agent)
 - **Cloudflare Pages project `kitsbyzizo`**, which gives `https://kitsbyzizo.pages.dev`.
 - Build `cd storefront && npm ci && npm run build`, output `storefront/dist`.
-- Env vars `VITE_STORE_DOMAIN=kitsbyzizo.myshopify.com`, `VITE_STOREFRONT_TOKEN=<public token>`. The public token ends up in the browser by design (F9); still keep it out of git.
+- The **public** token is built into the browser bundle by design (F9: it's meant for browsers, read-only products and carts), so it lives in `storefront/.env.production` in git: `VITE_STORE_DOMAIN=kitsbyzizo.myshopify.com` and `VITE_STOREFRONT_TOKEN=<public token>`. The **private** token is never stored anywhere.
 - Use `wrangler pages deploy storefront/dist --project-name kitsbyzizo`, or connect the repo in the Cloudflare dashboard.
 - Check the live URL with the e2e suite.
 
